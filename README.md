@@ -1,54 +1,46 @@
-# :smiley: Team08 Client Repository
+# Getting Started with Create React App
 
-8팀 클라이언트 저장소입니다.
+This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-포크 뜨세요!
+## Available Scripts
 
-## 📁 브랜치 관리
+In the project directory, you can run:
 
-- `master`
-    - 배포 가능한 상태만을 관리합니다.
-    - 팀장님만 : `dev` >> `master`
-- `dev`
-    - 기능 개발을 위한 브랜치들을 병합하기 위해 사용합니다.
-    - 모든 기능이 추가되고 버그가 수정되어 배포 가능한 안정적인 상태인 경우에만 `master`에 병합합니다.
-- `feature`
-    - `dev` 브랜치에서 새로운 기능에 대한 `feature` 브랜치를 분기합니다.
-    - 새로운 기능에 대한 작업 수행이 끝나면 `dev` 브랜치로 병합합니다.
-    - 더 이상 필요하지 않은 `feature` 브랜치는 삭제합니다.
-    - 중앙 원격 저장소에 올리기(`push`) 전에 `pull` 땡겨와서 `merge conflict` 해결해줍니다.
-    - `feature/기능요약` : `feature/login`
-    ```
-    git checkout -b feature/login develop
-    /* 새로운 기능 작업 수행, add, commit, add, commit, ... */ 
-    git checkout develop
-    git merge --no-ff feature/login
-    git branch -d feature/login
-    git push origin develop
-    ```
+### `yarn start`
 
-## 📸 커밋 규칙
+Runs the app in the development mode.\
+Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
-- 예시: `feat: 로그인 기능 구현`
-- `feat` : 새로운 기능 추가
-- `fix` : 버그 수정
-- `docs` : 문서 수정
-- `style` : 코드 formatting, 세미콜론(;) 누락, 코드 변경이 없는 경우
-- `refactor` : 코드 리팩터링
-- `test` : 테스트 코드, 리팩터링 테스트 코드 추가(프로덕션 코드 변경 X)
-- `chore` : 빌드 업무 수정, 패키지 매니저 수정(프로덕션 코드 변경 X)
-- `design` : CSS 등 사용자 UI 디자인 변경
-- `comment` : 필요한 주석 추가 및 변경
-- `rename` : 파일 혹은 폴더명을 수정하거나 옮기는 작업만인 경우
-- `remove` : 파일을 삭제하는 작업만 수행한 경우
-- `!BREAKING CHANGE` : 커다란 API 변경의 경우
-- `!HOTFIX` : 급하게 치명적인 버그를 고쳐야 하는 경우
+The page will reload if you make edits.\
+You will also see any lint errors in the console.
 
+### `yarn test`
 
-## 💦 참고
+Launches the test runner in the interactive watch mode.\
+See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
-[Git 브랜치의 종류](https://gmlwjd9405.github.io/2018/05/11/types-of-git-branch.html)
+### `yarn build`
 
-[자주 사용되는 Git 명령어](https://www.holaxprogramming.com/2018/11/01/git-commands/)
+Builds the app for production to the `build` folder.\
+It correctly bundles React in production mode and optimizes the build for the best performance.
 
-[프로젝트 fork 하는 법](https://salix97.tistory.com/223)
+The build is minified and the filenames include the hashes.\
+Your app is ready to be deployed!
+
+See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+
+### `yarn eject`
+
+**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+
+If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+
+Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+
+You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+
+## Learn More
+
+You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+
+To learn React, check out the [React documentation](https://reactjs.org/).
