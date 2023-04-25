@@ -8,7 +8,7 @@
     "plugin:react/recommended",
     "plugin:@typescript-eslint/recommended",
     // "airbnb/hook",
-    "airbnb-typescript",
+    // "airbnb-typescript",
     "prettier"
   ],
   "overrides": [],
@@ -21,7 +21,7 @@
     "sourceType": "module",
     "project": "./tsconfig.json"
   },
-  "plugins": ["react", "@typescript-eslint"],
+  "plugins": ["react", "@typescript-eslint", "tailwindcss"],
   "rules": {
     "quotes": ["error", "single"] // 더블 쿼터 사용
   }
