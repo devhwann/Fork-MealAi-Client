@@ -3,13 +3,18 @@
     "browser": true,
     "es2021": true
   },
+  "settings": {
+    "react": {
+      "version": "detect"
+    }
+  },
   "extends": [
     "eslint:recommended",
     "plugin:react/recommended",
     "plugin:@typescript-eslint/recommended",
-    // "airbnb/hook",
-    // "airbnb-typescript",
+    "airbnb-typescript",
     "prettier"
+    // "airbnb/hook",
   ],
   "overrides": [],
   "parser": "@typescript-eslint/parser",
@@ -22,8 +27,9 @@
     "project": "./tsconfig.json"
   },
   "plugins": ["react", "@typescript-eslint", "tailwindcss"],
+  "ignorePatterns": ["craco.config.js","tailwind.config.js" ],
   "rules": {
-    "quotes": ["error", "single"], // 더블 쿼터 사용
+    "quotes": ["error", "double"], // 더블 쿼터 사용
     "linebreak-style": 0,
     "import/no-dynamic-require": 0,
     "import/no-unresolved": 0,
