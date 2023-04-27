@@ -1,3 +1,6 @@
+import Input from "@/components/atoms/Input";
+import ValidationInput from "@/components/atoms/ValidationInput";
+import InputWithLabel from "@/components/molecules/InputWithLabel";
 import React from "react";
 
 const Home = () => {
@@ -28,6 +31,37 @@ const Home = () => {
 					<p>Rerum reiciendis beatae tenetur excepturi</p>
 				</div>
 			</div>
+
+			<p>basic input</p>
+			<Input type="text" name="test" id="1" value="" placeholder="test" onChange={() => {}} />
+			<br />
+			<br />
+			<p>validation input</p>
+			<ValidationInput
+				type="text"
+				name="test"
+				id="1"
+				value="test"
+				placeholder="test"
+				isError={false}
+				errorMessage="message test"
+				onChange={() => {}}
+			/>
+			<br />
+			<br />
+			<p>validation input + label</p>
+			<InputWithLabel
+				type="text"
+				name="test"
+				id="1"
+				value="test"
+				placeholder="test"
+				isError={false}
+				errorMessage="message test"
+				onChange={() => {}}
+				label="label test"
+				htmlFor="test"
+			/>
 		</div>
 	);
 };
