@@ -31,7 +31,7 @@ export default {
 	daisyui: {
 		styled: true,
 		base: true,
-		utils: false,
+		utils: true,
 		logs: true,
 		rtl: false,
 	},
