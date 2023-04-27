@@ -3,6 +3,7 @@ import SelectWithLabel from "@/components/molecules/SelectWithLabel";
 import ValidationInput from "@/components/atoms/ValidationInput";
 import InputWithLabel from "@/components/molecules/InputWithLabel";
 import BasicButton from "@/components/atoms/BasicButton";
+import TinyButton from "@/components/atoms/TinyButton";
 import React from "react";
 
 const Home = () => {
@@ -40,6 +41,21 @@ const Home = () => {
 			<BasicButton type="button" onClick={() => {}} width={false} style="gray">
 				gray button
 			</BasicButton>
+			<br />
+			<br />
+			<p>tiny button</p>
+			<TinyButton type="button" onClick={() => {}} style="primary">
+				tiny
+			</TinyButton>
+			<TinyButton type="button" onClick={() => {}} style="bg">
+				tiny button
+			</TinyButton>
+			<TinyButton type="button" onClick={() => {}} style="deactivated">
+				deactivated
+			</TinyButton>
+			<TinyButton type="button" onClick={() => {}} style="gray">
+				gray
+			</TinyButton>
 			<br />
 			<br />
 			<p>basic input</p>
