@@ -1,4 +1,5 @@
 import Input from "@/components/atoms/Input";
+import SelectWithLabel from "@/components/molecules/SelectWithLabel";
 import ValidationInput from "@/components/atoms/ValidationInput";
 import InputWithLabel from "@/components/molecules/InputWithLabel";
 import React from "react";
@@ -62,6 +63,29 @@ const Home = () => {
 				label="label test"
 				htmlFor="test"
 			/>
+			<br />
+			<br />
+			<p>select box</p>
+
+			<select className="select select-bordered max-w-xs">
+				<option disabled selected>
+					선택
+				</option>
+				<option>test option 1</option>
+				<option>test option 2</option>
+			</select>
+
+			<br />
+			<br />
+			<p>select box + label</p>
+
+			<SelectWithLabel name="test" id="test" value="선택" label="select label" htmlFor="test" onChange={() => {}}>
+				<option disabled selected>
+					선택
+				</option>
+				<option>test option 1</option>
+				<option>test option 2</option>
+			</SelectWithLabel>
 		</div>
 	);
 };
