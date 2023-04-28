@@ -7,7 +7,7 @@ export default function GetStyle(style: string) {
 		case "bg":
 			return "bg-bg-1 text-primary-1";
 		case "deactivated":
-			return "bg-gray-8 text-gray-4";
+			return "bg-gray-8 text-gray-6";
 		case "gray":
 			return "bg-gray-1 text-white";
 	}

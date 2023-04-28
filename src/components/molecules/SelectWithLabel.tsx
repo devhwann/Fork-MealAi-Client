@@ -1,4 +1,4 @@
-import React, { ChangeEvent, ReactNode } from "react";
+import { ChangeEvent, ReactNode } from "react";
 import InputLabel, { InputLabelProps } from "../atoms/InputLabel";
 
 export interface SelectProps extends InputLabelProps {

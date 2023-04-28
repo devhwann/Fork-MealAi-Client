@@ -4,7 +4,7 @@ import ValidationInput from "@/components/atoms/ValidationInput";
 import InputWithLabel from "@/components/molecules/InputWithLabel";
 import BasicButton from "@/components/atoms/BasicButton";
 import TinyButton from "@/components/atoms/TinyButton";
-import React from "react";
+import TopButton from "@/components/atoms/TopButton";
 
 const Home = () => {
 	return (
@@ -35,7 +35,7 @@ const Home = () => {
 			<BasicButton type="button" onClick={() => {}} width={true} style="bg">
 				bg button
 			</BasicButton>
-			<BasicButton type="button" onClick={() => {}} width={false} style="deactivated">
+			<BasicButton type="button" onClick={() => {}} width={false} style="deactivated" deactivated={true}>
 				deactivated button
 			</BasicButton>
 			<BasicButton type="button" onClick={() => {}} width={false} style="gray">
@@ -50,10 +50,10 @@ const Home = () => {
 			<TinyButton type="button" onClick={() => {}} style="bg">
 				tiny button
 			</TinyButton>
-			<TinyButton type="button" onClick={() => {}} style="deactivated">
+			<TinyButton type="button" onClick={() => {}} style="deactivated" deactivated={true}>
 				deactivated
 			</TinyButton>
-			<TinyButton type="button" onClick={() => {}} style="gray">
+			<TinyButton type="button" onClick={() => {}} style="gray" deactivated={false}>
 				gray
 			</TinyButton>
 			<br />
@@ -111,6 +111,9 @@ const Home = () => {
 				<option>test option 1</option>
 				<option>test option 2</option>
 			</SelectWithLabel>
+
+			<TopButton />
+			<div className="h-96">여백</div>
 		</div>
 	);
 };
