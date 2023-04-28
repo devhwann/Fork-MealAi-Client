@@ -5,10 +5,12 @@ import InputWithLabel from "@/components/molecules/InputWithLabel";
 import BasicButton from "@/components/atoms/BasicButton";
 import TinyButton from "@/components/atoms/TinyButton";
 import TopButton from "@/components/atoms/TopButton";
+import Header from "@/templates/Header";
 
 const Home = () => {
 	return (
 		<div>
+			<Header />
 			<div>
 				Lorem ipsum dolor, sit amet consectetur adipisicing elit. Totam consequuntur laborum culpa non a aspernatur
 				omnis possimus error accusamus illum illo soluta eius officiis recusandae, ipsum quaerat accusantium sapiente
@@ -91,7 +93,6 @@ const Home = () => {
 			<br />
 			<br />
 			<p>select box</p>
-
 			<select className="select select-bordered max-w-xs">
 				<option disabled selected>
 					선택
@@ -99,11 +100,9 @@ const Home = () => {
 				<option>test option 1</option>
 				<option>test option 2</option>
 			</select>
-
 			<br />
 			<br />
 			<p>select box + label</p>
-
 			<SelectWithLabel name="test" id="test" value="선택" label="select label" htmlFor="test" onChange={() => {}}>
 				<option disabled selected>
 					선택
@@ -111,7 +110,6 @@ const Home = () => {
 				<option>test option 1</option>
 				<option>test option 2</option>
 			</SelectWithLabel>
-
 			<TopButton />
 			<div className="h-96">여백</div>
 		</div>
