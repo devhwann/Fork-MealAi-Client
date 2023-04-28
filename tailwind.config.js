@@ -23,6 +23,9 @@ export default {
 				"system-success": "#36D399",
 				"system-error": "#F87272",
 			},
+			height: {
+				"90": "90px",
+			},
 		},
 	},
 	variants: {
