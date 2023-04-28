@@ -2,8 +2,18 @@ import { createGlobalStyle } from "styled-components";
 import reset from "styled-reset";
 
 export const GlobalStyle = createGlobalStyle`
-    @font-face { font-family: 'ghanachoco'; src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_20-04@1.0/ghanachoco.woff') format('woff'); font-weight: normal; font-style: normal; 
+  ${reset}
+  
+  @import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.6/dist/web/static/pretendard-dynamic-subset.css");
 
-}
-    ${reset}        
+  *,
+  *::after,
+  *::before {
+    box-sizing: border-box;
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-font-smoothing: antialiased;
+    font-smoothing: antialiased;
+    font-family: pretendard, sans-serif !important;
+  }
+  
 `;
