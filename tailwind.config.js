@@ -19,6 +19,7 @@ export default {
 				"primary-2": "#6BB64A",
 				"secondary-1": "#F8CD24",
 				"bg-1": "#EDFBF4",
+				"bg-2": "#FEF5D3",
 				"system-success": "#36D399",
 				"system-error": "#F87272",
 			},
