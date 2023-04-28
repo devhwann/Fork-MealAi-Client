@@ -1,43 +1,37 @@
-import React, { ErrorInfo, ReactNode } from "react";
-// TODO 커스텀 에러 바운더리 컴포넌트 입니다. 현재는 사용 x
-// TODO 나중에 커스텀 하게 된다면 react-error-boundary 모듈제거 후 직접 바운딩 할 에러들을 커스텀 해나가면 됩니다.
+import React, { useState, ErrorInfo } from "react";
 
 interface Props {
-	children?: ReactNode;
-	fallback: React.ElementType;
+	children?: React.ReactNode;
+	fallback: React.ElementType<{ error: Error | null }>;
+	onError?: (error: Error, errorInfo: ErrorInfo) => void;
 }
 
-interface State {
-	hasError: boolean;
-	info: Error | null;
-}
+const ErrorBoundary: React.FC<Props> = ({ children, fallback: FallbackComponent, onError }) => {
+	const [hasError, setHasError] = useState(false);
+	const [errorState, setErrorState] = useState<Error | null>(null);
 
-class ErrorBoundary extends React.Component<Props, State> {
-	constructor(props: Props) {
-		super(props);
-		this.state = {
-			hasError: false,
-			info: null,
-		};
-	}
-
-	static getDerivedStateFromError(error: Error) {
-		return { hasError: true, info: error };
-	}
-
-	componentDidCatch(error: Error, errorInfo: ErrorInfo) {
-		console.log("error: ", error);
-		console.log("errorInfo: ", errorInfo);
-	}
-
-	render() {
-		const { hasError, info } = this.state;
-		const { children } = this.props;
-		if (hasError) {
-			return <this.props.fallback error={info} />;
+	const handleCatch = (error: Error, errorInfo: ErrorInfo) => {
+		console.log("Caught an error:", error, errorInfo);
+		setErrorState(error);
+		setHasError(true);
+		if (onError) {
+			onError(error, errorInfo);
 		}
-		return children;
+	};
+
+	if (hasError) {
+		return <FallbackComponent error={errorState} />;
 	}
-}
+
+	return (
+		<React.Fragment>
+			{children}
+			<ErrorBoundary fallback={FallbackComponent} onError={handleCatch} />
+		</React.Fragment>
+	);
+};
 
 export default ErrorBoundary;
+
+// TODO 커스텀 에러 바운더리 컴포넌트 입니다. 현재는 사용 x
+// TODO 나중에 커스텀 하게 된다면 react-error-boundary 모듈제거 후 직접 바운딩 할 에러들을 커스텀 해나가면 됩니다.
