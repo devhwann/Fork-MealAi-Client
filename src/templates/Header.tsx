@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import logo from "@/assets/logo.svg";
+import Logo from "@/assets/logo.svg";
 
 interface MenuObjProps {
 	name: string;
@@ -26,9 +26,9 @@ const Header = () => {
 	];
 
 	return (
-		<div className="flex flex-row w-screen h-90 gap-12 items-center bg-white border-solid border-b border-gray-7">
+		<div className="flex flex-row w-screen h-90 gap-12 items-center bg-white border-solid border-b border-gray-7 shadow-md">
 			<Link to="/">
-				<img src={logo} width="115" height="27" className="ml-20" />
+				<img src={Logo} width="115" height="27" className="ml-20" />
 			</Link>
 			{menuObj.map(({ name, path }: MenuObjProps) => (
 				<Link to={path} key={path}>
@@ -38,7 +38,7 @@ const Header = () => {
 				</Link>
 			))}
 			{isLoggedIn ? (
-				<div className="flex flex-row ml-auto mr-20 gap-10 text-base text-gray-3">
+				<div className="flex flex-row ml-auto mr-20 gap-10 text-base text-gray-6">
 					<Link to="/">
 						<p>마이페이지</p>
 					</Link>
