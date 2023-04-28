@@ -1,4 +1,3 @@
-import React from "react";
 import InputLabel, { InputLabelProps } from "../atoms/InputLabel";
 import ValidationInput, { ValidationInputProps } from "../atoms/ValidationInput";
 

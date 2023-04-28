@@ -1,4 +1,3 @@
-import React from "react";
 import { InputProps } from "./Input";
 
 export interface ValidationInputProps extends InputProps {

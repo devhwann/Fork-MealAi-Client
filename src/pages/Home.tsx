@@ -4,7 +4,6 @@ import ValidationInput from "@/components/atoms/ValidationInput";
 import InputWithLabel from "@/components/molecules/InputWithLabel";
 import BasicButton from "@/components/atoms/BasicButton";
 import TinyButton from "@/components/atoms/TinyButton";
-import React from "react";
 import TopButton from "@/components/atoms/TopButton";
 
 const Home = () => {

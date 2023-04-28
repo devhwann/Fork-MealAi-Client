@@ -1,4 +1,3 @@
-import React from "react";
 import TopIcon from "@/assets/icon_top.svg";
 
 function handleMoveToTop() {
