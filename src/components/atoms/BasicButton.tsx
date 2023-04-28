@@ -18,16 +18,7 @@ function getWidth(width: boolean) {
 	}
 }
 
-export default function BasicButton({
-	id,
-	name,
-	type,
-	children,
-	onClick,
-	width,
-	style,
-	deactivated,
-}: BasicButtonProps) {
+const BasicButton = ({ id, name, type, children, onClick, width, style, deactivated }: BasicButtonProps) => {
 	if (deactivated) {
 		return (
 			<button
@@ -53,4 +44,6 @@ export default function BasicButton({
 			{children}
 		</button>
 	);
-}
+};
+
+export default BasicButton;

@@ -11,7 +11,7 @@ interface TinyButtonProps {
 	deactivated?: boolean;
 }
 
-export default function TinyButton({ id, name, type, children, onClick, style, deactivated }: TinyButtonProps) {
+const TinyButton = ({ id, name, type, children, onClick, style, deactivated }: TinyButtonProps) => {
 	if (deactivated) {
 		return (
 			<button
@@ -37,4 +37,6 @@ export default function TinyButton({ id, name, type, children, onClick, style, d
 			{children}
 		</button>
 	);
-}
+};
+
+export default TinyButton;
