@@ -1,5 +1,5 @@
-import InputLabel, { InputLabelProps } from "../atoms/InputLabel";
-import ValidationInput, { ValidationInputProps } from "../atoms/ValidationInput";
+import InputLabel, { InputLabelProps } from "../atoms/inputs/InputLabel";
+import ValidationInput, { ValidationInputProps } from "../atoms/inputs/ValidationInput";
 
 interface InputWithLabelProps extends ValidationInputProps, InputLabelProps {}
 
