@@ -1,13 +1,16 @@
-import Input from "@/components/atoms/Input";
-import SelectWithLabel from "@/components/molecules/SelectWithLabel";
-import ValidationInput from "@/components/atoms/ValidationInput";
-import InputWithLabel from "@/components/molecules/InputWithLabel";
-import BasicButton from "@/components/atoms/BasicButton";
-import TinyButton from "@/components/atoms/TinyButton";
-import TopButton from "@/components/atoms/TopButton";
-import Header from "@/templates/Header";
+import Input from "@/components/atoms/inputs/Input";
+import SelectWithLabel from "@/components/organisms/SelectWithLabel";
+import ValidationInput from "@/components/atoms/inputs/ValidationInput";
+import InputWithLabel from "@/components/organisms/InputWithLabel";
+import BasicButton from "@/components/atoms/buttons/BasicButton";
+import TinyButton from "@/components/atoms/buttons/TinyButton";
+import TopButton from "@/components/atoms/buttons/TopButton";
+import Header from "@/components/templates/Header";
+import LikeButton from "@/components/atoms/buttons/LikeButton";
+import { useState } from "react";
 
 const Home = () => {
+	const [isLike, setIsLike] = useState(false);
 	return (
 		<div>
 			<Header />
@@ -103,14 +106,29 @@ const Home = () => {
 			<br />
 			<br />
 			<p>select box + label</p>
-			<SelectWithLabel name="test" id="test" value="선택" label="select label" htmlFor="test" onChange={() => {}}>
-				<option disabled selected>
-					선택
-				</option>
+
+			<SelectWithLabel
+				name="test"
+				id="test"
+				defaultValue="선택"
+				label="select label"
+				htmlFor="test"
+				onChange={() => {}}
+			>
+				<option disabled>선택</option>
 				<option>test option 1</option>
 				<option>test option 2</option>
 			</SelectWithLabel>
 			<TopButton />
+
+			<LikeButton
+				isLike={isLike}
+				onClick={() => {
+					setIsLike(!isLike);
+				}}
+			/>
+
+			{/* <LikeButton isLike={false} onClick={() => {}} /> */}
 			<div className="h-96">여백</div>
 		</div>
 	);
