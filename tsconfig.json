@@ -21,12 +21,13 @@
         "jsx": "react-jsx",
         "baseUrl": ".", // 경로 시작 위치를 현재 위치로 설정
         "paths": {
-            "@/*": ["./src/*"]
+          "@/*": ["./src/*"]
         }
     },
     "include": [
       "src",
-      "craco.config.js"
+      "craco.config.js",
+      "models/custom.d.ts"
     ]
 }
 
