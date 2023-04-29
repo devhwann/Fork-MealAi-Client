@@ -13,6 +13,7 @@ const Wrapper = styled.div`
 
 const Page = styled.div`
 	margin: 90px auto 120px auto;
+	width: 100%;
 	flex: 1;
 `;
 

@@ -5,17 +5,12 @@ import InputWithLabel from "@/components/organisms/InputWithLabel";
 import BasicButton from "@/components/atoms/buttons/BasicButton";
 import TinyButton from "@/components/atoms/buttons/TinyButton";
 import LikeButton from "@/components/atoms/buttons/LikeButton";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
 const Home = () => {
 	const [isLike, setIsLike] = useState(false);
 	return (
 		<>
-			<div>
-				Lorem ipsum dolor, sit amet consectetur adipisicing elit. Totam consequuntur laborum culpa non a aspernatur
-				omnis possimus error accusamus illum illo soluta eius officiis recusandae, ipsum quaerat accusantium sapiente
-				explicabo.
-			</div>
 			<div className="card shadow bg-bg-1">
 				<div className="card-body">
 					<h2 className="card-title">no border with shadow</h2>
@@ -123,8 +118,6 @@ const Home = () => {
 					setIsLike(!isLike);
 				}}
 			/>
-
-			<div className="h-96">여백</div>
 		</>
 	);
 };
