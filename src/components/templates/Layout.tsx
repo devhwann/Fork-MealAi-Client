@@ -17,7 +17,6 @@ const Page = styled.div`
 	flex: 1;
 `;
 
-// TODO : app.tsx, index.tsx 구조 확인 후 작업
 const Layout = () => {
 	return (
 		<>
