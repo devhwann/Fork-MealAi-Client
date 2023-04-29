@@ -4,16 +4,13 @@ import ValidationInput from "@/components/atoms/inputs/ValidationInput";
 import InputWithLabel from "@/components/organisms/InputWithLabel";
 import BasicButton from "@/components/atoms/buttons/BasicButton";
 import TinyButton from "@/components/atoms/buttons/TinyButton";
-import TopButton from "@/components/atoms/buttons/TopButton";
-import Header from "@/components/templates/Header";
 import LikeButton from "@/components/atoms/buttons/LikeButton";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 const Home = () => {
 	const [isLike, setIsLike] = useState(false);
 	return (
-		<div>
-			<Header />
+		<>
 			<div>
 				Lorem ipsum dolor, sit amet consectetur adipisicing elit. Totam consequuntur laborum culpa non a aspernatur
 				omnis possimus error accusamus illum illo soluta eius officiis recusandae, ipsum quaerat accusantium sapiente
@@ -119,7 +116,6 @@ const Home = () => {
 				<option>test option 1</option>
 				<option>test option 2</option>
 			</SelectWithLabel>
-			<TopButton />
 
 			<LikeButton
 				isLike={isLike}
@@ -128,9 +124,8 @@ const Home = () => {
 				}}
 			/>
 
-			{/* <LikeButton isLike={false} onClick={() => {}} /> */}
 			<div className="h-96">여백</div>
-		</div>
+		</>
 	);
 };
 

@@ -1,35 +1,44 @@
 import React, { lazy, Suspense } from "react";
-// import { Routes, Route } from "react-router-dom";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
+import Layout from "@/components/templates/Layout";
 
 const Home = lazy(() => import("@/pages/Home"));
 const Profile = lazy(() => import("@/pages/Profile"));
 const SignUp = lazy(() => import("@/pages/SignUp"));
 
-const router = createBrowserRouter([
+const routes = createBrowserRouter([
 	{
-		path: "/",
-		element: <Home />,
-	},
-	{
-		path: "/profile",
-		element: <Profile />,
-	},
-	{
-		path: "/signup",
-		element: <SignUp />,
+		element: <Layout />,
+		children: [
+			{
+				path: "/",
+				element: <Home />,
+			},
+			{
+				path: "/profile",
+				element: <Profile />,
+			},
+			{
+				path: "/signup",
+				element: <SignUp />,
+			},
+			{
+				path: "*",
+				element: <div>404 example</div>,
+			},
+		],
 	},
 ]);
 
 // TODO 로딩중 컴포넌트 (나중에 만들어야함)
-const CustomRouter = () => {
+const AppRouter = () => {
 	return (
 		<React.Fragment>
 			<Suspense fallback={<div>로딩중 </div>}>
-				<RouterProvider router={router} />
+				<RouterProvider router={routes} />
 			</Suspense>
 		</React.Fragment>
 	);
 };
 
-export default CustomRouter;
+export default AppRouter;
