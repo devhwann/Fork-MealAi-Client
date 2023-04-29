@@ -7,6 +7,7 @@ import SearchInput from "@/components/atoms/inputs/SearchInput";
 import BasicButton from "@/components/atoms/buttons/BasicButton";
 import TinyButton from "@/components/atoms/buttons/TinyButton";
 import LikeButton from "@/components/atoms/buttons/LikeButton";
+import LikeWithCount from "@/components/organisms/LikeWithCount";
 
 const Home = () => {
 	const [isLike, setIsLike] = useState(false);
@@ -130,6 +131,13 @@ const Home = () => {
 				onClick={() => {
 					setIsLike(!isLike);
 				}}
+			/>
+			<LikeWithCount
+				isLike={isLike}
+				onClick={() => {
+					setIsLike(!isLike);
+				}}
+				count={13}
 			/>
 		</>
 	);
