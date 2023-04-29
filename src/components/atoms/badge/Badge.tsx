@@ -18,7 +18,11 @@ function getBgColor(color: BadgeProps["color"]) {
 
 const Badge = ({ text, color }: BadgeProps) => {
 	return (
-		<span className={`h-6 px-2 py-1 rounded-lg ${getBgColor(color)} text-white text-sm font-semibold text-center`}>
+		<span
+			className={`h-6 px-2 pt-0.5 rounded-lg ${getBgColor(
+				color
+			)} text-white text-sm font-semibold text-center inline-block`}
+		>
 			{text}
 		</span>
 	);

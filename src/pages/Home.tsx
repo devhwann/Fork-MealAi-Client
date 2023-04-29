@@ -9,6 +9,7 @@ import TinyButton from "@/components/atoms/buttons/TinyButton";
 import LikeButton from "@/components/atoms/buttons/LikeButton";
 import LikeWithCount from "@/components/organisms/LikeWithCount";
 import Badge from "@/components/atoms/badge/Badge";
+import GoalText from "@/components/atoms/goal/GoalText";
 
 const Home = () => {
 	const [isLike, setIsLike] = useState(false);
@@ -88,7 +89,6 @@ const Home = () => {
 			<br />
 			<br />
 			<p>validation input</p>
-
 			{/* // ********************** */}
 			<ValidationInput
 				type="text"
@@ -128,7 +128,6 @@ const Home = () => {
 			<br />
 			<br />
 			<p>select box + label</p>
-
 			<SelectWithLabel
 				name="test"
 				id="label2"
@@ -141,7 +140,6 @@ const Home = () => {
 				<option>test option 1</option>
 				<option>test option 2</option>
 			</SelectWithLabel>
-
 			<LikeButton
 				isLike={isLike}
 				onClick={() => {
@@ -155,11 +153,12 @@ const Home = () => {
 				}}
 				count={13}
 			/>
-
 			<Badge text="쌀국수" color="gray" />
 			<Badge text="목표" color="primary2" />
 			<Badge text="부족" color="systemError" />
 			<Badge text="충분" color="systemSuccess" />
+			<br />
+			<GoalText goal="균형잡힌 식단 (탄·단·지 밸런스)" />
 		</>
 	);
 };
