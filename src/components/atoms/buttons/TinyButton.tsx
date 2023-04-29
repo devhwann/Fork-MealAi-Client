@@ -1,13 +1,13 @@
 import { ReactNode } from "react";
 import getStyle from "@/utils/getStyle";
 
-interface TinyButtonProps {
+export interface TinyButtonProps {
 	id?: string;
 	name?: string;
 	type?: "button" | "reset" | "submit";
 	children: ReactNode;
 	onClick: () => void;
-	style: string;
+	style: "primary" | "bg" | "deactivated" | "gray";
 	deactivated?: boolean;
 }
 

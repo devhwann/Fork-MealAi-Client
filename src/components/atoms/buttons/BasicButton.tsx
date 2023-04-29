@@ -1,15 +1,9 @@
 import { ReactNode } from "react";
 import getStyle from "@/utils/getStyle";
+import { TinyButtonProps } from "./TinyButton";
 
-interface BasicButtonProps {
-	id?: string;
-	name?: string;
-	type?: "button" | "reset" | "submit";
-	children: ReactNode;
-	onClick: () => void;
+interface BasicButtonProps extends TinyButtonProps {
 	width: boolean;
-	style: string;
-	deactivated?: boolean;
 }
 
 function getWidth(width: boolean) {
