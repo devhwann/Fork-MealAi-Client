@@ -1,5 +1,5 @@
 import { ReactNode } from "react";
-import GetStyle from "@/utils/GetStyle";
+import getStyle from "@/utils/getStyle";
 
 interface TinyButtonProps {
 	id?: string;
@@ -15,7 +15,7 @@ const TinyButton = ({ id, name, type, children, onClick, style, deactivated }: T
 	if (deactivated) {
 		return (
 			<button
-				className={`btn btn-xs border-none ${GetStyle(style)}`}
+				className={`btn btn-xs border-none ${getStyle(style)}`}
 				id={id}
 				name={name}
 				type={type}
@@ -28,7 +28,7 @@ const TinyButton = ({ id, name, type, children, onClick, style, deactivated }: T
 	}
 	return (
 		<button
-			className={`btn btn-xs border-none hover:bg-secondary-1 ${GetStyle(style)}`}
+			className={`btn btn-xs border-none hover:bg-secondary-1 ${getStyle(style)}`}
 			id={id}
 			name={name}
 			type={type}
