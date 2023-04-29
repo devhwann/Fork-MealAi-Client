@@ -1,4 +1,3 @@
-import Logo from "@/assets/logo_white.svg";
 import LikeButton, { LikeButtonProps } from "../atoms/buttons/LikeButton";
 
 interface LikeWithCountProps extends LikeButtonProps {

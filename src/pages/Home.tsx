@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { ChangeEvent, useState } from "react";
 import Input from "@/components/atoms/inputs/Input";
 import SelectWithLabel from "@/components/organisms/SelectWithLabel";
 import ValidationInput from "@/components/atoms/inputs/ValidationInput";
@@ -8,9 +8,23 @@ import BasicButton from "@/components/atoms/buttons/BasicButton";
 import TinyButton from "@/components/atoms/buttons/TinyButton";
 import LikeButton from "@/components/atoms/buttons/LikeButton";
 import LikeWithCount from "@/components/organisms/LikeWithCount";
+import Badge from "@/components/atoms/badge/Badge";
 
 const Home = () => {
 	const [isLike, setIsLike] = useState(false);
+
+	const [inputTest, setInputTest] = useState("");
+	const [errorTest, setErrorTest] = useState(false);
+
+	function onChangeEmailTest(e: ChangeEvent<HTMLInputElement>) {
+		e.preventDefault();
+		setInputTest(e.target.value);
+		setErrorTest(true); //test
+		if (e.target.value.length >= 5) {
+			setErrorTest(false);
+		}
+	}
+
 	return (
 		<>
 			<div className="card shadow bg-bg-1">
@@ -74,15 +88,17 @@ const Home = () => {
 			<br />
 			<br />
 			<p>validation input</p>
+
+			{/* // ********************** */}
 			<ValidationInput
 				type="text"
 				name="test"
 				id="1"
-				value="test"
+				value={inputTest}
 				placeholder="test"
-				isError={false}
+				isError={errorTest}
 				errorMessage="message test"
-				onChange={() => {}}
+				onChange={onChangeEmailTest}
 			/>
 			<br />
 			<br />
@@ -90,14 +106,14 @@ const Home = () => {
 			<InputWithLabel
 				type="text"
 				name="test"
-				id="1"
-				value="test"
+				id="label1"
+				value="입력이 안되도 놀라지 마세용"
 				placeholder="test"
 				isError={false}
 				errorMessage="message test"
 				onChange={() => {}}
 				label="label test"
-				htmlFor="test"
+				htmlFor="label1"
 			/>
 			<br />
 			<br />
@@ -115,10 +131,10 @@ const Home = () => {
 
 			<SelectWithLabel
 				name="test"
-				id="test"
+				id="label2"
 				defaultValue="선택"
 				label="select label"
-				htmlFor="test"
+				htmlFor="label2"
 				onChange={() => {}}
 			>
 				<option disabled>선택</option>
@@ -139,6 +155,11 @@ const Home = () => {
 				}}
 				count={13}
 			/>
+
+			<Badge text="쌀국수" color="gray" />
+			<Badge text="목표" color="primary2" />
+			<Badge text="부족" color="systemError" />
+			<Badge text="충분" color="systemSuccess" />
 		</>
 	);
 };
