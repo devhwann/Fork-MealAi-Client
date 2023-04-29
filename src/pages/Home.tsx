@@ -1,11 +1,12 @@
+import { useState } from "react";
 import Input from "@/components/atoms/inputs/Input";
 import SelectWithLabel from "@/components/organisms/SelectWithLabel";
 import ValidationInput from "@/components/atoms/inputs/ValidationInput";
 import InputWithLabel from "@/components/organisms/InputWithLabel";
+import SearchInput from "@/components/atoms/inputs/SearchInput";
 import BasicButton from "@/components/atoms/buttons/BasicButton";
 import TinyButton from "@/components/atoms/buttons/TinyButton";
 import LikeButton from "@/components/atoms/buttons/LikeButton";
-import { useState } from "react";
 
 const Home = () => {
 	const [isLike, setIsLike] = useState(false);
@@ -57,6 +58,18 @@ const Home = () => {
 			<br />
 			<p>basic input</p>
 			<Input type="text" name="test" id="1" value="" placeholder="test" onChange={() => {}} />
+			<br />
+			<br />
+			<p>search input</p>
+			<SearchInput
+				name="search"
+				id="search"
+				value=""
+				onChange={() => {}}
+				onClick={() => {
+					console.log("hello");
+				}}
+			/>
 			<br />
 			<br />
 			<p>validation input</p>
