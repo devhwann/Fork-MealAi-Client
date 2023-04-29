@@ -1,10 +1,17 @@
-// import { ChangeEvent } from "react";
+import { ChangeEvent } from "react";
 
-const RadioButton = () => {
+interface RadioButtonProps {
+	type: "radio";
+	id: string;
+	gender: string;
+	onChange?: (e: ChangeEvent<HTMLInputElement>) => void;
+}
+
+const RadioButton = ({ type, id, gender, onChange }: RadioButtonProps) => {
 	return (
 		<div>
-			<input type="radio" id="radio-button" />
-			<label htmlFor="radio-button">Option text</label>
+			<input type={type} id={id} onChange={onChange} />
+			<label htmlFor="radio-button">{gender === "M" ? "남자" : "여자"}</label>
 		</div>
 	);
 };

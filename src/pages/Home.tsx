@@ -14,7 +14,8 @@ const Home = () => {
 	const [isLike, setIsLike] = useState(false);
 	return (
 		<>
-			<RadioButton></RadioButton>
+			<RadioButton type="radio" id="gender" gender="M" onChange={() => {}} />
+			<RadioButton type="radio" id="gender" gender="F" onChange={() => {}} />
 			<div className="card shadow bg-bg-1">
 				<div className="card-body">
 					<h2 className="card-title">no border with shadow</h2>
