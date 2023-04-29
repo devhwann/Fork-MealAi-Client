@@ -5,7 +5,7 @@ import InputWithLabel from "@/components/molecules/InputWithLabel";
 import BasicButton from "@/components/atoms/BasicButton";
 import TinyButton from "@/components/atoms/TinyButton";
 import TopButton from "@/components/atoms/TopButton";
-import Header from "@/templates/Header";
+import Header from "@/components/templates/Header";
 
 const Home = () => {
 	return (

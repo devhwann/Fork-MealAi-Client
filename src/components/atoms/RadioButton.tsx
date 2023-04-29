@@ -1,12 +1,11 @@
 import { ReactNode } from "react";
+import
 
 interface RadioButtonProps {
 	id?: string;
 	name?: string;
-	type?: "button" | "reset" | "submit";
+	value?: string;
+	type: "radio";
 	children: ReactNode;
-	onClick: () => void;
-	width: boolean;
-	style: string;
-	deactivated?: boolean;
+	onChange: () => void;
 }
