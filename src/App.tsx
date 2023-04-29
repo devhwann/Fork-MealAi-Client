@@ -1,4 +1,4 @@
-import CustomRouter from "@/router/CustomRouter";
+import AppRouter from "@/router/AppRouter";
 import { GlobalStyle } from "@/styles/GlobalStyles";
 import { ErrorBoundary } from "react-error-boundary";
 import Fallback from "@/components/errorrBoundary/CommonErrorBoundary";
@@ -8,7 +8,7 @@ const App = () => {
 	return (
 		<ErrorBoundary FallbackComponent={Fallback}>
 			<GlobalStyle />
-			<CustomRouter />
+			<AppRouter />
 			<ThrowCounter />
 		</ErrorBoundary>
 	);

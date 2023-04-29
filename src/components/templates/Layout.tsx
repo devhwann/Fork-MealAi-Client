@@ -1,12 +1,8 @@
-import { ReactNode } from "react";
+import { Outlet } from "react-router-dom";
 import styled from "styled-components";
 import TopButton from "../atoms/buttons/TopButton";
 import Footer from "./Footer";
 import Header from "./Header";
-
-interface LayoutProps {
-	children: ReactNode;
-}
 
 // styled
 const Wrapper = styled.div`
@@ -21,13 +17,15 @@ const Page = styled.div`
 `;
 
 // TODO : app.tsx, index.tsx 구조 확인 후 작업
-const Layout = ({ children }: LayoutProps) => {
+const Layout = () => {
 	return (
 		<>
 			<Header />
 			<TopButton />
 			<Wrapper>
-				<Page>{children}</Page>
+				<Page>
+					<Outlet />
+				</Page>
 				<Footer />
 			</Wrapper>
 		</>

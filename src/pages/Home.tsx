@@ -5,13 +5,12 @@ import InputWithLabel from "@/components/organisms/InputWithLabel";
 import BasicButton from "@/components/atoms/buttons/BasicButton";
 import TinyButton from "@/components/atoms/buttons/TinyButton";
 import LikeButton from "@/components/atoms/buttons/LikeButton";
-import { useState } from "react";
-import Layout from "@/components/templates/Layout";
+import { useState, useEffect } from "react";
 
 const Home = () => {
 	const [isLike, setIsLike] = useState(false);
 	return (
-		<Layout>
+		<>
 			<div>
 				Lorem ipsum dolor, sit amet consectetur adipisicing elit. Totam consequuntur laborum culpa non a aspernatur
 				omnis possimus error accusamus illum illo soluta eius officiis recusandae, ipsum quaerat accusantium sapiente
@@ -126,7 +125,7 @@ const Home = () => {
 			/>
 
 			<div className="h-96">여백</div>
-		</Layout>
+		</>
 	);
 };
 
