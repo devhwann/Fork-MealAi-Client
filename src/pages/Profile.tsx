@@ -1,5 +1,7 @@
 const Profile = () => {
-	return <div>프로필</div>;
+	const personName = "철수";
+
+	return <div>{personName}</div>;
 };
 
 export default Profile;

@@ -1,21 +1,20 @@
-import Input from "@/components/atoms/Input";
-import SelectWithLabel from "@/components/molecules/SelectWithLabel";
-import ValidationInput from "@/components/atoms/ValidationInput";
-import InputWithLabel from "@/components/molecules/InputWithLabel";
-import BasicButton from "@/components/atoms/BasicButton";
-import TinyButton from "@/components/atoms/TinyButton";
-import TopButton from "@/components/atoms/TopButton";
-import Header from "@/components/templates/Header";
+import { useState } from "react";
+import Input from "@/components/atoms/inputs/Input";
+import SelectWithLabel from "@/components/organisms/SelectWithLabel";
+import ValidationInput from "@/components/atoms/inputs/ValidationInput";
+import InputWithLabel from "@/components/organisms/InputWithLabel";
+import SearchInput from "@/components/atoms/inputs/SearchInput";
+import BasicButton from "@/components/atoms/buttons/BasicButton";
+import TinyButton from "@/components/atoms/buttons/TinyButton";
+import LikeButton from "@/components/atoms/buttons/LikeButton";
+import LikeWithCount from "@/components/organisms/LikeWithCount";
+import RadioButton from "@/components/atoms/buttons/RadioButton";
 
 const Home = () => {
+	const [isLike, setIsLike] = useState(false);
 	return (
-		<div>
-			<Header />
-			<div>
-				Lorem ipsum dolor, sit amet consectetur adipisicing elit. Totam consequuntur laborum culpa non a aspernatur
-				omnis possimus error accusamus illum illo soluta eius officiis recusandae, ipsum quaerat accusantium sapiente
-				explicabo.
-			</div>
+		<>
+			<RadioButton></RadioButton>
 			<div className="card shadow bg-bg-1">
 				<div className="card-body">
 					<h2 className="card-title">no border with shadow</h2>
@@ -64,6 +63,18 @@ const Home = () => {
 			<Input type="text" name="test" id="1" value="" placeholder="test" onChange={() => {}} />
 			<br />
 			<br />
+			<p>search input</p>
+			<SearchInput
+				name="search"
+				id="search"
+				value=""
+				onChange={() => {}}
+				onClick={() => {
+					console.log("hello");
+				}}
+			/>
+			<br />
+			<br />
 			<p>validation input</p>
 			<ValidationInput
 				type="text"
@@ -103,16 +114,34 @@ const Home = () => {
 			<br />
 			<br />
 			<p>select box + label</p>
-			<SelectWithLabel name="test" id="test" value="선택" label="select label" htmlFor="test" onChange={() => {}}>
-				<option disabled selected>
-					선택
-				</option>
+
+			<SelectWithLabel
+				name="test"
+				id="test"
+				defaultValue="선택"
+				label="select label"
+				htmlFor="test"
+				onChange={() => {}}
+			>
+				<option disabled>선택</option>
 				<option>test option 1</option>
 				<option>test option 2</option>
 			</SelectWithLabel>
-			<TopButton />
-			<div className="h-96">여백</div>
-		</div>
+
+			<LikeButton
+				isLike={isLike}
+				onClick={() => {
+					setIsLike(!isLike);
+				}}
+			/>
+			<LikeWithCount
+				isLike={isLike}
+				onClick={() => {
+					setIsLike(!isLike);
+				}}
+				count={13}
+			/>
+		</>
 	);
 };
 
