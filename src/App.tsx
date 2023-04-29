@@ -1,4 +1,3 @@
-import React from "react";
 import CustomRouter from "@/router/CustomRouter";
 import { GlobalStyle } from "@/styles/GlobalStyles";
 import { ErrorBoundary } from "react-error-boundary";
