@@ -1,21 +1,18 @@
+import { useState } from "react";
 import Input from "@/components/atoms/inputs/Input";
 import SelectWithLabel from "@/components/organisms/SelectWithLabel";
 import ValidationInput from "@/components/atoms/inputs/ValidationInput";
 import InputWithLabel from "@/components/organisms/InputWithLabel";
+import SearchInput from "@/components/atoms/inputs/SearchInput";
 import BasicButton from "@/components/atoms/buttons/BasicButton";
 import TinyButton from "@/components/atoms/buttons/TinyButton";
 import LikeButton from "@/components/atoms/buttons/LikeButton";
-import { useState, useEffect } from "react";
+import LikeWithCount from "@/components/organisms/LikeWithCount";
 
 const Home = () => {
 	const [isLike, setIsLike] = useState(false);
 	return (
 		<>
-			<div>
-				Lorem ipsum dolor, sit amet consectetur adipisicing elit. Totam consequuntur laborum culpa non a aspernatur
-				omnis possimus error accusamus illum illo soluta eius officiis recusandae, ipsum quaerat accusantium sapiente
-				explicabo.
-			</div>
 			<div className="card shadow bg-bg-1">
 				<div className="card-body">
 					<h2 className="card-title">no border with shadow</h2>
@@ -62,6 +59,18 @@ const Home = () => {
 			<br />
 			<p>basic input</p>
 			<Input type="text" name="test" id="1" value="" placeholder="test" onChange={() => {}} />
+			<br />
+			<br />
+			<p>search input</p>
+			<SearchInput
+				name="search"
+				id="search"
+				value=""
+				onChange={() => {}}
+				onClick={() => {
+					console.log("hello");
+				}}
+			/>
 			<br />
 			<br />
 			<p>validation input</p>
@@ -123,8 +132,13 @@ const Home = () => {
 					setIsLike(!isLike);
 				}}
 			/>
-
-			<div className="h-96">여백</div>
+			<LikeWithCount
+				isLike={isLike}
+				onClick={() => {
+					setIsLike(!isLike);
+				}}
+				count={13}
+			/>
 		</>
 	);
 };
