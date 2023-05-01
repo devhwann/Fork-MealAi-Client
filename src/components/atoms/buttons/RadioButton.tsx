@@ -1,12 +1,19 @@
-import { ReactNode } from "react";
+import { ChangeEvent } from "react";
 
 interface RadioButtonProps {
-	id?: string;
-	name?: string;
-	type?: "button" | "reset" | "submit";
-	children: ReactNode;
-	onClick: () => void;
-	width: boolean;
-	style: string;
-	deactivated?: boolean;
+	type: "radio";
+	id: string;
+	gender: string;
+	onChange?: (e: ChangeEvent<HTMLInputElement>) => void;
 }
+
+const RadioButton = ({ type, id, gender, onChange }: RadioButtonProps) => {
+	return (
+		<div>
+			<input type={type} id={id} onChange={onChange} />
+			<label htmlFor="radio-button">{gender === "M" ? "남자" : "여자"}</label>
+		</div>
+	);
+};
+
+export default RadioButton;
