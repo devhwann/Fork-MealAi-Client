@@ -159,6 +159,11 @@ const Home = () => {
 			<Badge text="충분" color="systemSuccess" />
 			<br />
 			<GoalText goal="균형잡힌 식단 (탄·단·지 밸런스)" />
+
+			<h1>서브페이지 타이틀</h1>
+			<h2>36px 타이틀</h2>
+			<h3>30px 타이틀</h3>
+			<h4>24px 타이틀</h4>
 		</>
 	);
 };
