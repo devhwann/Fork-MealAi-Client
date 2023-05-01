@@ -14,6 +14,7 @@ import RadioButton from "@/components/atoms/buttons/RadioButton";
 import ToggleButton from "@/components/atoms/buttons/ToggleButton";
 import HorizontalProgressBars from "@/components/atoms/progressBars/HorizontalProgressBars";
 import VerticalProgressBars from "@/components/atoms/progressBars/VerticalProgressBars";
+import Modal from "@/components/organisms/Modal";
 
 const Home = () => {
 	const [isChecked, setIsChecked] = useState(true);
@@ -231,6 +232,9 @@ const Home = () => {
 					day="수"
 				/>
 			</div>
+			<Modal>
+				<h4>Title</h4>
+			</Modal>
 		</>
 	);
 };

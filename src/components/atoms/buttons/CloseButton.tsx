@@ -6,9 +6,11 @@ export interface CloseButtonProps {
 
 const CloseButton = ({ onClick }: CloseButtonProps) => {
 	return (
-		<button onClick={onClick}>
-			<img src={CloseIcon} />
-		</button>
+		<div>
+			<button onClick={onClick}>
+				<img src={CloseIcon} />
+			</button>
+		</div>
 	);
 };
 
