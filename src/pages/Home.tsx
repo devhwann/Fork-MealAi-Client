@@ -12,6 +12,8 @@ import Badge from "@/components/atoms/badge/Badge";
 import GoalText from "@/components/atoms/goal/GoalText";
 import RadioButton from "@/components/atoms/buttons/RadioButton";
 import ToggleButton from "@/components/atoms/buttons/ToggleButton";
+import HorizontalProgressBars from "@/components/atoms/progressBars/HorizontalProgressBars";
+import VerticalProgressBars from "@/components/atoms/progressBars/VerticalProgressBars";
 
 const Home = () => {
 	const [isChecked, setIsChecked] = useState(true);
@@ -178,6 +180,57 @@ const Home = () => {
 					setIsChecked(!isChecked);
 				}}
 			/>
+			<br />
+			<br />
+			<div className="w-96 p-10 border-solid border border-gray-7 rounded-lg">
+				<HorizontalProgressBars
+					kcalValue={982}
+					kcalMax={2200}
+					carboValue={8}
+					carboMax={113}
+					proteinValue={25}
+					proteinMax={20}
+					fatValue={12}
+					fatMax={16}
+				/>
+			</div>
+			<br />
+			<br />
+			<div className="flex gap-10">
+				<VerticalProgressBars
+					kcalValue={982}
+					kcalMax={2200}
+					carboValue={8}
+					carboMax={113}
+					proteinValue={25}
+					proteinMax={20}
+					fatValue={12}
+					fatMax={16}
+					day="월"
+				/>
+				<VerticalProgressBars
+					kcalValue={982}
+					kcalMax={2200}
+					carboValue={8}
+					carboMax={113}
+					proteinValue={25}
+					proteinMax={20}
+					fatValue={12}
+					fatMax={16}
+					day="화"
+				/>
+				<VerticalProgressBars
+					kcalValue={982}
+					kcalMax={2200}
+					carboValue={8}
+					carboMax={113}
+					proteinValue={25}
+					proteinMax={20}
+					fatValue={12}
+					fatMax={16}
+					day="수"
+				/>
+			</div>
 		</>
 	);
 };
