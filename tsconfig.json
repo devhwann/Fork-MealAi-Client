@@ -27,7 +27,7 @@
     "include": [
       "src",
       "craco.config.js",
-      "models/custom.d.ts"
+      "types/custom.d.ts"
     ]
 }
 
