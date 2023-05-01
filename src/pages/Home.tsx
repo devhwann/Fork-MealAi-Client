@@ -16,6 +16,7 @@ import HorizontalProgressBars from "@/components/atoms/progressBars/HorizontalPr
 import VerticalProgressBars from "@/components/atoms/progressBars/VerticalProgressBars";
 import GoalButtons from "@/components/organisms/GoalButtons";
 import Modal from "@/components/organisms/Modal";
+import MyGoalText from "@/components/organisms/MyGoalText";
 
 const Home = () => {
 	// 토글버튼
@@ -26,11 +27,10 @@ const Home = () => {
 	const [inputTest, setInputTest] = useState("");
 	const [errorTest, setErrorTest] = useState(false);
 
-
 	const [goal, setGoal] = useState("");
 	console.log(goal);
-  
-  // 모달창 on&off
+
+	// 모달창 on&off
 	const [modalIsOpen, setModalIsOpen] = useState(false);
 	const onModal = () => {
 		setModalIsOpen(true);
@@ -252,8 +252,9 @@ const Home = () => {
 			<GoalButtons setGoal={setGoal} />
 			<GoalText goal="balance" />
 			<GoalText goal="diet" />
-      
-      <div>
+			<MyGoalText goal="balance" />
+
+			<div>
 				<BasicButton type="button" onClick={onModal} width={false} style="primary">
 					모달테스트
 				</BasicButton>
