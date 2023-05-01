@@ -1,5 +1,5 @@
 import { ReactNode } from "react";
-import GetStyle from "@/utils/GetStyle";
+import GetStyle from "@/utils/getStyle";
 
 interface TinyButtonProps {
 	id?: string;

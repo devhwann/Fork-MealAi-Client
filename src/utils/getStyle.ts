@@ -1,6 +1,6 @@
 // BasicButton, TinyButton 스타일 적용 함수
 
-export default function GetStyle(style: string) {
+export default function getStyle(style: string) {
 	switch (style) {
 		case "primary":
 			return "bg-primary-1 text-white";
