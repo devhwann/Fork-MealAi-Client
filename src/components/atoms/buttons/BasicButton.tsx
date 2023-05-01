@@ -1,4 +1,3 @@
-import { ReactNode } from "react";
 import getStyle from "@/utils/getStyle";
 import { TinyButtonProps } from "./TinyButton";
 
