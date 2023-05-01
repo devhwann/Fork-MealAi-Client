@@ -1,4 +1,4 @@
-export interface ToggleButtonProps {
+interface ToggleButtonProps {
 	isChecked: boolean;
 	onChange?: () => void;
 }
