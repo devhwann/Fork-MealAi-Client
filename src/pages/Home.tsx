@@ -29,8 +29,6 @@ const Home = () => {
 
 	return (
 		<>
-			<RadioButton type="radio" id="gender" gender="M" onChange={() => {}} />
-			<RadioButton type="radio" id="gender" gender="F" onChange={() => {}} />
 			<div className="card shadow bg-bg-1">
 				<div className="card-body">
 					<h2 className="card-title">no border with shadow</h2>
@@ -162,6 +160,10 @@ const Home = () => {
 			<Badge text="충분" color="systemSuccess" />
 			<br />
 			<GoalText goal="균형잡힌 식단 (탄·단·지 밸런스)" />
+			<div className="flex flex-row gap-8">
+				<RadioButton type="radio" id="gender-m" name="gender" gender="M" onChange={() => {}} />
+				<RadioButton type="radio" id="gender-f" name="gender" gender="F" onChange={() => {}} />
+			</div>
 		</>
 	);
 };
