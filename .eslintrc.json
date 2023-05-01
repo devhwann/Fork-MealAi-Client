@@ -47,6 +47,7 @@
     "@typescript-eslint/no-unused-vars": ["off"],
     "@typescript-eslint/no-var-requires": 0,
     "no-shadow": "off",
+    "@typescript-eslint/no-shadow": "off",
     "react/prop-types": 0,
     "no-empty-pattern": 0,
     "no-alert": 0,
