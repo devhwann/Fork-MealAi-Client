@@ -11,8 +11,11 @@ import LikeWithCount from "@/components/organisms/LikeWithCount";
 import Badge from "@/components/atoms/badge/Badge";
 import GoalText from "@/components/atoms/goal/GoalText";
 import RadioButton from "@/components/atoms/buttons/RadioButton";
+import ToggleButton from "@/components/atoms/buttons/ToggleButton";
 
 const Home = () => {
+	const [isChecked, setIsChecked] = useState(true);
+
 	const [isLike, setIsLike] = useState(false);
 
 	const [inputTest, setInputTest] = useState("");
@@ -169,6 +172,12 @@ const Home = () => {
 			<h2>36px 타이틀</h2>
 			<h3>30px 타이틀</h3>
 			<h4>24px 타이틀</h4>
+			<ToggleButton
+				isChecked={isChecked}
+				onChange={() => {
+					setIsChecked(!isChecked);
+				}}
+			/>
 		</>
 	);
 };
