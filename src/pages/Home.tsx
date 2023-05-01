@@ -15,8 +15,10 @@ import ToggleButton from "@/components/atoms/buttons/ToggleButton";
 import HorizontalProgressBars from "@/components/atoms/progressBars/HorizontalProgressBars";
 import VerticalProgressBars from "@/components/atoms/progressBars/VerticalProgressBars";
 import GoalButtons from "@/components/organisms/GoalButtons";
+import Modal from "@/components/organisms/Modal";
 
 const Home = () => {
+	// 토글버튼
 	const [isChecked, setIsChecked] = useState(true);
 
 	const [isLike, setIsLike] = useState(false);
@@ -24,8 +26,18 @@ const Home = () => {
 	const [inputTest, setInputTest] = useState("");
 	const [errorTest, setErrorTest] = useState(false);
 
+
 	const [goal, setGoal] = useState("");
 	console.log(goal);
+  
+  // 모달창 on&off
+	const [modalIsOpen, setModalIsOpen] = useState(false);
+	const onModal = () => {
+		setModalIsOpen(true);
+	};
+	const offModal = () => {
+		setModalIsOpen(false);
+	};
 
 	function onChangeEmailTest(e: ChangeEvent<HTMLInputElement>) {
 		e.preventDefault();
@@ -234,11 +246,36 @@ const Home = () => {
 					day="수"
 				/>
 			</div>
+
 			<br />
 			<br />
 			<GoalButtons setGoal={setGoal} />
 			<GoalText goal="balance" />
 			<GoalText goal="diet" />
+      
+      <div>
+				<BasicButton type="button" onClick={onModal} width={false} style="primary">
+					모달테스트
+				</BasicButton>
+				{modalIsOpen && (
+					<Modal onClose={offModal} title="모달타이틀">
+						모달컨텐츠모달컨텐츠모달컨텐츠모달컨텐츠
+						<br />
+						모달컨텐츠모달컨텐츠모달컨텐츠
+						<br />
+						모달컨텐츠모달컨텐츠
+						<br />
+						모달컨텐츠
+						<br />
+						<br />
+						<div className="flex justify-center">
+							<BasicButton type="button" onClick={() => {}} width={false} style="bg">
+								모달창 내부 버튼
+							</BasicButton>
+						</div>
+					</Modal>
+				)}
+			</div>
 		</>
 	);
 };
