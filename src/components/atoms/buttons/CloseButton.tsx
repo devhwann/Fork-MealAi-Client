@@ -1,6 +1,6 @@
 import CloseIcon from "@/assets/icon_close.svg";
 
-export interface CloseButtonProps {
+interface CloseButtonProps {
 	onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
 }
 
