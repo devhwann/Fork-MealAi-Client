@@ -1,15 +1,8 @@
-import { ReactNode } from "react";
-import GetStyle from "@/utils/GetStyle";
+import getStyle from "@/utils/getStyle";
+import { TinyButtonProps } from "./TinyButton";
 
-interface BasicButtonProps {
-	id?: string;
-	name?: string;
-	type?: "button" | "reset" | "submit";
-	children: ReactNode;
-	onClick: () => void;
+interface BasicButtonProps extends TinyButtonProps {
 	width: boolean;
-	style: string;
-	deactivated?: boolean;
 }
 
 function getWidth(width: boolean) {
@@ -22,7 +15,7 @@ const BasicButton = ({ id, name, type, children, onClick, width, style, deactiva
 	if (deactivated) {
 		return (
 			<button
-				className={`btn border-none ${getWidth(width)} ${GetStyle(style)}`}
+				className={`btn border-none ${getWidth(width)} ${getStyle(style)}`}
 				id={id}
 				name={name}
 				type={type}
@@ -35,7 +28,7 @@ const BasicButton = ({ id, name, type, children, onClick, width, style, deactiva
 	}
 	return (
 		<button
-			className={`btn border-none hover:bg-secondary-1 ${getWidth(width)} ${GetStyle(style)}`}
+			className={`btn border-none hover:bg-secondary-1 ${getWidth(width)} ${getStyle(style)}`}
 			id={id}
 			name={name}
 			type={type}

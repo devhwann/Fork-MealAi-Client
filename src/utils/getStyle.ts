@@ -1,6 +1,7 @@
-// BasicButton, TinyButton 스타일 적용 함수
+import { TinyButtonProps } from "@/components/atoms/buttons/TinyButton";
 
-export default function GetStyle(style: string) {
+// BasicButton, TinyButton 스타일 적용 함수
+export default function getStyle(style: TinyButtonProps["style"]) {
 	switch (style) {
 		case "primary":
 			return "bg-primary-1 text-white";
