@@ -22,6 +22,8 @@ export default {
 				"bg-2": "#FEF5D3",
 				"system-success": "#36D399",
 				"system-error": "#F87272",
+				"graph-carbo": "#FD7D48",
+				"graph-protein": "#A3C777",
 			},
 			height: {
 				"90": "90px",
