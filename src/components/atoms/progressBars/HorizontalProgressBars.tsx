@@ -25,7 +25,7 @@ export interface DataProps {
 const ProgressBar = ({ type, value, max }: ProgressBarProps) => {
 	return (
 		<div>
-			<div className="flex justify-between font-semibold text-gray-3">
+			<div className="flex justify-between text-base font-semibold text-gray-3">
 				<p>{type} </p>
 				<p>
 					{value}
