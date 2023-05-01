@@ -9,11 +9,12 @@ import TinyButton from "@/components/atoms/buttons/TinyButton";
 import LikeButton from "@/components/atoms/buttons/LikeButton";
 import LikeWithCount from "@/components/organisms/LikeWithCount";
 import Badge from "@/components/atoms/badge/Badge";
-import GoalText from "@/components/atoms/goal/GoalText";
+import GoalText from "@/components/organisms/GoalText";
 import RadioButton from "@/components/atoms/buttons/RadioButton";
 import ToggleButton from "@/components/atoms/buttons/ToggleButton";
 import HorizontalProgressBars from "@/components/atoms/progressBars/HorizontalProgressBars";
 import VerticalProgressBars from "@/components/atoms/progressBars/VerticalProgressBars";
+import GoalButtons from "@/components/organisms/GoalButtons";
 import Modal from "@/components/organisms/Modal";
 
 const Home = () => {
@@ -25,7 +26,11 @@ const Home = () => {
 	const [inputTest, setInputTest] = useState("");
 	const [errorTest, setErrorTest] = useState(false);
 
-	// 모달창 on&off
+
+	const [goal, setGoal] = useState("");
+	console.log(goal);
+  
+  // 모달창 on&off
 	const [modalIsOpen, setModalIsOpen] = useState(false);
 	const onModal = () => {
 		setModalIsOpen(true);
@@ -175,7 +180,6 @@ const Home = () => {
 			<Badge text="부족" color="systemError" />
 			<Badge text="충분" color="systemSuccess" />
 			<br />
-			<GoalText goal="균형잡힌 식단 (탄·단·지 밸런스)" />
 			<div className="flex flex-row gap-8">
 				<RadioButton type="radio" id="gender-m" name="gender" gender="M" onChange={() => {}} />
 				<RadioButton type="radio" id="gender-f" name="gender" gender="F" onChange={() => {}} />
@@ -242,7 +246,14 @@ const Home = () => {
 					day="수"
 				/>
 			</div>
-			<div>
+
+			<br />
+			<br />
+			<GoalButtons setGoal={setGoal} />
+			<GoalText goal="balance" />
+			<GoalText goal="diet" />
+      
+      <div>
 				<BasicButton type="button" onClick={onModal} width={false} style="primary">
 					모달테스트
 				</BasicButton>
