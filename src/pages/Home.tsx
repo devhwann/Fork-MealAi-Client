@@ -164,6 +164,11 @@ const Home = () => {
 				<RadioButton type="radio" id="gender-m" name="gender" gender="M" onChange={() => {}} />
 				<RadioButton type="radio" id="gender-f" name="gender" gender="F" onChange={() => {}} />
 			</div>
+			<br />
+			<h1>서브페이지 타이틀</h1>
+			<h2>36px 타이틀</h2>
+			<h3>30px 타이틀</h3>
+			<h4>24px 타이틀</h4>
 		</>
 	);
 };
