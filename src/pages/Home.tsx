@@ -21,6 +21,7 @@ import SearchResult from "@/components/organisms/SearchResult";
 import SearchBadge from "@/components/atoms/badges/SearchBadge";
 import Thumb from "@/components/atoms/thumbnail/Thumbnail";
 import TempTHumbImage from "@/assets/image_default_thumbs.svg";
+import FoodCard from "@/components/organisms/FoodCard";
 
 // 검색 결과 임시 데이터
 const temp = [
@@ -50,8 +51,11 @@ const Home = () => {
 	const [inputTest, setInputTest] = useState("");
 	const [errorTest, setErrorTest] = useState(false);
 
+	// 목표 설정
 	const [goal, setGoal] = useState("");
-	console.log(goal);
+	function handleGoal(goal: string) {
+		setGoal(goal);
+	}
 
 	// 모달창 on&off
 	const [modalIsOpen, setModalIsOpen] = useState(false);
@@ -266,7 +270,7 @@ const Home = () => {
 
 			<br />
 			<br />
-			<GoalButtons setGoal={setGoal} />
+			<GoalButtons handleGoal={handleGoal} />
 			<GoalText goal="balance" />
 			<GoalText goal="diet" />
 			<MyGoalText goal="balance" />
@@ -285,6 +289,12 @@ const Home = () => {
 			/>
 			<Thumb src={TempTHumbImage} id={1} size="md" type="log" mealTime="B" open={true} onClick={() => {}} />
 			<Thumb src={TempTHumbImage} size="sm" type="none" />
+			<br />
+			<br />
+			<div>
+				<FoodCard src={TempTHumbImage} size="sm" type="none" isEdit={true} onClick={onModal} />
+				<FoodCard src={TempTHumbImage} size="sm" type="none" isEdit={false} onClick={onModal} />
+			</div>
 			<br />
 			<br />
 			<div>
