@@ -1,5 +1,5 @@
 export interface LikeButtonProps {
-	isLike: boolean;
+	isLike?: boolean;
 	onClick?: () => void;
 }
 

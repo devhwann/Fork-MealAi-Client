@@ -1,5 +1,5 @@
 import { ChangeEvent, ReactNode } from "react";
-import InputLabel, { InputLabelProps } from "../atoms/inputs/InputLabel";
+import InputLabel, { InputLabelProps } from "@atoms/inputs/InputLabel";
 
 interface SelectProps extends InputLabelProps {
 	name: string;

@@ -1,5 +1,5 @@
 import getProgressBarColor from "@/utils/getProgressBarColor";
-import { ProgressBarsProps, ProgressBarProps } from "./HorizontalProgressBars";
+import { ProgressBarsProps, ProgressBarProps } from "@atoms/progressBars/HorizontalProgressBars";
 import getProgressBarPercent from "@/utils/getProgressBarPercent";
 
 interface VerticalProgressBarsProps extends ProgressBarsProps {
@@ -13,7 +13,9 @@ const ProgressBar = ({ type, value, max }: ProgressBarProps) => {
 			<div className="w-2 h-32 bg-gray-9 rounded-full relative">
 				<div
 					className={`${getProgressBarColor(type)} w-2 rounded-full absolute bottom-0`}
-					style={{ height: `${getProgressBarPercent({ value, max })}%` }}
+					style={{
+						height: `${getProgressBarPercent({ value, max }) > 100 ? 100 : getProgressBarPercent({ value, max })}%`,
+					}}
 				></div>
 			</div>
 		</div>

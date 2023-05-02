@@ -8,7 +8,7 @@ import BasicButton from "@/components/atoms/buttons/BasicButton";
 import TinyButton from "@/components/atoms/buttons/TinyButton";
 import LikeButton from "@/components/atoms/buttons/LikeButton";
 import LikeWithCount from "@/components/organisms/LikeWithCount";
-import Badge from "@/components/atoms/badge/Badge";
+import Badge from "@/components/atoms/badges/Badge";
 import GoalText from "@/components/organisms/GoalText";
 import RadioButton from "@/components/atoms/buttons/RadioButton";
 import ToggleButton from "@/components/atoms/buttons/ToggleButton";
@@ -16,7 +16,32 @@ import HorizontalProgressBars from "@/components/atoms/progressBars/HorizontalPr
 import VerticalProgressBars from "@/components/atoms/progressBars/VerticalProgressBars";
 import GoalButtons from "@/components/organisms/GoalButtons";
 import Modal from "@/components/organisms/Modal";
+import MyGoalText from "@/components/organisms/MyGoalText";
+import SearchResult from "@/components/organisms/SearchResult";
+import SearchBadge from "@/components/atoms/badges/SearchBadge";
+import Thumb from "@/components/atoms/thumbnail/Thumbnail";
+import TempTHumbImage from "@/assets/image_default_thumbs.svg";
+import FoodCard from "@/components/organisms/FoodCard";
 import ReportInfoCards from "@/components/atoms/cards/ReportInfoCards";
+
+// 검색 결과 임시 데이터
+const temp = [
+	"리조또",
+	"크림 리조또",
+	"해물 리조또",
+	"투움바 리조또",
+	"어쩌구 리조또",
+	"리조또",
+	"크림 리조또",
+	"해물 리조또",
+	"투움바 리조또",
+	"어쩌구 리조또",
+	"리조또",
+	"크림 리조또",
+	"해물 리조또",
+	"투움바 리조또",
+	"어쩌구 리조또",
+];
 
 const Home = () => {
 	// 토글버튼
@@ -27,8 +52,11 @@ const Home = () => {
 	const [inputTest, setInputTest] = useState("");
 	const [errorTest, setErrorTest] = useState(false);
 
+	// 목표 설정
 	const [goal, setGoal] = useState("");
-	console.log(goal);
+	function handleGoal(goal: string) {
+		setGoal(goal);
+	}
 
 	// 모달창 on&off
 	const [modalIsOpen, setModalIsOpen] = useState(false);
@@ -99,19 +127,13 @@ const Home = () => {
 			<br />
 			<br />
 			<p>search input</p>
-			<SearchInput
-				name="search"
-				id="search"
-				value=""
-				onChange={() => {}}
-				onClick={() => {
-					console.log("hello");
-				}}
-			/>
+			<SearchInput name="search" id="search" value="" onChange={() => {}} onClick={() => {}} />
+			<br />
+			<SearchResult data={temp} onChange={() => {}} onClick={() => {}} />
+			<SearchBadge />
 			<br />
 			<br />
 			<p>validation input</p>
-			{/* // ********************** */}
 			<ValidationInput
 				type="text"
 				name="test"
@@ -248,9 +270,33 @@ const Home = () => {
 			</div>
 			<br />
 			<br />
-			<GoalButtons setGoal={setGoal} />
+			<GoalButtons handleGoal={handleGoal} />
 			<GoalText goal="balance" />
 			<GoalText goal="diet" />
+			<MyGoalText goal="balance" />
+			<br />
+			<br />
+			<Thumb src={TempTHumbImage} size="lg" type="none" />
+			<Thumb
+				src={TempTHumbImage}
+				id={1}
+				size="md"
+				type="like"
+				isLike={isLike}
+				onClick={() => {
+					setIsLike(!isLike);
+				}}
+			/>
+			<Thumb src={TempTHumbImage} id={1} size="md" type="log" mealTime="B" open={true} onClick={() => {}} />
+			<Thumb src={TempTHumbImage} size="sm" type="none" />
+			<br />
+			<br />
+			<div>
+				<FoodCard src={TempTHumbImage} size="sm" type="none" isEdit={true} onClick={onModal} />
+				<FoodCard src={TempTHumbImage} size="sm" type="none" isEdit={false} onClick={onModal} />
+			</div>
+			<br />
+			<br />
 			<div>
 				<BasicButton type="button" onClick={onModal} width={false} style="primary">
 					모달테스트
