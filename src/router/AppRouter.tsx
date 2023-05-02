@@ -5,6 +5,7 @@ import Layout from "@/components/templates/Layout";
 const Home = lazy(() => import("@/pages/Home"));
 const Profile = lazy(() => import("@/pages/Profile"));
 const SignUp = lazy(() => import("@/pages/SignUp"));
+const PageNotFound = lazy(() => import("@/pages/PageNotFound"));
 
 const routes = createBrowserRouter([
 	{
@@ -24,7 +25,7 @@ const routes = createBrowserRouter([
 			},
 			{
 				path: "*",
-				element: <div>404 example</div>,
+				element: <PageNotFound />,
 			},
 		],
 	},
