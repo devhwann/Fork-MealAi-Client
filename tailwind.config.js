@@ -32,8 +32,6 @@ export default {
 			width: {
 				"90": "90px",
 				"184": "184px",
-			},
-			width: {
 				"282": "282px",
 			},
 		},

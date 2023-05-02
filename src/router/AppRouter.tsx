@@ -1,6 +1,7 @@
 import React, { lazy, Suspense } from "react";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import Layout from "@/components/templates/Layout";
+import Loader from "@/components/atoms/loader/Loader";
 
 const Home = lazy(() => import("@/pages/Home"));
 const Profile = lazy(() => import("@/pages/Profile"));
@@ -31,11 +32,11 @@ const routes = createBrowserRouter([
 	},
 ]);
 
-// TODO 로딩중 컴포넌트 (나중에 만들어야함)
+// TODO : Suspense가 두 개 중복으로 못쓰는 건지?
 const AppRouter = () => {
 	return (
 		<React.Fragment>
-			<Suspense fallback={<div>로딩중 </div>}>
+			<Suspense fallback={<Loader />}>
 				<RouterProvider router={routes} />
 			</Suspense>
 		</React.Fragment>
