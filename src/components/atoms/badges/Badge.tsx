@@ -1,5 +1,5 @@
 interface BadgeProps {
-	text: string;
+	text?: string;
 	color: "gray" | "primary2" | "systemError" | "systemSuccess";
 }
 
