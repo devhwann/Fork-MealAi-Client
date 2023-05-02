@@ -1,23 +1,5 @@
-import { goalTypes } from "@/utils/getGoalData";
-import BalanceIcon from "@/assets/icon_balance.svg";
-import DietIcon from "@/assets/icon_diet.svg";
-import MuscleIcon from "@/assets/icon_muscle.svg";
-import LchfIcon from "@/assets/icon_lchf.svg";
+import { getIcon, goalTypes } from "@/utils/getGoalData";
 import GoalText, { GoalTextProps } from "./GoalText";
-
-// TODO : getIcon 코드 리팩토링
-function getIcon(icon: string) {
-	switch (icon) {
-		case "BalanceIcon":
-			return BalanceIcon;
-		case "DietIcon":
-			return DietIcon;
-		case "MuscleIcon":
-			return MuscleIcon;
-		case "LchfIcon":
-			return LchfIcon;
-	}
-}
 
 const MyGoalText = ({ goal }: GoalTextProps) => {
 	const data = goalTypes.filter((f) => f.name === goal)[0].items;

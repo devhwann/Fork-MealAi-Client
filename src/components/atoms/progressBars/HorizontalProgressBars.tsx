@@ -38,7 +38,9 @@ const ProgressBar = ({ type, value, max }: ProgressBarProps) => {
 			<div className="w-full h-2 bg-gray-9 rounded-full">
 				<div
 					className={`${getProgressBarColor(type)} h-2 rounded-full`}
-					style={{ width: `${getProgressBarPercent({ value, max })}%` }}
+					style={{
+						width: `${getProgressBarPercent({ value, max }) > 100 ? 100 : getProgressBarPercent({ value, max })}%`,
+					}}
 				></div>
 			</div>
 		</div>

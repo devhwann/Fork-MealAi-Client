@@ -1,31 +1,13 @@
 import { Dispatch, SetStateAction } from "react";
-import { goalTypes } from "@/utils/getGoalData";
-import BalanceIcon from "@/assets/icon_balance.svg";
-import DietIcon from "@/assets/icon_diet.svg";
-import MuscleIcon from "@/assets/icon_muscle.svg";
-import LchfIcon from "@/assets/icon_lchf.svg";
+import { getIcon, goalTypes } from "@/utils/getGoalData";
 
-// TODO : getIcon 코드 리팩토링, setGoal 메소드의 전달이 올바른건지?
-
+// TODO : setGoal 메소드의 전달이 올바른건지? setGoal props -> Recoil로 리팩토링
 interface GoalButtonsProps {
 	setGoal: Dispatch<SetStateAction<string>>;
 }
 
 interface GoalButtonProps extends GoalButtonsProps {
 	goal: string;
-}
-
-function getIcon(icon: string) {
-	switch (icon) {
-		case "BalanceIcon":
-			return BalanceIcon;
-		case "DietIcon":
-			return DietIcon;
-		case "MuscleIcon":
-			return MuscleIcon;
-		case "LchfIcon":
-			return LchfIcon;
-	}
 }
 
 const GoalButton = ({ goal, setGoal }: GoalButtonProps) => {
