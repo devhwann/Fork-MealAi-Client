@@ -1,7 +1,7 @@
 import { goalTypes } from "@/utils/getGoalData";
 import Badge from "../atoms/badge/Badge";
 
-interface GoalTextProps {
+export interface GoalTextProps {
 	goal: string;
 }
 
