@@ -51,9 +51,11 @@ const Home = () => {
 	const [inputTest, setInputTest] = useState("");
 	const [errorTest, setErrorTest] = useState(false);
 
+	// 목표 설정
 	const [goal, setGoal] = useState("");
-
-	console.log(goal);
+	function handleGoal(goal: string) {
+		setGoal(goal);
+	}
 
 	// 모달창 on&off
 	const [modalIsOpen, setModalIsOpen] = useState(false);
@@ -268,7 +270,7 @@ const Home = () => {
 
 			<br />
 			<br />
-			<GoalButtons setGoal={setGoal} />
+			<GoalButtons handleGoal={handleGoal} />
 			<GoalText goal="balance" />
 			<GoalText goal="diet" />
 			<MyGoalText goal="balance" />

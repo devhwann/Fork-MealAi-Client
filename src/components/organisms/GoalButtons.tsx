@@ -1,16 +1,14 @@
-import { Dispatch, SetStateAction } from "react";
 import { getIcon, goalTypes } from "@/utils/getGoalData";
 
-// TODO : setGoal 메소드의 전달이 올바른건지? setGoal props -> Recoil로 리팩토링
 interface GoalButtonsProps {
-	setGoal: Dispatch<SetStateAction<string>>;
+	handleGoal: (goal: string) => void;
 }
 
 interface GoalButtonProps extends GoalButtonsProps {
 	goal: string;
 }
 
-const GoalButton = ({ goal, setGoal }: GoalButtonProps) => {
+const GoalButton = ({ goal, handleGoal }: GoalButtonProps) => {
 	const data = goalTypes.filter((f) => f.name === goal)[0].items;
 	const [icon, title, desc] = [data.icon, data.title, data.desc];
 
@@ -21,9 +19,7 @@ const GoalButton = ({ goal, setGoal }: GoalButtonProps) => {
 				id={goal}
 				value={goal}
 				name="goal"
-				onChange={() => {
-					setGoal(goal);
-				}}
+				onChange={() => handleGoal(goal)}
 				className="hidden peer"
 			/>
 			<label
@@ -40,14 +36,14 @@ const GoalButton = ({ goal, setGoal }: GoalButtonProps) => {
 	);
 };
 
-const GoalButtons = ({ setGoal }: GoalButtonsProps) => {
+const GoalButtons = ({ handleGoal }: GoalButtonsProps) => {
 	return (
 		<div>
 			<ul className="grid w-96 gap-6 md:grid-cols-2">
-				<GoalButton goal="balance" setGoal={setGoal} />
-				<GoalButton goal="diet" setGoal={setGoal} />
-				<GoalButton goal="protein" setGoal={setGoal} />
-				<GoalButton goal="lchf" setGoal={setGoal} />
+				<GoalButton goal="balance" handleGoal={handleGoal} />
+				<GoalButton goal="diet" handleGoal={handleGoal} />
+				<GoalButton goal="protein" handleGoal={handleGoal} />
+				<GoalButton goal="lchf" handleGoal={handleGoal} />
 			</ul>
 		</div>
 	);
