@@ -4,8 +4,6 @@ import reset from "styled-reset";
 export const GlobalStyle = createGlobalStyle`
   ${reset}        
   
-  @import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.6/dist/web/static/pretendard-dynamic-subset.css");
-
   *,
   *::after,
   *::before {
@@ -14,7 +12,6 @@ export const GlobalStyle = createGlobalStyle`
     -webkit-font-smoothing: antialiased;
     font-family: pretendard, sans-serif !important;
   }
-
 
   h1, h2, h3, h4 {
     font-weight: 700;
