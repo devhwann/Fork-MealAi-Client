@@ -22,6 +22,7 @@ import SearchBadge from "@/components/atoms/badges/SearchBadge";
 import Thumb from "@/components/atoms/thumbnail/Thumbnail";
 import TempTHumbImage from "@/assets/image_default_thumbs.svg";
 import FoodCard from "@/components/organisms/FoodCard";
+import AddFoodButton from "@/components/atoms/buttons/AddFoodButton";
 
 // 검색 결과 임시 데이터
 const temp = [
@@ -46,10 +47,20 @@ const Home = () => {
 	// 토글버튼
 	const [isChecked, setIsChecked] = useState(true);
 
+	// 좋아요버튼
 	const [isLike, setIsLike] = useState(false);
 
+	// input validation 테스트
 	const [inputTest, setInputTest] = useState("");
 	const [errorTest, setErrorTest] = useState(false);
+	function onChangeEmailTest(e: ChangeEvent<HTMLInputElement>) {
+		e.preventDefault();
+		setInputTest(e.target.value);
+		setErrorTest(true); //test
+		if (e.target.value.length >= 5) {
+			setErrorTest(false);
+		}
+	}
 
 	// 목표 설정
 	const [goal, setGoal] = useState("");
@@ -66,14 +77,13 @@ const Home = () => {
 		setModalIsOpen(false);
 	};
 
-	function onChangeEmailTest(e: ChangeEvent<HTMLInputElement>) {
-		e.preventDefault();
-		setInputTest(e.target.value);
-		setErrorTest(true); //test
-		if (e.target.value.length >= 5) {
-			setErrorTest(false);
-		}
-	}
+	const [deleteModalIsOpen, setDeleteModalIsOpen] = useState(false);
+	const onDeleteModal = () => {
+		setDeleteModalIsOpen(true);
+	};
+	const offDeleteModal = () => {
+		setDeleteModalIsOpen(false);
+	};
 
 	return (
 		<>
@@ -291,9 +301,18 @@ const Home = () => {
 			<Thumb src={TempTHumbImage} size="sm" type="none" />
 			<br />
 			<br />
-			<div>
-				<FoodCard src={TempTHumbImage} size="sm" type="none" isEdit={true} onClick={onModal} />
-				<FoodCard src={TempTHumbImage} size="sm" type="none" isEdit={false} onClick={onModal} />
+			<div className="flex gap-6 items-start">
+				<FoodCard
+					src={TempTHumbImage}
+					size="sm"
+					type="none"
+					name="치킨"
+					isEdit={true}
+					editModal={onModal}
+					deleteModal={onDeleteModal}
+				/>
+				<FoodCard src={TempTHumbImage} size="sm" type="none" name="치킨" isEdit={false} />
+				<AddFoodButton onClick={onModal} />
 			</div>
 			<br />
 			<br />
@@ -303,15 +322,25 @@ const Home = () => {
 				</BasicButton>
 				{modalIsOpen && (
 					<Modal onClose={offModal} title="모달타이틀">
-						모달컨텐츠모달컨텐츠모달컨텐츠모달컨텐츠
-						<br />
-						모달컨텐츠모달컨텐츠모달컨텐츠
-						<br />
-						모달컨텐츠모달컨텐츠
-						<br />
-						모달컨텐츠
-						<br />
-						<br />
+						<div className="mb-6">
+							모달컨텐츠모달컨텐츠모달컨텐츠모달컨텐츠
+							<br />
+							모달컨텐츠모달컨텐츠모달컨텐츠
+							<br />
+							모달컨텐츠모달컨텐츠
+							<br />
+							모달컨텐츠
+						</div>
+						<div className="flex justify-center">
+							<BasicButton type="button" onClick={() => {}} width={false} style="bg">
+								모달창 내부 버튼
+							</BasicButton>
+						</div>
+					</Modal>
+				)}
+				{deleteModalIsOpen && (
+					<Modal onClose={offDeleteModal} title="삭제">
+						<div className="mb-6">정말 삭제하시겠어요?</div>
 						<div className="flex justify-center">
 							<BasicButton type="button" onClick={() => {}} width={false} style="bg">
 								모달창 내부 버튼
