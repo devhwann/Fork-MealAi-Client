@@ -21,7 +21,8 @@
         "jsx": "react-jsx",
         "baseUrl": ".", // 경로 시작 위치를 현재 위치로 설정
         "paths": {
-          "@/*": ["./src/*"]
+
+          "@/*": ["./src/*"],
         }
     },
     "include": [
@@ -37,7 +38,7 @@
 // 		"baseUrl": ".",
 // 		"paths": {
 // 			"@assets/*": ["src/components/assets/*"],
-// 			"@atoms/*": ["src/components/atoms/*"],
+//      "@atoms/*": ["src/components/atoms/*"],
 // 			"@molecules/*": ["src/components/molecules/*"],
 // 			"@organisms/*": ["src/components/organisms/*"],
 // 			"@pages/*": ["src/components/pages/*"]

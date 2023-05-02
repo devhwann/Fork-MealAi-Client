@@ -1,5 +1,5 @@
 import { getIcon, goalTypes } from "@/utils/getGoalData";
-import GoalText, { GoalTextProps } from "./GoalText";
+import GoalText, { GoalTextProps } from "@/components/organisms/GoalText";
 
 const MyGoalText = ({ goal }: GoalTextProps) => {
 	const data = goalTypes.filter((f) => f.name === goal)[0].items;
