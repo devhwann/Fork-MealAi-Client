@@ -3,7 +3,7 @@ import { ProgressBarProps } from "@/components/atoms/progressBars/HorizontalProg
 // HorizontalProgressBars, VerticalProgressBars 컬러 적용 함수
 export default function getProgressBarColor(type: ProgressBarProps["type"]) {
 	switch (type) {
-		case "열량":
+		case "칼로리":
 			return "bg-primary-1";
 		case "탄수화물":
 			return "bg-graph-carbo";

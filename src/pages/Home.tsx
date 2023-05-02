@@ -16,6 +16,7 @@ import HorizontalProgressBars from "@/components/atoms/progressBars/HorizontalPr
 import VerticalProgressBars from "@/components/atoms/progressBars/VerticalProgressBars";
 import GoalButtons from "@/components/organisms/GoalButtons";
 import Modal from "@/components/organisms/Modal";
+import ReportInfoCards from "@/components/atoms/cards/ReportInfoCards";
 
 const Home = () => {
 	// 토글버튼
@@ -26,11 +27,10 @@ const Home = () => {
 	const [inputTest, setInputTest] = useState("");
 	const [errorTest, setErrorTest] = useState(false);
 
-
 	const [goal, setGoal] = useState("");
 	console.log(goal);
-  
-  // 모달창 on&off
+
+	// 모달창 on&off
 	const [modalIsOpen, setModalIsOpen] = useState(false);
 	const onModal = () => {
 		setModalIsOpen(true);
@@ -246,14 +246,12 @@ const Home = () => {
 					day="수"
 				/>
 			</div>
-
 			<br />
 			<br />
 			<GoalButtons setGoal={setGoal} />
 			<GoalText goal="balance" />
 			<GoalText goal="diet" />
-      
-      <div>
+			<div>
 				<BasicButton type="button" onClick={onModal} width={false} style="primary">
 					모달테스트
 				</BasicButton>
@@ -276,6 +274,18 @@ const Home = () => {
 					</Modal>
 				)}
 			</div>
+			<br />
+			<br />
+			<ReportInfoCards
+				kcalValue={2200}
+				kcalMax={2200}
+				carboValue={8}
+				carboMax={113}
+				proteinValue={18}
+				proteinMax={20}
+				fatValue={80}
+				fatMax={16}
+			/>
 		</>
 	);
 };

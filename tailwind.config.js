@@ -28,6 +28,9 @@ export default {
 			height: {
 				"90": "90px",
 			},
+			width: {
+				"282": "282px",
+			},
 		},
 	},
 	variants: {
