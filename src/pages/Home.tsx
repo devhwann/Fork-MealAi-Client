@@ -24,6 +24,7 @@ import TempTHumbImage from "@/assets/image_default_thumbs.svg";
 import FoodCard from "@/components/organisms/FoodCard";
 import AddFoodButton from "@/components/atoms/buttons/AddFoodButton";
 import ReportInfoCards from "@/components/atoms/cards/ReportInfoCards";
+import SocialButtons from "@/components/atoms/buttons/SocialButton";
 
 // 검색 결과 임시 데이터
 const temp = [
@@ -88,18 +89,35 @@ const Home = () => {
 
 	return (
 		<>
-			<div className="card shadow bg-bg-1">
-				<div className="card-body">
-					<h2 className="card-title">no border with shadow</h2>
-					<p>Rerum reiciendis beatae tenetur excepturi</p>
-				</div>
-			</div>
-			<div className="card shadow-lg">
-				<div className="card-body">
-					<h2 className="card-title">no border with shadow</h2>
-					<p>Rerum reiciendis beatae tenetur excepturi</p>
-				</div>
-			</div>
+			<br />
+			<br />
+			소셜 로그인/ 회원가입 (간격이 살짝 다른 것은 텍스트 길이 때문이니 신경쓰지 마세용)
+			<SocialButtons
+				role="로그인"
+				googleApi={() => {
+					console.log("구글");
+				}}
+				naverApi={() => {
+					console.log("네이버");
+				}}
+				kakaoApi={() => {
+					console.log("카카오");
+				}}
+			/>
+			<br />
+			<br />
+			<SocialButtons
+				role="회원가입"
+				googleApi={() => {
+					console.log("구글");
+				}}
+				naverApi={() => {
+					console.log("네이버");
+				}}
+				kakaoApi={() => {
+					console.log("카카오");
+				}}
+			/>
 			<br />
 			<br />
 			<p>basic button</p>
