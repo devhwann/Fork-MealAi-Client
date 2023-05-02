@@ -22,6 +22,7 @@ import SearchBadge from "@/components/atoms/badges/SearchBadge";
 import Thumb from "@/components/atoms/thumbnail/Thumbnail";
 import TempTHumbImage from "@/assets/image_default_thumbs.svg";
 import FoodCard from "@/components/organisms/FoodCard";
+import ReportInfoCards from "@/components/atoms/cards/ReportInfoCards";
 
 // 검색 결과 임시 데이터
 const temp = [
@@ -267,7 +268,6 @@ const Home = () => {
 					day="수"
 				/>
 			</div>
-
 			<br />
 			<br />
 			<GoalButtons handleGoal={handleGoal} />
@@ -320,6 +320,18 @@ const Home = () => {
 					</Modal>
 				)}
 			</div>
+			<br />
+			<br />
+			<ReportInfoCards
+				kcalValue={2200}
+				kcalMax={2200}
+				carboValue={8}
+				carboMax={113}
+				proteinValue={18}
+				proteinMax={20}
+				fatValue={80}
+				fatMax={16}
+			/>
 		</>
 	);
 };
