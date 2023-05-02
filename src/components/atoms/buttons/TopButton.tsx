@@ -7,7 +7,7 @@ function handleMoveToTop() {
 const TopButton = () => {
 	return (
 		<button
-			className="w-16 h-16 rounded-full bg-white border border-primary-1 p-5 shadow-lg z-10 fixed bottom-14 right-14 end-14 transition ease-out hover:scale-105 hover:bg-bg-1"
+			className="w-16 h-16 rounded-full bg-white border border-primary-1 p-5 shadow-lg z-50 fixed bottom-14 right-14 end-14 transition ease-out hover:scale-105 hover:bg-bg-1"
 			onClick={() => {
 				handleMoveToTop();
 			}}

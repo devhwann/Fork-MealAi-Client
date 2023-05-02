@@ -13,7 +13,7 @@ export interface ProgressBarsProps {
 }
 
 export interface ProgressBarProps extends DataProps {
-	type: "열량" | "탄수화물" | "단백질" | "지방";
+	type: "칼로리" | "탄수화물" | "단백질" | "지방";
 }
 
 export interface DataProps {
@@ -31,14 +31,16 @@ const ProgressBar = ({ type, value, max }: ProgressBarProps) => {
 					{value}
 					<span className="text-gray-6">
 						{" "}
-						/ {max} {type === "열량" ? "kcal" : "g"}
+						/ {max} {type === "칼로리" ? "kcal" : "g"}
 					</span>
 				</p>
 			</div>
 			<div className="w-full h-2 bg-gray-9 rounded-full">
 				<div
 					className={`${getProgressBarColor(type)} h-2 rounded-full`}
-					style={{ width: `${getProgressBarPercent({ value, max })}%` }}
+					style={{
+						width: `${getProgressBarPercent({ value, max }) > 100 ? 100 : getProgressBarPercent({ value, max })}%`,
+					}}
 				></div>
 			</div>
 		</div>
@@ -58,7 +60,7 @@ const HorizontalProgressBars = ({
 }: ProgressBarsProps) => {
 	return (
 		<div className="flex flex-col gap-4">
-			<ProgressBar type="열량" value={kcalValue} max={kcalMax} />
+			<ProgressBar type="칼로리" value={kcalValue} max={kcalMax} />
 			<ProgressBar type="탄수화물" value={carboValue} max={carboMax} />
 			<ProgressBar type="단백질" value={proteinValue} max={proteinMax} />
 			<ProgressBar type="지방" value={fatValue} max={fatMax} />

@@ -13,7 +13,9 @@ const ProgressBar = ({ type, value, max }: ProgressBarProps) => {
 			<div className="w-2 h-32 bg-gray-9 rounded-full relative">
 				<div
 					className={`${getProgressBarColor(type)} w-2 rounded-full absolute bottom-0`}
-					style={{ height: `${getProgressBarPercent({ value, max })}%` }}
+					style={{
+						height: `${getProgressBarPercent({ value, max }) > 100 ? 100 : getProgressBarPercent({ value, max })}%`,
+					}}
 				></div>
 			</div>
 		</div>
@@ -35,7 +37,7 @@ const VerticalProgressBars = ({
 	return (
 		<div className="w-14">
 			<div className="flex gap-2">
-				<ProgressBar type="열량" value={kcalValue} max={kcalMax} />
+				<ProgressBar type="칼로리" value={kcalValue} max={kcalMax} />
 				<ProgressBar type="탄수화물" value={carboValue} max={carboMax} />
 				<ProgressBar type="단백질" value={proteinValue} max={proteinMax} />
 				<ProgressBar type="지방" value={fatValue} max={fatMax} />

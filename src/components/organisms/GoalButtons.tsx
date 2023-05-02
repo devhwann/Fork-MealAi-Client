@@ -1,34 +1,14 @@
-import { Dispatch, SetStateAction } from "react";
-import { goalTypes } from "@/utils/getGoalData";
-import BalanceIcon from "@/assets/icon_balance.svg";
-import DietIcon from "@/assets/icon_diet.svg";
-import MuscleIcon from "@/assets/icon_muscle.svg";
-import LchfIcon from "@/assets/icon_lchf.svg";
-
-// TODO : getIcon 코드 리팩토링, setGoal 메소드의 전달이 올바른건지?
+import { getIcon, goalTypes } from "@/utils/getGoalData";
 
 interface GoalButtonsProps {
-	setGoal: Dispatch<SetStateAction<string>>;
+	handleGoal: (goal: string) => void;
 }
 
 interface GoalButtonProps extends GoalButtonsProps {
 	goal: string;
 }
 
-function getIcon(icon: string) {
-	switch (icon) {
-		case "BalanceIcon":
-			return BalanceIcon;
-		case "DietIcon":
-			return DietIcon;
-		case "MuscleIcon":
-			return MuscleIcon;
-		case "LchfIcon":
-			return LchfIcon;
-	}
-}
-
-const GoalButton = ({ goal, setGoal }: GoalButtonProps) => {
+const GoalButton = ({ goal, handleGoal }: GoalButtonProps) => {
 	const data = goalTypes.filter((f) => f.name === goal)[0].items;
 	const [icon, title, desc] = [data.icon, data.title, data.desc];
 
@@ -39,9 +19,7 @@ const GoalButton = ({ goal, setGoal }: GoalButtonProps) => {
 				id={goal}
 				value={goal}
 				name="goal"
-				onChange={() => {
-					setGoal(goal);
-				}}
+				onChange={() => handleGoal(goal)}
 				className="hidden peer"
 			/>
 			<label
@@ -58,14 +36,14 @@ const GoalButton = ({ goal, setGoal }: GoalButtonProps) => {
 	);
 };
 
-const GoalButtons = ({ setGoal }: GoalButtonsProps) => {
+const GoalButtons = ({ handleGoal }: GoalButtonsProps) => {
 	return (
 		<div>
 			<ul className="grid w-96 gap-6 md:grid-cols-2">
-				<GoalButton goal="balance" setGoal={setGoal} />
-				<GoalButton goal="diet" setGoal={setGoal} />
-				<GoalButton goal="protein" setGoal={setGoal} />
-				<GoalButton goal="lchf" setGoal={setGoal} />
+				<GoalButton goal="balance" handleGoal={handleGoal} />
+				<GoalButton goal="diet" handleGoal={handleGoal} />
+				<GoalButton goal="protein" handleGoal={handleGoal} />
+				<GoalButton goal="lchf" handleGoal={handleGoal} />
 			</ul>
 		</div>
 	);
