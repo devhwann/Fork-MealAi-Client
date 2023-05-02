@@ -1,5 +1,5 @@
 import { ChangeEvent } from "react";
-import SearchInput from "@atoms/inputs/SearchInput";
+import SearchInput from "../atoms/inputs/SearchInput";
 
 interface SearchResultProps {
 	data?: string[];

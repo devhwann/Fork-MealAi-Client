@@ -1,4 +1,4 @@
-import Thumb, { ThumbnailProps } from "@atoms/thumbnail/Thumbnail";
+import Thumb, { ThumbnailProps } from "../atoms/thumbnail/Thumbnail";
 import EditIcon from "@/assets/icon_food_edit.svg";
 import DeleteIcon from "@/assets/icon_food_delete.svg";
 

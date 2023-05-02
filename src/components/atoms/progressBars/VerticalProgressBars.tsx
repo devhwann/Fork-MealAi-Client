@@ -1,5 +1,5 @@
 import getProgressBarColor from "@/utils/getProgressBarColor";
-import { ProgressBarsProps, ProgressBarProps } from "@atoms/progressBars/HorizontalProgressBars";
+import { ProgressBarsProps, ProgressBarProps } from "./HorizontalProgressBars";
 import getProgressBarPercent from "@/utils/getProgressBarPercent";
 
 interface VerticalProgressBarsProps extends ProgressBarsProps {

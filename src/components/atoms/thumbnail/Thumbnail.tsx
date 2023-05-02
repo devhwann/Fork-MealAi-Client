@@ -1,7 +1,7 @@
 import getMealTime from "@/utils/getMealTime";
-import LikeButton, { LikeButtonProps } from "@atoms/buttons/LikeButton";
+import LikeButton, { LikeButtonProps } from "../buttons/LikeButton";
 import LockIcon from "@/assets/icon_lock.svg";
-import Badge from "@atoms/badges/Badge";
+import Badge from "../badges/Badge";
 import { useNavigate } from "react-router-dom";
 
 export interface ThumbnailProps extends LikeButtonProps {

@@ -1,5 +1,5 @@
-import Badge from "@atoms/badges/Badge";
-import { ProgressBarProps, ProgressBarsProps } from "@atoms/progressBars/HorizontalProgressBars";
+import Badge from "../badges/Badge";
+import { ProgressBarProps, ProgressBarsProps } from "../progressBars/HorizontalProgressBars";
 import getProgressBarPercent from "@/utils/getProgressBarPercent";
 import KcalIcon from "@/assets/icon_kcal.svg";
 import CarboIcon from "@/assets/icon_carbo.svg";

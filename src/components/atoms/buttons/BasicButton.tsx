@@ -1,5 +1,5 @@
 import getStyle from "@/utils/getStyle";
-import { TinyButtonProps } from "@atoms/buttons/TinyButton";
+import { TinyButtonProps } from "./TinyButton";
 
 interface BasicButtonProps extends TinyButtonProps {
 	width: boolean;
