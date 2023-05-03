@@ -5,9 +5,11 @@ import Loader from "@/components/atoms/loader/Loader";
 
 const Home = lazy(() => import("@/pages/Home"));
 const Profile = lazy(() => import("@/pages/Profile"));
-const SignUp = lazy(() => import("@/pages/SignUp"));
 const PageNotFound = lazy(() => import("@/pages/PageNotFound"));
 const Goal = lazy(() => import("@/pages/auth/Goal"));
+const SignIn = lazy(() => import("@/pages/auth/SignIn"));
+const FindPassword = lazy(() => import("@/pages/auth/FindPassword"));
+const SignUp = lazy(() => import("@/pages/auth/SignUp"));
 
 const routes = createBrowserRouter([
 	{
@@ -22,12 +24,20 @@ const routes = createBrowserRouter([
 				element: <Profile />,
 			},
 			{
-				path: "/signup",
+				path: "/auth/sign-in",
+				element: <SignIn />,
+			},
+			{
+				path: "/auth/sign-up",
 				element: <SignUp />,
 			},
 			{
 				path: "/auth/sign-up/goal",
 				element: <Goal />,
+			},
+			{
+				path: "/auth/find-password",
+				element: <FindPassword />,
 			},
 			{
 				path: "*",
