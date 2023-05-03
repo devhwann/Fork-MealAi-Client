@@ -38,6 +38,9 @@ export default {
 				"220": "220px",
 				"282": "282px",
 			},
+			margin: {
+				"74": "74px",
+			},
 		},
 	},
 	variants: {
