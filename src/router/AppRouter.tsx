@@ -7,6 +7,7 @@ const Home = lazy(() => import("@/pages/Home"));
 const Profile = lazy(() => import("@/pages/Profile"));
 const SignUp = lazy(() => import("@/pages/SignUp"));
 const PageNotFound = lazy(() => import("@/pages/PageNotFound"));
+const Goal = lazy(() => import("@/pages/auth/Goal"));
 
 const routes = createBrowserRouter([
 	{
@@ -23,6 +24,10 @@ const routes = createBrowserRouter([
 			{
 				path: "/signup",
 				element: <SignUp />,
+			},
+			{
+				path: "/auth/sign-up/goal",
+				element: <Goal />,
 			},
 			{
 				path: "*",
