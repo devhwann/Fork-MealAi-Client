@@ -4,12 +4,12 @@ import Layout from "@/components/templates/Layout";
 import Loader from "@/components/atoms/loader/Loader";
 
 const Home = lazy(() => import("@/pages/Home"));
-const Profile = lazy(() => import("@/pages/Profile"));
 const PageNotFound = lazy(() => import("@/pages/PageNotFound"));
 const Goal = lazy(() => import("@/pages/auth/Goal"));
 const SignIn = lazy(() => import("@/pages/auth/SignIn"));
 const FindPassword = lazy(() => import("@/pages/auth/FindPassword"));
 const SignUp = lazy(() => import("@/pages/auth/SignUp"));
+const Info = lazy(() => import("@/pages/auth/Info"));
 
 const routes = createBrowserRouter([
 	{
@@ -20,16 +20,16 @@ const routes = createBrowserRouter([
 				element: <Home />,
 			},
 			{
-				path: "/profile",
-				element: <Profile />,
-			},
-			{
 				path: "/auth/sign-in",
 				element: <SignIn />,
 			},
 			{
 				path: "/auth/sign-up",
 				element: <SignUp />,
+			},
+			{
+				path: "/auth/sign-up/info",
+				element: <Info />,
 			},
 			{
 				path: "/auth/sign-up/goal",
