@@ -13,6 +13,7 @@ const SignIn = lazy(() => import("@/pages/auth/SignIn"));
 const FindPassword = lazy(() => import("@/pages/auth/FindPassword"));
 const SignUp = lazy(() => import("@/pages/auth/SignUp"));
 const Info = lazy(() => import("@/pages/auth/Info"));
+const Feeds = lazy(() => import("@/pages/feeds/Feeds"));
 
 const routes = createBrowserRouter([
 	{
@@ -53,6 +54,10 @@ const routes = createBrowserRouter([
 			{
 				path: "/auth/find-password",
 				element: <FindPassword />,
+			},
+			{
+				path: "/feeds",
+				element: <Feeds />,
 			},
 			{
 				path: "*",
