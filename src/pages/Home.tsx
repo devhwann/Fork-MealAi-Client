@@ -20,11 +20,10 @@ import MyGoalText from "@/components/organisms/MyGoalText";
 import SearchResult from "@/components/organisms/SearchResult";
 import SearchBadge from "@/components/atoms/badges/SearchBadge";
 import Thumb from "@/components/atoms/thumbnail/Thumbnail";
-import FoodCard from "@/components/organisms/FoodCard";
-import AddFoodButton from "@/components/atoms/buttons/AddFoodButton";
 import ReportInfoCards from "@/components/atoms/cards/ReportInfoCards";
 import SocialButtons from "@/components/atoms/buttons/SocialButton";
 import TempImage from "@/assets/temp_image.jpg"; // TODO : 실제 데이터 연동 후 지우기
+import FoodCardViewOnly from "@/components/organisms/FoodCardViewOnly";
 
 // 검색 결과 임시 데이터
 const temp = [
@@ -157,7 +156,7 @@ const Home = () => {
 			<p>search input</p>
 			<SearchInput name="search" id="search" value="" onChange={() => {}} onClick={() => {}} />
 			<br />
-			<SearchResult data={temp} onChange={() => {}} onClick={() => {}} />
+			<SearchResult data={temp} onClick={() => {}} />
 			<SearchBadge />
 			<br />
 			<br />
@@ -320,17 +319,7 @@ const Home = () => {
 			<br />
 			<br />
 			<div className="flex gap-6 items-start">
-				<FoodCard
-					src={TempImage}
-					size="sm"
-					type="none"
-					name="치킨"
-					isEdit={true}
-					editModal={onModal}
-					deleteModal={onDeleteModal}
-				/>
-				<FoodCard src={null} size="sm" type="none" name="치킨" isEdit={false} />
-				<AddFoodButton onClick={onModal} />
+				<FoodCardViewOnly src={TempImage} size="sm" type="none" name={"치킨"} weight={200} />
 			</div>
 			<br />
 			<br />
