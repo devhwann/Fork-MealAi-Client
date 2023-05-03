@@ -8,6 +8,11 @@ const Ai = lazy(() => import("@/pages/meal-ai/Ai"));
 const Result = lazy(() => import("@/pages/meal-ai/Result"));
 const Fail = lazy(() => import("@/pages/meal-ai/Fail"));
 const PageNotFound = lazy(() => import("@/pages/PageNotFound"));
+const Goal = lazy(() => import("@/pages/auth/Goal"));
+const SignIn = lazy(() => import("@/pages/auth/SignIn"));
+const FindPassword = lazy(() => import("@/pages/auth/FindPassword"));
+const SignUp = lazy(() => import("@/pages/auth/SignUp"));
+const Info = lazy(() => import("@/pages/auth/Info"));
 
 const routes = createBrowserRouter([
 	{
@@ -28,6 +33,26 @@ const routes = createBrowserRouter([
 			{
 				path: "/meal-ai/fail",
 				element: <Fail />,
+			},
+			{
+				path: "/auth/sign-in",
+				element: <SignIn />,
+			},
+			{
+				path: "/auth/sign-up",
+				element: <SignUp />,
+			},
+			{
+				path: "/auth/sign-up/info",
+				element: <Info />,
+			},
+			{
+				path: "/auth/sign-up/goal",
+				element: <Goal />,
+			},
+			{
+				path: "/auth/find-password",
+				element: <FindPassword />,
 			},
 			{
 				path: "*",

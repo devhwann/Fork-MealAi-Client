@@ -51,10 +51,10 @@ const Header = () => {
 				</div>
 			) : (
 				<div className="flex flex-row ml-auto mr-20 gap-10 text-base text-gray-6">
-					<Link to="/">
+					<Link to="/auth/sign-in">
 						<p>로그인</p>
 					</Link>
-					<Link to="/">
+					<Link to="/auth/sign-up">
 						<p>회원가입</p>
 					</Link>
 				</div>
