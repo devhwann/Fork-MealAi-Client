@@ -15,7 +15,7 @@ const Goal = () => {
 				<GoalButtons handleGoal={handleGoal} />
 			</div>
 			<div className="w-96 grid gap-3">
-				<BasicButton type="button" onClick={() => {}} width={true} style="primary">
+				<BasicButton type="submit" onClick={() => {}} width={true} style="primary">
 					회원가입 완료
 				</BasicButton>
 				<BasicButton type="button" onClick={() => {}} width={true} style="bg">
