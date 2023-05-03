@@ -1,12 +1,19 @@
 import Thumb, { ThumbnailProps } from "../atoms/thumbnail/Thumbnail";
 import EditIcon from "@/assets/icon_food_edit.svg";
 import DeleteIcon from "@/assets/icon_food_delete.svg";
+import Modal from "./Modal";
+import Input from "../atoms/inputs/Input";
+import TinyButton from "../atoms/buttons/TinyButton";
+import BasicButton from "../atoms/buttons/BasicButton";
 
 interface FoodCardProps extends ThumbnailProps {
 	name: string;
-	isEdit: boolean;
-	editModal?: () => void;
-	deleteModal?: () => void;
+	weight: number;
+	handleEditModal: () => void;
+	handleDeleteModal: () => void;
+	handleSearchModal: () => void;
+	editModalState?: boolean;
+	deleteModalState?: boolean;
 }
 
 interface FoodCardButtonProps {
@@ -25,22 +32,72 @@ const FoodCardButton = ({ role, onClick }: FoodCardButtonProps) => {
 /*
 src, size, type : 이미지 썸네일 관련 props
 name : 음식 이름
-isEdit : 수정/삭제 여부
-editModal, deleteModal : 수정/삭제 모달
-
+weight : 중량
 */
-const FoodCard = ({ src, size, type, name, isEdit, editModal, deleteModal }: FoodCardProps) => {
+const FoodCard = ({
+	src,
+	size,
+	type,
+	name,
+	weight,
+	handleEditModal,
+	handleDeleteModal,
+	handleSearchModal,
+	editModalState,
+	deleteModalState,
+}: FoodCardProps) => {
 	return (
-		<div className="max-w-fit p-4 border border-solid border-gray-7 rounded-lg">
-			<Thumb src={src} size={size} type={type} />
-			<p className="mt-4 mb-2 font-semibold text-gray-2">{name}</p>
-			{isEdit && (
+		<>
+			<div className="max-w-fit p-4 border border-solid border-gray-7 rounded-lg">
+				<Thumb src={src} size={size} type={type} />
+				<p className="mt-4 mb-2 font-semibold text-gray-2">{name}</p>
 				<div className="flex justify-end gap-1">
-					<FoodCardButton role="edit" onClick={editModal} />
-					<FoodCardButton role="delete" onClick={deleteModal} />
+					<FoodCardButton role="edit" onClick={handleEditModal} />
+					<FoodCardButton role="delete" onClick={handleDeleteModal} />
 				</div>
+			</div>
+
+			{editModalState && (
+				<Modal onClose={handleEditModal} title="수정">
+					<div className="mb-6 flex gap-4">
+						<Thumb src={src} size="sm" type="none" />
+						<div className="w-60 flex flex-col gap-3">
+							<Input type="text" name="name" id="name" value={name} placeholder="음식명" onChange={() => {}} />
+							<div>
+								<Input type="number" name="weight" id="weight" value={weight} placeholder="중량" onChange={() => {}} />
+							</div>
+							<div className="flex justify-between">
+								<p className="text-sm text-gray-4">{name}이(가) 아닌가요?</p>
+								<TinyButton type="button" onClick={handleSearchModal} style="gray" deactivated={false}>
+									검색
+								</TinyButton>
+							</div>
+						</div>
+					</div>
+					<div className="flex justify-center gap-2">
+						<BasicButton type="button" onClick={handleEditModal} width={false} style="bg">
+							취소
+						</BasicButton>
+						<BasicButton type="button" onClick={() => {}} width={false} style="primary">
+							수정 완료
+						</BasicButton>
+					</div>
+				</Modal>
 			)}
-		</div>
+			{deleteModalState && (
+				<Modal onClose={handleDeleteModal} title="삭제">
+					<div className="mb-6">정말 삭제하시겠어요?</div>
+					<div className="flex justify-center gap-2">
+						<BasicButton type="button" onClick={handleDeleteModal} width={false} style="bg">
+							취소
+						</BasicButton>
+						<BasicButton type="button" onClick={() => {}} width={false} style="gray">
+							삭제
+						</BasicButton>
+					</div>
+				</Modal>
+			)}
+		</>
 	);
 };
 

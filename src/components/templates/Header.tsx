@@ -17,7 +17,7 @@ const Header = () => {
 	const menuObj: MenuObjProps[] = [
 		{
 			name: "식단AI분석",
-			path: "/",
+			path: "/meal-ai",
 		},
 		{
 			name: "식단톡",

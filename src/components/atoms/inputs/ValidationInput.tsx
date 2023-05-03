@@ -44,7 +44,7 @@ const ValidationInput = ({
 				onChange={onChange}
 				className={`input input-bordered w-full ${getBorderColor(isError, value)}`}
 			/>
-			<p className={`text-sm ${getTextColor(isError)}`}>{value.length >= 1 && errorMessage}</p>
+			<p className={`text-sm ${getTextColor(isError)}`}>{value.length >= 1 && errorMessage}&nbsp;</p>
 		</>
 	);
 };

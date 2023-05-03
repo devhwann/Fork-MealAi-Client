@@ -4,8 +4,9 @@ import Layout from "@/components/templates/Layout";
 import Loader from "@/components/atoms/loader/Loader";
 
 const Home = lazy(() => import("@/pages/Home"));
-const Profile = lazy(() => import("@/pages/Profile"));
-const SignUp = lazy(() => import("@/pages/SignUp"));
+const Ai = lazy(() => import("@/pages/meal-ai/Ai"));
+const Result = lazy(() => import("@/pages/meal-ai/Result"));
+const Fail = lazy(() => import("@/pages/meal-ai/Fail"));
 const PageNotFound = lazy(() => import("@/pages/PageNotFound"));
 
 const routes = createBrowserRouter([
@@ -17,12 +18,16 @@ const routes = createBrowserRouter([
 				element: <Home />,
 			},
 			{
-				path: "/profile",
-				element: <Profile />,
+				path: "/meal-ai",
+				element: <Ai />,
 			},
 			{
-				path: "/signup",
-				element: <SignUp />,
+				path: "/meal-ai/result",
+				element: <Result />,
+			},
+			{
+				path: "/meal-ai/fail",
+				element: <Fail />,
 			},
 			{
 				path: "*",
