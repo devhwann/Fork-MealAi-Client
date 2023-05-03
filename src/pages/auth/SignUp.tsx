@@ -14,9 +14,9 @@ const SignUp = () => {
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
 	const [passwordConfirm, setPasswordConfirm] = useState("");
-
 	const [authCode, setAuthCode] = useState("");
 	const [nickname, setNickname] = useState("");
+	const [ageGroup, setAgeGroup] = useState("");
 
 	function handleEmailChange(e: ChangeEvent<HTMLInputElement>) {
 		setEmail(e.target.value);
@@ -32,6 +32,9 @@ const SignUp = () => {
 	}
 	function handleNickname(e: ChangeEvent<HTMLInputElement>) {
 		setNickname(e.target.value);
+	}
+	function handleAgeGroup(e: ChangeEvent<HTMLSelectElement>) {
+		setAgeGroup(e.target.value);
 	}
 
 	return (
@@ -132,7 +135,7 @@ const SignUp = () => {
 						defaultValue="연령대 선택"
 						label="연령대"
 						htmlFor="ageGroup"
-						onChange={() => {}}
+						onChange={handleAgeGroup}
 					>
 						<option disabled>연령대 선택</option>
 						<option value="1">10대</option>
