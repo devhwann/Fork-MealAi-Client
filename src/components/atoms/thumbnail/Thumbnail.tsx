@@ -1,11 +1,12 @@
-import getMealTime from "@/utils/getMealTime";
+import { useNavigate } from "react-router-dom";
 import LikeButton, { LikeButtonProps } from "../buttons/LikeButton";
+import getMealTime from "@/utils/getMealTime";
 import LockIcon from "@/assets/icon_lock.svg";
 import Badge from "../badges/Badge";
-import { useNavigate } from "react-router-dom";
+import NoneImage from "@/assets/image_default_thumbs.svg";
 
 export interface ThumbnailProps extends LikeButtonProps {
-	src: string; // 이미지 주소
+	src: string | null; // 이미지 주소
 	id?: number; // params
 	size: "lg" | "md" | "sm"; // 이미지 사이즈
 	type: "like" | "log" | "none"; // 이미지에 얹어지는 요소 타입
@@ -16,12 +17,19 @@ export interface ThumbnailProps extends LikeButtonProps {
 function getSize(size: ThumbnailProps["size"]) {
 	switch (size) {
 		case "lg":
-			return 384;
+			return "w-96 h-96";
 		case "md":
-			return 220;
+			return "w-220 h-220";
 		case "sm":
-			return 148;
+			return "w-148 h-148";
 	}
+}
+
+function getImageSrc(src: ThumbnailProps["src"]) {
+	if (src !== null) {
+		return src;
+	}
+	return NoneImage;
 }
 
 const Thumb = ({ src, id, size, type, mealTime, open, isLike, onClick }: ThumbnailProps) => {
@@ -35,36 +43,36 @@ const Thumb = ({ src, id, size, type, mealTime, open, isLike, onClick }: Thumbna
 	}
 
 	return (
-		<div className="max-w-fit overflow-hidden border border-solid border-gray-7 rounded-lg relative">
-			{type === "like" && (
-				<p className="absolute right-4 bottom-4 z-10">
-					<LikeButton isLike={isLike} onClick={onClick} />
-				</p>
-			)}
-			{type === "log" && (
-				<>
-					<p className="absolute top-3 left-3 z-10">
-						<Badge text={getMealTime(mealTime)} color="gray" />
+		<>
+			<div className={`${getSize(size)} overflow-hidden border border-solid border-gray-7 rounded-lg relative`}>
+				{type === "like" && (
+					<p className="absolute right-4 bottom-4 z-10">
+						<LikeButton isLike={isLike} onClick={onClick} />
 					</p>
-					{open === true && (
-						<p className="absolute top-3 right-3 z-10">
-							<img src={LockIcon} />
+				)}
+				{type === "log" && (
+					<>
+						<p className="absolute top-3 left-3 z-10">
+							<Badge text={getMealTime(mealTime)} color="gray" />
 						</p>
-					)}
-				</>
-			)}
-			<img
-				src={src}
-				width={getSize(size)}
-				height={getSize(size)}
-				className={`${isClick(size)}`}
-				onClick={() => {
-					if (size === "md") {
-						navigate(`/${id}`);
-					}
-				}}
-			/>
-		</div>
+						{open === true && (
+							<p className="absolute top-3 right-3 z-10">
+								<img src={LockIcon} />
+							</p>
+						)}
+					</>
+				)}
+				<img
+					src={getImageSrc(src)}
+					className={`${isClick(size)} ${getSize(size)} object-cover`}
+					onClick={() => {
+						if (size === "md") {
+							navigate(`/${id}`);
+						}
+					}}
+				/>
+			</div>
+		</>
 	);
 };
 

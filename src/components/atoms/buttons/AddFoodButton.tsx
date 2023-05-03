@@ -6,17 +6,19 @@ interface AddFoodButtonProps {
 
 const AddFoodButton = ({ onClick }: AddFoodButtonProps) => {
 	return (
-		<button
-			className="w-184 h-258 p-4 border border-solid border-gray-7 rounded-lg flex justify-center items-center hover:bg-gray-9"
-			onClick={onClick}
-		>
-			<div className="flex flex-col gap-6">
-				<div className="flex justify-center">
-					<img src={AddIcon} />
+		<div>
+			<button
+				className="w-184 h-258 p-4 border border-solid border-gray-7 rounded-lg flex justify-center items-center hover:bg-gray-9"
+				onClick={onClick}
+			>
+				<div className="flex flex-col gap-6">
+					<div className="flex justify-center">
+						<img src={AddIcon} />
+					</div>
+					<p className="text-sm text-gray-6">음식 추가</p>
 				</div>
-				<p className="text-sm text-gray-6">음식 추가</p>
-			</div>
-		</button>
+			</button>
+		</div>
 	);
 };
 

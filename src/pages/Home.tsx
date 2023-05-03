@@ -20,11 +20,11 @@ import MyGoalText from "@/components/organisms/MyGoalText";
 import SearchResult from "@/components/organisms/SearchResult";
 import SearchBadge from "@/components/atoms/badges/SearchBadge";
 import Thumb from "@/components/atoms/thumbnail/Thumbnail";
-import TempTHumbImage from "@/assets/image_default_thumbs.svg";
 import FoodCard from "@/components/organisms/FoodCard";
 import AddFoodButton from "@/components/atoms/buttons/AddFoodButton";
 import ReportInfoCards from "@/components/atoms/cards/ReportInfoCards";
 import SocialButtons from "@/components/atoms/buttons/SocialButton";
+import TempImage from "@/assets/temp_image.jpg"; // TODO : 실제 데이터 연동 후 지우기
 
 // 검색 결과 임시 데이터
 const temp = [
@@ -304,9 +304,9 @@ const Home = () => {
 			<MyGoalText goal="balance" />
 			<br />
 			<br />
-			<Thumb src={TempTHumbImage} size="lg" type="none" />
+			<Thumb src={TempImage} size="lg" type="none" />
 			<Thumb
-				src={TempTHumbImage}
+				src={TempImage}
 				id={1}
 				size="md"
 				type="like"
@@ -315,13 +315,13 @@ const Home = () => {
 					setIsLike(!isLike);
 				}}
 			/>
-			<Thumb src={TempTHumbImage} id={1} size="md" type="log" mealTime="B" open={true} onClick={() => {}} />
-			<Thumb src={TempTHumbImage} size="sm" type="none" />
+			<Thumb src={TempImage} id={1} size="md" type="log" mealTime="B" open={true} onClick={() => {}} />
+			<Thumb src={null} size="sm" type="none" />
 			<br />
 			<br />
 			<div className="flex gap-6 items-start">
 				<FoodCard
-					src={TempTHumbImage}
+					src={TempImage}
 					size="sm"
 					type="none"
 					name="치킨"
@@ -329,7 +329,7 @@ const Home = () => {
 					editModal={onModal}
 					deleteModal={onDeleteModal}
 				/>
-				<FoodCard src={TempTHumbImage} size="sm" type="none" name="치킨" isEdit={false} />
+				<FoodCard src={null} size="sm" type="none" name="치킨" isEdit={false} />
 				<AddFoodButton onClick={onModal} />
 			</div>
 			<br />
