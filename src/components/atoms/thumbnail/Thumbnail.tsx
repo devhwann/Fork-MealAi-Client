@@ -67,7 +67,7 @@ const Thumb = ({ src, id, size, type, mealTime, open, isLike, onClick }: Thumbna
 					className={`${isClick(size)} ${getSize(size)} object-cover`}
 					onClick={() => {
 						if (size === "md") {
-							navigate(`/${id}`);
+							navigate(`/feeds/${id}`);
 						}
 					}}
 				/>

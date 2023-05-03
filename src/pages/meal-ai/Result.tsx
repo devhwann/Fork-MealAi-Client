@@ -4,7 +4,6 @@ import Thumb from "@/components/atoms/thumbnail/Thumbnail";
 import FoodCard from "@/components/organisms/FoodCard";
 import AddFoodButton from "@/components/atoms/buttons/AddFoodButton";
 import Modal from "@/components/organisms/Modal";
-import FoodCardViewOnly from "@/components/organisms/FoodCardViewOnly";
 import SearchInput from "@/components/atoms/inputs/SearchInput";
 import SearchResult from "@/components/organisms/SearchResult";
 import BasicButton from "@/components/atoms/buttons/BasicButton";
