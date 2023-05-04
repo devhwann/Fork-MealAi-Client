@@ -41,6 +41,7 @@ export default {
 			},
 			margin: {
 				"74": "74px",
+				"771": "771px",
 			},
 			gap: {
 				"67": "67px",
