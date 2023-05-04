@@ -18,17 +18,12 @@ const Ai = () => {
 	const [image, setImage] = useState("");
 	const [imageUrl, setImageUrl] = useState("");
 
-	// const encodeFileToBase64 = (fileBlob: any) => {
-	// 	const reader = new FileReader();
-	// 	reader.readAsDataURL(fileBlob);
-
-	// 	return new Promise((resolve) => {
-	// 		reader.onload = () => {
-	// 			setImageUrl(reader!.result!.toString());
-	// 			resolve(null);
-	// 		};
-	// 	});
-	// };
+	const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
+		const file = e.target.files![0];
+		console.log(file);
+		const imgSrc = URL.createObjectURL(file);
+		setImageUrl(imgSrc);
+	};
 
 	return (
 		<GradientWrapper>
@@ -59,7 +54,7 @@ const Ai = () => {
 							<option value="S">간식</option>
 						</select>
 					</div>
-					<AddImageFileButton imageUrl={imageUrl} onChange={() => {}} />
+					<AddImageFileButton imageUrl={imageUrl} onChange={handleFileChange} />
 				</div>
 				<div className="ml-6 pt-4">
 					<div className="flex justify-end gap-2 h-8 mb-4 ">
