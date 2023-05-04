@@ -7,7 +7,7 @@ const Feeds = () => {
 	const [isLike, setIsLike] = useState(false);
 
 	// 최신순, 인기순 클릭시 색상 변경
-	const [clickNewest, setClickNewest] = useState(false);
+	const [clickNewest, setClickNewest] = useState(true);
 	const [clickPopularity, setClickPopularity] = useState(false);
 
 	// 목표 검색 카테고리
