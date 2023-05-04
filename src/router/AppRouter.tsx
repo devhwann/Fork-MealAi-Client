@@ -13,6 +13,7 @@ const SignIn = lazy(() => import("@/pages/auth/SignIn"));
 const FindPassword = lazy(() => import("@/pages/auth/FindPassword"));
 const SignUp = lazy(() => import("@/pages/auth/SignUp"));
 const Info = lazy(() => import("@/pages/auth/Info"));
+const Feeds = lazy(() => import("@/pages/feeds/Feeds"));
 const Detail = lazy(() => import("@/pages/feeds/Detail"));
 const Edit = lazy(() => import("@/pages/feeds/Edit"));
 
@@ -57,8 +58,8 @@ const routes = createBrowserRouter([
 				element: <FindPassword />,
 			},
 			{
-				path: "/auth/find-password",
-				element: <FindPassword />,
+				path: "/feeds",
+				element: <Feeds />,
 			},
 			{
 				path: "/feeds/:id",

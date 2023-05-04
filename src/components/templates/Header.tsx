@@ -21,7 +21,7 @@ const Header = () => {
 		},
 		{
 			name: "식단톡",
-			path: "/",
+			path: "/feeds",
 		},
 	];
 
@@ -39,10 +39,10 @@ const Header = () => {
 			))}
 			{isLoggedIn ? (
 				<div className="flex flex-row ml-auto mr-20 gap-10 text-base text-gray-6">
-					<Link to="/">
+					<Link to="/mypage">
 						<p>마이페이지</p>
 					</Link>
-					<Link to="/">
+					<Link to="/mylog">
 						<p>식단일지</p>
 					</Link>
 					<Link to="/" onClick={handleLogout}>
