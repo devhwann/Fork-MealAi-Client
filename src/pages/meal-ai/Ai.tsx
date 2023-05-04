@@ -50,10 +50,9 @@ const Ai = () => {
 								setMealTime(e.target.value);
 							}}
 							className="select select-bordered w-1/2"
+							defaultValue="식사 시간 선택"
 						>
-							<option disabled selected>
-								식사 시간 선택
-							</option>
+							<option disabled>식사 시간 선택</option>
 							<option value="B">아침</option>
 							<option value="L">점심</option>
 							<option value="D">저녁</option>
