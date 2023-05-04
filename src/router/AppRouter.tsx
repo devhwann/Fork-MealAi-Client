@@ -82,13 +82,10 @@ const routes = createBrowserRouter([
 	},
 ]);
 
-// TODO : Suspense가 두 개 중복으로 못쓰는 건지?
 const AppRouter = () => {
 	return (
 		<React.Fragment>
-			<Suspense fallback={<Loader />}>
-				<RouterProvider router={routes} />
-			</Suspense>
+			<RouterProvider router={routes} />
 		</React.Fragment>
 	);
 };
