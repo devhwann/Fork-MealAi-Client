@@ -38,7 +38,7 @@ const Header = () => {
 				</Link>
 			))}
 			{isLoggedIn ? (
-				<div className="flex flex-row ml-auto mr-20 gap-10 text-base text-gray-6">
+				<div className="flex ml-auto mr-20 gap-10 text-base text-gray-6">
 					<Link to="/mypage">
 						<p>마이페이지</p>
 					</Link>
@@ -50,7 +50,7 @@ const Header = () => {
 					</Link>
 				</div>
 			) : (
-				<div className="flex flex-row ml-auto mr-20 gap-10 text-base text-gray-6">
+				<div className="flex ml-auto mr-20 gap-10 text-base text-gray-6">
 					<Link to="/auth/sign-in">
 						<p>로그인</p>
 					</Link>

@@ -50,7 +50,7 @@ const Modal = ({ title, children, onClose }: ModalProps) => {
 	return (
 		<Overlay>
 			<ModalWrap>
-				<div className="flex flex-row justify-between mb-6">
+				<div className="flex justify-between mb-6">
 					<h4>{title}</h4>
 					<CloseButton onClick={handleClose} />
 				</div>

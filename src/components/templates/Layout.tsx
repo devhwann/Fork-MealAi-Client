@@ -5,6 +5,7 @@ import Footer from "./Footer";
 import Header from "./Header";
 import { Suspense } from "react";
 import Loader from "../atoms/loader/Loader";
+import ScrollToTop from "./ScrollToTop";
 
 // styled
 const Wrapper = styled.div`
@@ -23,6 +24,7 @@ const Page = styled.div`
 const Layout = () => {
 	return (
 		<>
+			<ScrollToTop />
 			<Header />
 			<TopButton />
 			<Wrapper>
