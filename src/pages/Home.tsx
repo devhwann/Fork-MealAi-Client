@@ -1,4 +1,4 @@
-import { ChangeEvent, useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { HeadContainer, IntroContainer } from "./Home.style";
 import WhiteLogo from "@/assets/logo_white.svg";
@@ -39,7 +39,7 @@ const Home = () => {
 
 	return (
 		<div>
-			<HeadContainer>
+			<HeadContainer currentScroll={currentScroll}>
 				<div className="ml-96 select-none">
 					<h1 className="text-white mb-3">나만의 맞춤 AI 영양사,</h1>
 					<img src={WhiteLogo} width="214" height="50" />

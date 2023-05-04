@@ -3,7 +3,7 @@ import styled from "styled-components";
 import Bg1 from "@/assets/image_main_bg1.png";
 import Bg2 from "@/assets/image_main_bg2.png";
 
-export const HeadContainer = styled.div`
+export const HeadContainer = styled.div<{ currentScroll: number }>`
 	height: 90vh;
 	background-image: url(${Bg1});
 	background-size: cover;
@@ -86,13 +86,6 @@ export const IntroContainer = styled.div<{ currentScroll: number }>`
 
 	.intro_illust {
 		position: relative;
-
-		/* display: ${({ currentScroll }) => {
-			if (currentScroll < 50) return "none";
-		}};
-		animation: ${({ currentScroll }) => {
-			if (currentScroll >= 50) return "fadeInUp 1s";
-		}}; */
 
 		.people_image,
 		.food1_image,
