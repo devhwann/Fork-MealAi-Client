@@ -26,7 +26,7 @@ const Header = () => {
 	];
 
 	return (
-		<div className="flex flex-row w-full h-90 gap-12 items-center bg-white border-solid border-b border-gray-7 shadow shadow-gray-8 z-50 fixed top-0">
+		<div className="flex flex-row w-full h-90 gap-12 items-center bg-white border-solid border-b border-gray-7 z-50 fixed top-0">
 			<Link to="/">
 				<img src={Logo} width="115" height="27" className="ml-20" />
 			</Link>
