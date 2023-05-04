@@ -26,7 +26,7 @@ const Header = () => {
 	];
 
 	return (
-		<div className="flex flex-row w-full h-90 gap-12 items-center bg-white border-solid border-b border-gray-7 shadow shadow-gray-8 z-50 fixed top-0">
+		<div className="flex w-full h-90 gap-12 items-center bg-white border-solid border-b border-gray-7 shadow shadow-gray-8 z-50 fixed top-0">
 			<Link to="/">
 				<img src={Logo} width="115" height="27" className="ml-20" />
 			</Link>
@@ -38,7 +38,7 @@ const Header = () => {
 				</Link>
 			))}
 			{isLoggedIn ? (
-				<div className="flex flex-row ml-auto mr-20 gap-10 text-base text-gray-6">
+				<div className="flex ml-auto mr-20 gap-10 text-base text-gray-6">
 					<Link to="/mypage">
 						<p>마이페이지</p>
 					</Link>
@@ -50,7 +50,7 @@ const Header = () => {
 					</Link>
 				</div>
 			) : (
-				<div className="flex flex-row ml-auto mr-20 gap-10 text-base text-gray-6">
+				<div className="flex ml-auto mr-20 gap-10 text-base text-gray-6">
 					<Link to="/auth/sign-in">
 						<p>로그인</p>
 					</Link>

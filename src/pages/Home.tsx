@@ -229,7 +229,7 @@ const Home = () => {
 			<Badge text="부족" color="systemError" />
 			<Badge text="충분" color="systemSuccess" />
 			<br />
-			<div className="flex flex-row gap-8">
+			<div className="flex gap-8">
 				<RadioButton type="radio" id="gender-m" name="gender" gender="M" onChange={() => {}} />
 				<RadioButton type="radio" id="gender-f" name="gender" gender="F" onChange={() => {}} />
 			</div>
