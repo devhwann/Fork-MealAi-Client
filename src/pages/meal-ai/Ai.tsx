@@ -1,6 +1,6 @@
 import { ChangeEvent, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { GradientWrapper } from "@/components/templates/GradientWrapper";
+import { GradientWrapper } from "@/pages/meal-ai/Ai.styles";
 import AddImageFileButton from "@/components/atoms/buttons/AddImageFileInput";
 import InfoIcon from "@/assets/icon_info.svg";
 import AiRule from "@/components/atoms/aiRule/AiRule";
