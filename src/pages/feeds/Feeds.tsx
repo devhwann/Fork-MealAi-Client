@@ -88,10 +88,8 @@ const Feeds = () => {
 					</button>
 				</div>
 				<>
-					<select className="select select-bordered max-w-xs ml-9" onChange={handleGoal}>
-						<option disabled selected>
-							목표 검색
-						</option>
+					<select className="select select-bordered max-w-xs ml-9" onChange={handleGoal} defaultValue="목표 검색">
+						<option disabled>목표 검색</option>
 						<option value="balance">균형잡힌 식단</option>
 						<option value="diet">다이어트</option>
 						<option value="muscle">근력보강</option>

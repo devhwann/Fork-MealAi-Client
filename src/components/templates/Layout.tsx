@@ -5,7 +5,7 @@ import Footer from "./Footer";
 import Header from "./Header";
 import { Suspense } from "react";
 import Loader from "../atoms/loader/Loader";
-import ScrollToTop from "./ScrollToTop";
+import useScrollRestoration from "@/hooks/useScrollRestoration";
 
 // styled
 const Wrapper = styled.div`
@@ -20,11 +20,11 @@ const Page = styled.div`
 	flex: 1;
 `;
 
-// TODO : 요 위치에 오는 게 맞나?
 const Layout = () => {
+	useScrollRestoration();
+
 	return (
 		<>
-			<ScrollToTop />
 			<Header />
 			<TopButton />
 			<Wrapper>

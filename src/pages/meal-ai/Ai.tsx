@@ -1,6 +1,6 @@
 import { ChangeEvent, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { GradientWrapper } from "@/components/templates/GradientWrapper";
+import { GradientWrapper } from "@/pages/meal-ai/Ai.styles";
 import AddImageFileButton from "@/components/atoms/buttons/AddImageFileInput";
 import InfoIcon from "@/assets/icon_info.svg";
 import AiRule from "@/components/atoms/aiRule/AiRule";
@@ -18,17 +18,12 @@ const Ai = () => {
 	const [image, setImage] = useState("");
 	const [imageUrl, setImageUrl] = useState("");
 
-	// const encodeFileToBase64 = (fileBlob: any) => {
-	// 	const reader = new FileReader();
-	// 	reader.readAsDataURL(fileBlob);
-
-	// 	return new Promise((resolve) => {
-	// 		reader.onload = () => {
-	// 			setImageUrl(reader!.result!.toString());
-	// 			resolve(null);
-	// 		};
-	// 	});
-	// };
+	const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
+		const file = e.target.files![0];
+		console.log(file);
+		const imgSrc = URL.createObjectURL(file);
+		setImageUrl(imgSrc);
+	};
 
 	return (
 		<GradientWrapper>
@@ -50,17 +45,16 @@ const Ai = () => {
 								setMealTime(e.target.value);
 							}}
 							className="select select-bordered w-1/2"
+							defaultValue="식사 시간 선택"
 						>
-							<option disabled selected>
-								식사 시간 선택
-							</option>
+							<option disabled>식사 시간 선택</option>
 							<option value="B">아침</option>
 							<option value="L">점심</option>
 							<option value="D">저녁</option>
 							<option value="S">간식</option>
 						</select>
 					</div>
-					<AddImageFileButton imageUrl={imageUrl} onChange={() => {}} />
+					<AddImageFileButton imageUrl={imageUrl} onChange={handleFileChange} />
 				</div>
 				<div className="ml-6 pt-4">
 					<div className="flex justify-end gap-2 h-8 mb-4 ">
