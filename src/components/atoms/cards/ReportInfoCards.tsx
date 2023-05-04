@@ -52,7 +52,7 @@ const ReportInfoCard = ({ type, value, max }: ProgressBarProps) => {
 
 	return (
 		<div className="w-282 h-80 p-8 bg-white border border-solid border-gray-7 rounded-lg">
-			<div className="flex flex-row justify-between mb-12">
+			<div className="flex justify-between mb-12">
 				<h4>{type}</h4>
 				{BadgeComponent}
 			</div>
@@ -84,7 +84,7 @@ const ReportInfoCards = ({
 	fatMax,
 }: ProgressBarsProps) => {
 	return (
-		<div className="flex flex-row gap-6">
+		<div className="flex gap-6">
 			<ReportInfoCard type="칼로리" value={kcalValue} max={kcalMax} />
 			<ReportInfoCard type="탄수화물" value={carboValue} max={carboMax} />
 			<ReportInfoCard type="단백질" value={proteinValue} max={proteinMax} />
