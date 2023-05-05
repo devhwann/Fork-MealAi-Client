@@ -1,17 +1,13 @@
-import { ChangeEvent, forwardRef } from "react";
+import { forwardRef } from "react";
 
 export interface SearchInputProps {
 	name: string;
 	id: string;
 	value?: string;
-	onChange?: (e: ChangeEvent<HTMLInputElement>) => void;
 	onClick?: () => void;
 }
 
-const SearchInput = (
-	{ name, id, value, onChange, onClick }: SearchInputProps,
-	ref: React.LegacyRef<HTMLInputElement>
-) => {
+const SearchInput = ({ name, id, onClick }: SearchInputProps, ref: React.LegacyRef<HTMLInputElement>) => {
 	return (
 		<div className="form-control">
 			<div className="input-group">
@@ -19,8 +15,6 @@ const SearchInput = (
 					type="text"
 					name={name}
 					id={id}
-					value={value}
-					onChange={onChange}
 					ref={ref}
 					placeholder="식단 이름을 검색해주세요."
 					className="input input-bordered w-full"

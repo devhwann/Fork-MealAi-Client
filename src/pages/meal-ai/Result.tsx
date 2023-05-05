@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Thumb from "@/components/atoms/thumbnail/Thumbnail";
 import FoodCard from "@/components/organisms/FoodCard";
@@ -47,9 +47,33 @@ const Result = () => {
 	const [searchModal, setSearchModal] = useState(false);
 	const handleSearchModal = () => setSearchModal(!searchModal);
 
-	const [registerModal, setRegisterModal] = useState(false);
-	const onRegisterModal = () => setRegisterModal(!registerModal);
-	const offRegisterModal = () => setRegisterModal(!registerModal);
+	// 데이터
+	const [searchKeyWord, setSearchKeyWord] = useState<string>();
+	const searchInputRef = useRef<HTMLInputElement>(null);
+
+	// 검색
+	function handleSearch() {
+		const searchTextValue = searchInputRef?.current?.value as string;
+		if (searchTextValue.length === 0) {
+			alert("검색어를 입력해주세요.");
+			return;
+		}
+		setSearchKeyWord(searchTextValue);
+	}
+
+	function handleSearchForFoodToModify() {
+		console.log("선택한 음식으로 데이터 수정");
+		handleSearchModal();
+		setSearchKeyWord("");
+	}
+
+	function handleSearchForNewFood() {
+		console.log("선택한 음식 추가");
+		handleSearchModal();
+		setSearchKeyWord("");
+	}
+
+	console.log("searchKeyWord", searchKeyWord);
 
 	return (
 		<>
@@ -91,7 +115,7 @@ const Result = () => {
 							deleteModalState={deleteModal}
 						/>
 
-						<AddFoodButton onClick={onRegisterModal} />
+						<AddFoodButton onClick={handleSearchModal} />
 					</div>
 					<div className="flex justify-center">
 						<div className="mt-14 w-96 flex flex-col items-center gap-4">
@@ -116,16 +140,25 @@ const Result = () => {
 				</div>
 			</div>
 
-			{registerModal && (
-				<Modal onClose={offRegisterModal} title="추가">
-					<div className="mb-6">추가하는 모달</div>
-				</Modal>
-			)}
-
 			{searchModal && (
-				<Modal onClose={handleSearchModal} title="검색">
-					<SearchInput name="search" id="search" value="" onChange={() => {}} onClick={() => {}} />
-					<SearchResult data={temp} onClick={() => {}} />
+				<Modal
+					onClose={() => {
+						handleSearchModal();
+						setSearchKeyWord("");
+					}}
+					title="검색"
+				>
+					<SearchInput name="search" id="search" value={searchKeyWord} onClick={handleSearch} ref={searchInputRef} />
+					<SearchResult
+						data={temp}
+						onClick={() => {
+							if (editModal) {
+								handleSearchForFoodToModify();
+								return;
+							}
+							handleSearchForNewFood();
+						}}
+					/>
 				</Modal>
 			)}
 		</>
