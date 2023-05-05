@@ -17,6 +17,8 @@ const Feeds = lazy(() => import("@/pages/feeds/Feeds"));
 const Detail = lazy(() => import("@/pages/feeds/Detail"));
 const Edit = lazy(() => import("@/pages/feeds/Edit"));
 const WeeklyReport = lazy(() => import("@/pages/mylog/WeeklyReport"));
+const MyPage = lazy(() => import("@/pages/mypage/MyPage"));
+const EditInfo = lazy(() => import("@/pages/mypage/EditInfo"));
 
 const routes = createBrowserRouter([
 	{
@@ -73,6 +75,14 @@ const routes = createBrowserRouter([
 			{
 				path: "/mylog/weekly-report/:week",
 				element: <WeeklyReport />,
+			},
+			{
+				path: "/mypage",
+				element: <MyPage />,
+			},
+			{
+				path: "/mypage/edit-info",
+				element: <EditInfo />,
 			},
 			{
 				path: "*",
