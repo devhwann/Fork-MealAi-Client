@@ -10,7 +10,7 @@ const App = () => {
 			<GlobalStyle />
 			<ErrorBoundary FallbackComponent={Fallback}>
 				<AppRouter />
-				<ThrowCounter />
+				{/* <ThrowCounter /> */}
 			</ErrorBoundary>
 		</>
 	);

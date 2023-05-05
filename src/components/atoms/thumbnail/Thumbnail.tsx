@@ -55,7 +55,7 @@ const Thumb = ({ src, id, size, type, mealTime, open, isLike, onClick }: Thumbna
 						<p className="absolute top-3 left-3 z-10">
 							<Badge text={getMealTime(mealTime)} color="gray" />
 						</p>
-						{open === true && (
+						{open === false && (
 							<p className="absolute top-3 right-3 z-10">
 								<img src={LockIcon} />
 							</p>

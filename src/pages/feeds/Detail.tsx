@@ -12,6 +12,7 @@ import GoalText from "@/components/organisms/GoalText";
 import PrevIcon from "@/assets/icon_prev.svg";
 import NextIcon from "@/assets/icon_next.svg";
 import TempImage from "@/assets/temp_image.jpg"; // TODO : 실제 데이터 연동 후 지우기
+import ArrowButton from "@/components/atoms/buttons/ArrowButton";
 
 // TODO : 유저 여부에 따라 하단 버튼 구성 다르게 하기
 // TODO : 나의 피드 -> 목록/수정/삭제 , 타인의 피드 -> 목록
@@ -42,11 +43,7 @@ const Detail = () => {
 	return (
 		<>
 			<div className="flex justify-center gap-36">
-				<div className="my-auto select-none">
-					<button onClick={() => {}} className="transition ease-out hover:scale-125">
-						<img src={PrevIcon} />
-					</button>
-				</div>
+				<ArrowButton direction="prev" onClick={() => {}} />
 				<div className="w-fit">
 					<div className="pt-20 mb-10 flex justify-between items-center">
 						<h1>
@@ -113,11 +110,7 @@ const Detail = () => {
 						</BasicButton>
 					</div>
 				</div>
-				<div className="my-auto select-none">
-					<button onClick={() => {}} className="transition ease-out hover:scale-125">
-						<img src={NextIcon} />
-					</button>
-				</div>
+				<ArrowButton direction="next" onClick={() => {}} />
 			</div>
 
 			{deleteModal && (

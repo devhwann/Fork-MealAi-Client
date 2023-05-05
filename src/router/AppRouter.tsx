@@ -1,7 +1,6 @@
-import React, { lazy, Suspense } from "react";
+import React, { lazy } from "react";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import Layout from "@/components/templates/Layout";
-import Loader from "@/components/atoms/loader/Loader";
 
 const Home = lazy(() => import("@/pages/Home"));
 const Ai = lazy(() => import("@/pages/meal-ai/Ai"));
@@ -16,6 +15,7 @@ const Info = lazy(() => import("@/pages/auth/Info"));
 const Feeds = lazy(() => import("@/pages/feeds/Feeds"));
 const Detail = lazy(() => import("@/pages/feeds/Detail"));
 const Edit = lazy(() => import("@/pages/feeds/Edit"));
+const MyLog = lazy(() => import("@/pages/mylog/MyLog"));
 const WeeklyReport = lazy(() => import("@/pages/mylog/WeeklyReport"));
 
 const routes = createBrowserRouter([
@@ -69,6 +69,10 @@ const routes = createBrowserRouter([
 			{
 				path: "/feeds/:id/edit",
 				element: <Edit />,
+			},
+			{
+				path: "/mylog",
+				element: <MyLog />,
 			},
 			{
 				path: "/mylog/weekly-report/:week",
