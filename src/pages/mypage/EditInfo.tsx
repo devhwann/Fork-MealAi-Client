@@ -48,15 +48,9 @@ const EditInfo = () => {
 
 	// 회원 탈퇴시 비밀번호 확인
 	const [checkPassword, setCheckPassword] = useState("");
-	const checkPasswordInputRef = useRef<HTMLInputElement>(null);
 
 	function handleCheckPassword(e: ChangeEvent<HTMLInputElement>) {
-		const checkPasswordInput = checkPasswordInputRef?.current?.value as string;
-		if (checkPasswordInput.length === 0) {
-			alert("비밀번호를 입력해주세요");
-			return;
-		}
-		setCheckPassword(checkPasswordInput);
+		setCheckPassword(e.target.value);
 	}
 
 	// console.log(ageGroup);
@@ -153,6 +147,7 @@ const EditInfo = () => {
 					</div>
 				</div>
 			</div>
+			{/* 회원 탈퇴 모달 */}
 			{withdrawalModal && (
 				<Modal onClose={handleWithdrawalModal} title="비밀번호 확인">
 					<div className="mb-6">
@@ -163,15 +158,13 @@ const EditInfo = () => {
 								해당 이메일로 재가입이 불가능 합니다.
 							</p>
 						</div>
-						<input
+						<Input
 							type="password"
 							name="password"
 							id="password"
 							value={checkPassword}
 							placeholder="비밀번호"
 							onChange={handleCheckPassword}
-							ref={checkPasswordInputRef}
-							className="input input-bordered w-full"
 						/>
 					</div>
 					<div className="flex justify-center gap-2">

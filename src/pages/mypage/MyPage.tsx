@@ -4,6 +4,7 @@ import BasicButton from "@/components/atoms/buttons/BasicButton";
 import GoalText from "@/components/organisms/GoalText";
 import Thumb from "@/components/atoms/thumbnail/Thumbnail";
 import Modal from "@/components/organisms/Modal";
+import Input from "@/components/atoms/inputs/Input";
 import InputWithLabel from "@/components/organisms/InputWithLabel";
 import TempImage from "@/assets/temp_image.jpg"; // TODO : 실제 데이터 연동 후 지우기
 
@@ -27,15 +28,9 @@ const MyPage = () => {
 
 	// 회원정보 수정 > 비밀번호 확인
 	const [checkPassword, setCheckPassword] = useState("");
-	const checkPasswordInputRef = useRef<HTMLInputElement>(null);
 
 	function handleCheckPassword(e: ChangeEvent<HTMLInputElement>) {
-		const checkPasswordInput = checkPasswordInputRef?.current?.value as string;
-		if (checkPasswordInput.length === 0) {
-			alert("비밀번호를 입력해주세요");
-			return;
-		}
-		setCheckPassword(checkPasswordInput);
+		setCheckPassword(e.target.value);
 	}
 
 	// 비밀번호 변경
@@ -149,19 +144,17 @@ const MyPage = () => {
 					/>
 				</div>
 			</div>
-
+			{/* 회원정보 수정 버튼 클릭하면 뜨는 비밀번호 확인 모달 */}
 			{editInfodModal && (
 				<Modal onClose={handleEditInfoModal} title="비밀번호 확인">
 					<div className="mb-6">
-						<input
+						<Input
 							type="password"
 							name="password"
 							id="password"
 							value={checkPassword}
 							placeholder="비밀번호"
 							onChange={handleCheckPassword}
-							ref={checkPasswordInputRef}
-							className="input input-bordered w-full"
 						/>
 					</div>
 					<div className="flex justify-center gap-2">
@@ -181,6 +174,7 @@ const MyPage = () => {
 					</div>
 				</Modal>
 			)}
+			{/* 비밀번호 변경 모달 */}
 			{newPasswordModal && (
 				<Modal onClose={handleNewPasswordModal} title="비밀번호 변경">
 					<div className="mb-6">
