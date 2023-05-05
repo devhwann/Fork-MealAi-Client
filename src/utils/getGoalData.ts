@@ -5,7 +5,7 @@ import LchfIcon from "@/assets/icon_lchf.svg";
 
 // 서버로부터 받은 goal 데이터와 프론트에서 실제 사용할 데이터 매칭
 interface GoalTypesInterface {
-	name: string;
+	name: "balance" | "diet" | "muscle" | "lchf";
 	items: {
 		[key: string]: string;
 	};

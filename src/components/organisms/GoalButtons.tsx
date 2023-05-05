@@ -2,7 +2,6 @@ import { getIcon, goalTypes } from "@/utils/getGoalData";
 
 interface GoalButtonsProps {
 	handleGoal: (goal: "balance" | "diet" | "muscle" | "lchf") => void;
-	// checked?: boolean;
 	currentGoal?: string;
 }
 

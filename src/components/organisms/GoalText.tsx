@@ -2,7 +2,7 @@ import { goalTypes } from "@/utils/getGoalData";
 import Badge from "../atoms/badges/Badge";
 
 export interface GoalTextProps {
-	goal: string;
+	goal: "balance" | "diet" | "protein" | "lchf";
 }
 
 const GoalText = ({ goal }: GoalTextProps) => {
