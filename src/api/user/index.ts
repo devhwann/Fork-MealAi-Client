@@ -1,4 +1,4 @@
-import { api, axios, API_ENDPOINT } from "@/utils/axios.utils";
+import { api } from "@/utils/axios.utils";
 
 /**
  * user apis
@@ -6,6 +6,6 @@ import { api, axios, API_ENDPOINT } from "@/utils/axios.utils";
  */
 export const userApi = Object.freeze({
 	async findUserById(userId: string) {
-		return  api.get(`/api/users?user_id=${userId}`);
+		return api.get(`/api/users?user_id=${userId}`);
 	},
 });

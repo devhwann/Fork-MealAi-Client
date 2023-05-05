@@ -1,9 +1,5 @@
-import { api, axios, API_ENDPOINT } from "@/utils/axios.utils";
-
-interface LoginParams {
-	email: string;
-	password: string;
-}
+import { LoginParams } from "@/types/baseAuth";
+import { api } from "@/utils/axios.utils";
 
 export const authApi = Object.freeze({
 	async requestLogin(params: LoginParams) {
