@@ -1,4 +1,4 @@
-import { ChangeEvent, useRef, useState } from "react";
+import { ChangeEvent, useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Input from "@/components/atoms/inputs/Input";
 import InputLabel from "@/components/atoms/inputs/InputLabel";
@@ -12,18 +12,34 @@ const EditInfo = () => {
 	const navigate = useNavigate();
 
 	// TODO : 유저 데이터 받아온 후 로직 구현
-	const [nickname, setNickname] = useState("");
-	const [ageGroup, setAgeGroup] = useState("");
-	const [goal, setGoal] = useState("");
+	// 유저 기존 정보
+	const nickname = "황금늑대";
+	const ageGroup = "1";
+	const userGender = "F";
+	const goal = "diet";
+
+	// 유저 변경 정보
+	const [NewNickname, setNewNickname] = useState("");
+	const [NewAgeGroup, setNewAgeGroup] = useState("");
+	const [gender, setGender] = useState("M");
+	const [newGoal, setNewGoal] = useState("balance");
+
+	useEffect(() => {
+		setGender(userGender);
+		setNewGoal(goal);
+	}, []);
 
 	function handleNickname(e: ChangeEvent<HTMLInputElement>) {
-		setNickname(e.target.value);
+		setNewNickname(e.target.value);
 	}
 	function handleAgeGroup(e: ChangeEvent<HTMLSelectElement>) {
-		setAgeGroup(e.target.value);
+		setNewAgeGroup(e.target.value);
 	}
-	function handleGoal(goal: string) {
-		setGoal(goal);
+	function handleGender(e: ChangeEvent<HTMLInputElement>) {
+		setGender(e.target.value);
+	}
+	function handleNewGoal(goal: "balance" | "diet" | "muscle" | "lchf") {
+		setNewGoal(goal);
 	}
 
 	// 탈퇴 모달
@@ -42,6 +58,13 @@ const EditInfo = () => {
 		}
 		setCheckPassword(checkPasswordInput);
 	}
+
+	// console.log(ageGroup);
+	// console.log(NewAgeGroup);
+	// console.log(nickname);
+	// console.log(NewNickname);
+	// console.log("gender", gender);
+	console.log(newGoal);
 	return (
 		<div className="grid justify-items-center mt-20">
 			<h1 className="mb-14">회원정보 수정</h1>
@@ -53,8 +76,8 @@ const EditInfo = () => {
 						type="text"
 						name="nickname"
 						id="nickName"
-						placeholder="닉네임"
-						value={nickname}
+						placeholder={nickname}
+						value={NewNickname}
 						onChange={handleNickname}
 					/>
 				</div>
@@ -62,7 +85,7 @@ const EditInfo = () => {
 					<SelectWithLabel
 						name="ageGroup"
 						id="ageGroup"
-						defaultValue="연령대 선택"
+						defaultValue={ageGroup}
 						label="연령대"
 						htmlFor="ageGroup"
 						onChange={handleAgeGroup}
@@ -87,24 +110,22 @@ const EditInfo = () => {
 							id="gender-m"
 							name="gender"
 							gender="M"
-							onChange={() => {
-								console.log("남자");
-							}}
+							onChange={handleGender}
+							checked={gender === "M" ? true : false}
 						/>
 						<RadioButton
 							type="radio"
 							id="gender-f"
 							name="gender"
 							gender="F"
-							onChange={() => {
-								console.log("여자");
-							}}
+							onChange={handleGender}
+							checked={gender === "F" ? true : false}
 						/>
 					</div>
 				</div>
 				<h4 className="mb-6">목표설정</h4>
 				<div className="mb-6">
-					<GoalButtons handleGoal={handleGoal} />
+					<GoalButtons handleGoal={handleNewGoal} currentGoal={newGoal} />
 				</div>
 				<div className="flex justify-center gap-2">
 					<BasicButton

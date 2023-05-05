@@ -29,7 +29,7 @@ export const goalTypes: Array<GoalTypesInterface> = [
 		},
 	},
 	{
-		name: "protein",
+		name: "muscle",
 		items: {
 			icon: "muscle",
 			title: "근력보강",

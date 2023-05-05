@@ -12,11 +12,12 @@ const Goal = () => {
 		setGoal(goal);
 	}
 
+	console.log(goal);
 	return (
 		<div className="grid justify-items-center mt-20">
 			<h1 className="mb-14">목표설정</h1>
 			<div className="mb-6">
-				<GoalButtons handleGoal={handleGoal} />
+				<GoalButtons handleGoal={handleGoal} currentGoal={goal} />
 			</div>
 			<div className="w-96 grid gap-3">
 				<BasicButton type="submit" onClick={() => {}} width={true} style="primary">

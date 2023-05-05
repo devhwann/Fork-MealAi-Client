@@ -297,7 +297,7 @@ const Test = () => {
 			</div>
 			<br />
 			<br />
-			<GoalButtons handleGoal={handleGoal} />
+			{/* <GoalButtons handleGoal={handleGoal} /> */}
 			<GoalText goal="balance" />
 			<GoalText goal="diet" />
 			<MyGoalText goal="balance" />
