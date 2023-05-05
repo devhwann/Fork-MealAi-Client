@@ -1,9 +1,9 @@
 import axios from "axios";
-
-const API_ENDPOINT = "http://kdt-ai6-team08.elicecoding.com:5000";
+import { API_ENDPOINT } from "@/config/constants";
 
 const axiosOptions = {
 	baseURL: API_ENDPOINT,
+	withCredentials: true,
 };
 
 const api = axios.create(axiosOptions);

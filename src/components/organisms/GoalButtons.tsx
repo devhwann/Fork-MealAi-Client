@@ -1,12 +1,11 @@
 import { getIcon, goalTypes } from "@/utils/getGoalData";
+import { GoalTextProps } from "./GoalText";
 
 interface GoalButtonsProps {
-	handleGoal: (goal: string) => void;
+	handleGoal: (goal: GoalTextProps["goal"]) => void;
 }
 
-interface GoalButtonProps extends GoalButtonsProps {
-	goal: string;
-}
+interface GoalButtonProps extends GoalButtonsProps, GoalTextProps {}
 
 const GoalButton = ({ goal, handleGoal }: GoalButtonProps) => {
 	const data = goalTypes.filter((f) => f.name === goal)[0].items;
