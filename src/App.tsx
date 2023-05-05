@@ -6,11 +6,13 @@ import ThrowCounter from "@/components/errorrBoundary/TestError";
 
 const App = () => {
 	return (
-		<ErrorBoundary FallbackComponent={Fallback}>
+		<>
 			<GlobalStyle />
-			<AppRouter />
-			{/* <ThrowCounter /> */}
-		</ErrorBoundary>
+			<ErrorBoundary FallbackComponent={Fallback}>
+				<AppRouter />
+				{/* <ThrowCounter /> */}
+			</ErrorBoundary>
+		</>
 	);
 };
 
