@@ -1,7 +1,6 @@
 import { ChangeEvent, useState } from "react";
-import Input from "@/components/atoms/inputs/Input";
-import InputLabel from "@/components/atoms/inputs/InputLabel";
 import BasicButton from "@/components/atoms/buttons/BasicButton";
+import InputWithLabel from "@/components/organisms/InputWithLabel";
 
 const FindPassword = () => {
 	const [email, setEmail] = useState("");
@@ -17,8 +16,18 @@ const FindPassword = () => {
 			<p>소셜 회원은 비밀번호 재발급을 할 수 없습니다.</p>
 			<div className="w-96 mt-14">
 				<div className="mb-6">
-					<InputLabel label="이메일" htmlFor="email" />
-					<Input type="text" name="email" id="email" placeholder="이메일" value={email} onChange={handleEmailChange} />
+					<InputWithLabel
+						type="text"
+						name="email"
+						id="email"
+						value={email}
+						placeholder="이메일"
+						isError={false}
+						errorMessage="message test"
+						onChange={handleEmailChange}
+						label="이메일"
+						htmlFor="email"
+					/>
 				</div>
 				<div>
 					<BasicButton type="submit" onClick={() => {}} width={true} style="primary">
