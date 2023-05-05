@@ -1,13 +1,15 @@
 import { getIcon, goalTypes } from "@/utils/getGoalData";
-import { GoalTextProps } from "./GoalText";
 
 interface GoalButtonsProps {
-	handleGoal: (goal: GoalTextProps["goal"]) => void;
+	handleGoal: (goal: "balance" | "diet" | "muscle" | "lchf") => void;
+	currentGoal?: string;
 }
 
-interface GoalButtonProps extends GoalButtonsProps, GoalTextProps {}
+interface GoalButtonProps extends GoalButtonsProps {
+	goal: "balance" | "diet" | "muscle" | "lchf";
+}
 
-const GoalButton = ({ goal, handleGoal }: GoalButtonProps) => {
+const GoalButton = ({ goal, handleGoal, currentGoal }: GoalButtonProps) => {
 	const data = goalTypes.filter((f) => f.name === goal)[0].items;
 	const [icon, title, desc] = [data.icon, data.title, data.desc];
 
@@ -20,6 +22,7 @@ const GoalButton = ({ goal, handleGoal }: GoalButtonProps) => {
 				name="goal"
 				onChange={() => handleGoal(goal)}
 				className="hidden peer"
+				checked={currentGoal === goal ? true : false}
 			/>
 			<label
 				htmlFor={goal}
@@ -35,14 +38,14 @@ const GoalButton = ({ goal, handleGoal }: GoalButtonProps) => {
 	);
 };
 
-const GoalButtons = ({ handleGoal }: GoalButtonsProps) => {
+const GoalButtons = ({ handleGoal, currentGoal }: GoalButtonsProps) => {
 	return (
 		<div>
 			<ul className="grid w-96 gap-6 md:grid-cols-2">
-				<GoalButton goal="balance" handleGoal={handleGoal} />
-				<GoalButton goal="diet" handleGoal={handleGoal} />
-				<GoalButton goal="protein" handleGoal={handleGoal} />
-				<GoalButton goal="lchf" handleGoal={handleGoal} />
+				<GoalButton goal="balance" handleGoal={handleGoal} currentGoal={currentGoal} />
+				<GoalButton goal="diet" handleGoal={handleGoal} currentGoal={currentGoal} />
+				<GoalButton goal="muscle" handleGoal={handleGoal} currentGoal={currentGoal} />
+				<GoalButton goal="lchf" handleGoal={handleGoal} currentGoal={currentGoal} />
 			</ul>
 		</div>
 	);

@@ -55,7 +55,7 @@ const SignUp = () => {
 					}}
 				/>
 			</div>
-			<div className="w-96 border border-solid border-gray-7 mb-74"></div>
+			<div className="w-96 border border-solid border-gray-7 mb-74" />
 			<div className="w-96">
 				<div className="mb-4 flex items-center justify-between gap-2">
 					<div className="grow">
