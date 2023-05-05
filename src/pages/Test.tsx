@@ -154,7 +154,7 @@ const Test = () => {
 			<br />
 			<br />
 			<p>search input</p>
-			<SearchInput name="search" id="search" value="" onChange={() => {}} onClick={() => {}} />
+			<SearchInput name="search" id="search" value="" onClick={() => {}} />
 			<br />
 			<SearchResult data={temp} onClick={() => {}} />
 			<SearchBadge />
