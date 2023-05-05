@@ -18,7 +18,7 @@ const SelectWithLabel = ({ name, id, defaultValue, onChange, children, label, ht
 				id={id}
 				defaultValue={defaultValue}
 				onChange={onChange}
-				className="select select-bordered min-w-full"
+				className="select select-bordered w-full"
 			>
 				{children}
 			</select>

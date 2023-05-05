@@ -3,13 +3,12 @@ import SearchInput from "../atoms/inputs/SearchInput";
 
 interface SearchResultProps {
 	data?: string[];
-	onChange?: (e: ChangeEvent<HTMLInputElement>) => void;
 	onClick?: () => void;
 }
 
 // TODO : 검색 기능 구현
-// ^ type 1. 항목 클릭 > 하단에 검색 keyword가 쌓임. 중복선택 가능. X 눌르면 삭제
-// ^ type 2. (모달) 항목 클릭 > 모달 꺼지며 선택한 항목 데이터가 담김
+// ^ type 1. (수정)항목 클릭 > 수정 모달의 인풋에 선택한 음식이 담김 > 수정버튼 눌러 최종 데이터 반영
+// ^ type 2. (추가) 항목 클릭 > 모달 꺼지며 선택한 음식이 데이터에 바로 1인분 중량으로 반영
 
 // 클릭하면 리스트에 추가되는거
 // function handleCheck(value: string) {
@@ -22,21 +21,18 @@ interface SearchResultProps {
 //   setCheckedCategoryNames(old);
 // }
 
-const SearchResult = ({ data, onChange, onClick }: SearchResultProps) => {
+const SearchResult = ({ data, onClick }: SearchResultProps) => {
 	return (
-		<div>
-			<SearchInput name="search" id="search" value="" onChange={() => {}} onClick={() => {}} />
-			<div className="w-full h-64 p-6 mt-4 border-solid border border-gray-7 rounded-lg overflow-auto">
-				{!data && <p className="text-center text-gray-6 mt-24">검색 결과가 없습니다.</p>}
-				{data &&
-					data.map((v, i) => {
-						return (
-							<p key={i} className="max-w-fit mb-4 text-sm text-gray-4 hover:underline cursor-pointer">
-								{v}
-							</p>
-						);
-					})}
-			</div>
+		<div className="w-full h-64 p-6 mt-4 border-solid border border-gray-7 rounded-lg overflow-auto">
+			{!data && <p className="text-center text-gray-6 mt-24">검색 결과가 없습니다.</p>}
+			{data &&
+				data.map((v, i) => {
+					return (
+						<p key={i} className="max-w-fit mb-4 text-sm text-gray-4 hover:underline cursor-pointer" onClick={onClick}>
+							{v}
+						</p>
+					);
+				})}
 		</div>
 	);
 };

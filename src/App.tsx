@@ -7,18 +7,20 @@ import MetaTag from "./utils/getMetaTag";
 
 const App = () => {
 	return (
-		<ErrorBoundary FallbackComponent={Fallback}>
-			<MetaTag
-				title={"MealAi"}
-				description={"식단 관리 서비스"}
-				keywords={"다이어트"}
-				imgsrc={"@/assets/icon_food_add.svg"}
-				url={"https://github.com"}
-				locale={"ko_KR"}
-			/>
+		<>
 			<GlobalStyle />
-			<AppRouter />
-		</ErrorBoundary>
+			<ErrorBoundary FallbackComponent={Fallback}>
+				<MetaTag
+					title={"MealAi"}
+					description={"식단 관리 서비스"}
+					keywords={"다이어트"}
+					imgsrc={"@/assets/icon_food_add.svg"}
+					url={"https://github.com"}
+					locale={"ko_KR"}
+				/>
+				<AppRouter />
+			</ErrorBoundary>
+		</>
 	);
 };
 

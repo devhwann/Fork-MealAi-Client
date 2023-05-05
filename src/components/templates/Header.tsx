@@ -17,16 +17,16 @@ const Header = () => {
 	const menuObj: MenuObjProps[] = [
 		{
 			name: "식단AI분석",
-			path: "/",
+			path: "/meal-ai",
 		},
 		{
 			name: "식단톡",
-			path: "/",
+			path: "/feeds",
 		},
 	];
 
 	return (
-		<div className="flex flex-row w-full h-90 gap-12 items-center bg-white border-solid border-b border-gray-7 shadow shadow-gray-8 z-50 fixed top-0">
+		<div className="flex flex-row w-full h-90 gap-12 items-center bg-white border-solid border-b border-gray-7 z-50 fixed top-0">
 			<Link to="/">
 				<img src={Logo} width="115" height="27" className="ml-20" />
 			</Link>
@@ -38,11 +38,11 @@ const Header = () => {
 				</Link>
 			))}
 			{isLoggedIn ? (
-				<div className="flex flex-row ml-auto mr-20 gap-10 text-base text-gray-6">
-					<Link to="/">
+				<div className="flex ml-auto mr-20 gap-10 text-base text-gray-6">
+					<Link to="/mypage">
 						<p>마이페이지</p>
 					</Link>
-					<Link to="/">
+					<Link to="/mylog">
 						<p>식단일지</p>
 					</Link>
 					<Link to="/" onClick={handleLogout}>
@@ -50,11 +50,11 @@ const Header = () => {
 					</Link>
 				</div>
 			) : (
-				<div className="flex flex-row ml-auto mr-20 gap-10 text-base text-gray-6">
-					<Link to="/">
+				<div className="flex ml-auto mr-20 gap-10 text-base text-gray-6">
+					<Link to="/auth/sign-in">
 						<p>로그인</p>
 					</Link>
-					<Link to="/">
+					<Link to="/auth/sign-up">
 						<p>회원가입</p>
 					</Link>
 				</div>
