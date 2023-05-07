@@ -1,12 +1,4 @@
-export interface AuthFormType {
-	email: string;
-	password: string;
-	// gender: string;
-	// ageGroup: number;
-	// nickname: string;
-	// goal: string;
-	// confirmPassword?: string;
-}
+// auth api 타입 정의
 
 export interface LoginParams {
 	email: string;
