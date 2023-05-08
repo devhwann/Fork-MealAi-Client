@@ -1,9 +1,6 @@
 import axios, { Axios, AxiosError } from "axios";
 import { API_ENDPOINT } from "@/config/constants";
 
-// const API_ENDPOINT = "http://kdt-ai6-team08.elicecoding.com:5000"; // Cors 이슈
-// TODO: ENV파일 만들어서 URL 넣기
-
 const axiosOptions = {
 	baseURL: API_ENDPOINT,
 	withCredentials: true,
@@ -34,7 +31,8 @@ axiosHandler.interceptors.response.use(
 	},
 	function (error) {
 		if (error.response.status >= 400 && error.response.status < 500) {
-			return Promise.reject(error);
+			// return Promise.reject(error);
+			return error;
 		} else if (error.reponse.status >= 500) {
 			return AxiosError;
 		}
