@@ -8,7 +8,7 @@ const axiosOptions = {
 	headers: {
 		"Content-Type": "application/json",
 	},
-	timeout: 3000, //  3초 지나면 요청 중단, 임의로 해놨어요
+	timeout: 10000, //  3초 지나면 요청 중단, 임의로 해놨어요
 };
 
 const axiosHandler = axios.create(axiosOptions);
@@ -30,11 +30,12 @@ axiosHandler.interceptors.response.use(
 		return res;
 	},
 	function (error) {
-		if (error.response.status >= 400 && error.response.status < 500) {
-			return Promise.reject(error);
-		} else if (error.reponse.status >= 500) {
-			return AxiosError;
-		}
+		console.log(error);
+		// if (error.response.status >= 400 && error.response.status < 500) {
+		// 	return Promise.reject(error);
+		// } else if (error.reponse.status >= 500) {
+		// 	return AxiosError;
+		// }
 	}
 );
 

@@ -1,4 +1,4 @@
-import { ChangeEvent, MouseEvent, createContext, useState } from "react";
+import { ChangeEvent, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import BasicButton from "@/components/atoms/buttons/BasicButton";
 import SocialButtons from "@/components/atoms/buttons/SocialButton";
@@ -7,81 +7,54 @@ import InputLabel from "@/components/atoms/inputs/InputLabel";
 import InputWithLabel from "@/components/organisms/InputWithLabel";
 import SelectWithLabel from "@/components/organisms/SelectWithLabel";
 import RadioButton from "@/components/atoms/buttons/RadioButton";
-import { authApi } from "@/api/auth";
 import { AuthFormType } from "@/types/auth/authTypes";
-
-// interface SignUpProps {
-// 	data: AuthFormType;
-// }
-
-export type SignUpContextType = {
-	datas: AuthFormType[];
-	// setDatas: (data: AuthFormType) => void;
-	setEmail: () => void;
-	setPassword: () => void;
-	setPasswordConfirm: () => void;
-	setAuthCode: () => void;
-	setGender: () => void;
-	setNickname: () => void;
-	setAgeGroup: () => void;
-};
-
-export const SignUpContext = createContext<SignUpContextType | null>(null);
 
 const SignUp = () => {
 	const navigate = useNavigate();
 
-	// context
-	const [datas, setDatas] = useState<AuthFormType | null>(null);
+	const [form, setForm] = useState<AuthFormType>({
+		email: "",
+		password: "",
+		confirmPassword: "",
+		gender: "",
+		nickname: "",
+		age_group: undefined,
+	});
 
-	const [email, setEmail] = useState("");
-	const [password, setPassword] = useState("");
-	const [passwordConfirm, setPasswordConfirm] = useState("");
+	function handleChange(key: keyof typeof form, e: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLSelectElement>) {
+		setForm({ ...form, [key]: e.target.value });
+	}
+
+	// const [email, setEmail] = useState("");
+	// const [password, setPassword] = useState("");
+	// const [passwordConfirm, setPasswordConfirm] = useState("");
 	const [authCode, setAuthCode] = useState("");
-	const [gender, setGender] = useState("");
-	const [nickname, setNickname] = useState("");
-	const [ageGroup, setAgeGroup] = useState<number>();
+	// const [gender, setGender] = useState("");
+	// const [nickname, setNickname] = useState("");
+	// const [ageGroup, setAgeGroup] = useState<number>();
 
-	function handleEmail(e: ChangeEvent<HTMLInputElement>) {
-		setEmail(e.target.value);
-	}
-	function handlePassword(e: ChangeEvent<HTMLInputElement>) {
-		setPassword(e.target.value);
-	}
-	function handlePasswordConfirm(e: ChangeEvent<HTMLInputElement>) {
-		setPasswordConfirm(e.target.value);
-	}
+	// function handleEmail(e: ChangeEvent<HTMLInputElement>) {
+	// 	setEmail(e.target.value);
+	// }
+	// function handlePassword(e: ChangeEvent<HTMLInputElement>) {
+	// 	setPassword(e.target.value);
+	// }
+	// function handlePasswordConfirm(e: ChangeEvent<HTMLInputElement>) {
+	// 	setPasswordConfirm(e.target.value);
+	// }
 	function handleAuthCode(e: ChangeEvent<HTMLInputElement>) {
 		setAuthCode(e.target.value);
 	}
-	function handleGender(e: ChangeEvent<HTMLInputElement>) {
-		setGender(e.target.value);
-	}
-	function handleNickname(e: ChangeEvent<HTMLInputElement>) {
-		setNickname(e.target.value);
-	}
-	function handleAgeGroup(e: ChangeEvent<HTMLSelectElement>) {
-		const value = parseInt(e.target.value);
-		setAgeGroup(value);
-	}
-	// const handleRegisterSubmit = async (e: MouseEvent<HTMLButtonElement>) => {
-	// 	e.preventDefault();
-
-	// 	// const { email, password, nickname, gender, ageGroup, goal } = data;
-	// 	// const gender = "F";
-	// 	const goal = "balance";
-	// 	// const ageGroup = 1;
-
-	// 	const data = await authApi.authRegisterRequest("/api/users", {
-	// 		email,
-	// 		password,
-	// 		gender,
-	// 		age_group: ageGroup,
-	// 		nickname,
-	// 		goal,
-	// 	});
-	// 	console.log(data);
-	// };
+	// function handleGender(e: ChangeEvent<HTMLInputElement>) {
+	// 	setGender(e.target.value);
+	// }
+	// function handleNickname(e: ChangeEvent<HTMLInputElement>) {
+	// 	setNickname(e.target.value);
+	// }
+	// function handleAgeGroup(e: ChangeEvent<HTMLSelectElement>) {
+	// 	const value = parseInt(e.target.value);
+	// 	setAgeGroup(value);
+	// }
 
 	return (
 		<div className="grid justify-items-center mt-20">
@@ -109,11 +82,11 @@ const SignUp = () => {
 							type="text"
 							name="email"
 							id="email"
-							value={email}
+							value={form.email}
 							placeholder="이메일"
 							isError={false}
 							errorMessage="message test"
-							onChange={handleEmail}
+							onChange={(e) => handleChange("email", e)}
 							label="이메일"
 							htmlFor="email"
 						/>
@@ -140,7 +113,7 @@ const SignUp = () => {
 						type="password"
 						name="password"
 						id="password"
-						value={password}
+						value={form.password}
 						placeholder="비밀번호"
 						isError={false}
 						errorMessage="message test"
@@ -204,8 +177,16 @@ const SignUp = () => {
 				</div>
 				<BasicButton
 					type="button"
-					onClick={(e) => {
-						navigate("/auth/sign-up/goal");
+					onClick={() => {
+						navigate("/auth/sign-up/goal", {
+							state: {
+								email,
+								password,
+								gender,
+								ageGroup,
+								nickname,
+							},
+						});
 					}}
 					width={true}
 					style="primary"
