@@ -1,5 +1,8 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { isLoggedInState } from "@/recoil/state";
+import { useRecoilState } from "recoil";
+import { authApi } from "@/api/auth";
 import Logo from "@/assets/logo.svg";
 
 interface MenuObjProps {
@@ -8,10 +11,18 @@ interface MenuObjProps {
 }
 
 const Header = () => {
-	const [isLoggedIn, setIsLoggedIn] = useState(true);
+	const [isLoggedIn, setIsLoggedInState] = useRecoilState(isLoggedInState);
+
+	useEffect(() => {
+		const isLoggedInValid = localStorage.getItem("accessToken") ? true : false;
+		setIsLoggedInState(isLoggedInValid);
+	}, [isLoggedIn]);
 
 	const handleLogout = () => {
-		setIsLoggedIn(false);
+		authApi.authLogoutRequest("/api/auth/logout");
+		localStorage.removeItem("accessToken");
+		localStorage.removeItem("refreshToken");
+		setIsLoggedInState(false);
 	};
 
 	const menuObj: MenuObjProps[] = [

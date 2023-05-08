@@ -1,4 +1,4 @@
-import { ChangeEvent, useRef, useState } from "react";
+import { ChangeEvent, useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import BasicButton from "@/components/atoms/buttons/BasicButton";
 import GoalText from "@/components/organisms/GoalText";
@@ -6,9 +6,22 @@ import Thumb from "@/components/atoms/thumbnail/Thumbnail";
 import Modal from "@/components/organisms/Modal";
 import InputWithLabel from "@/components/organisms/InputWithLabel";
 import TempImage from "@/assets/temp_image.jpg"; // TODO : 실제 데이터 연동 후 지우기
+import { userApi } from "@/api/user";
+import { axiosHandler } from "@/utils/axios.utils";
 
 const MyPage = () => {
 	const navigate = useNavigate();
+
+	// TODO : 새로고침 하면 headers에 설정해둔 authorization이 날라감
+	useEffect(() => {
+		const accessToken = localStorage.getItem("accessToken");
+		if (accessToken) {
+			axiosHandler.defaults.headers.common["authorization-"] = `Bearer ${accessToken}`;
+			userApi.userInfoRequest("/api/users").then((res) => {
+				console.log("토큰으로 받아온 정보", res);
+			});
+		}
+	}, []);
 
 	// TODO : 유저 데이터 받아온 후 로직 구현
 	// 유저 정보
