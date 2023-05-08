@@ -7,6 +7,7 @@ import InputLabel from "@/components/atoms/inputs/InputLabel";
 import InputWithLabel from "@/components/organisms/InputWithLabel";
 import SelectWithLabel from "@/components/organisms/SelectWithLabel";
 import RadioButton from "@/components/atoms/buttons/RadioButton";
+import { authApi } from "@/api/auth";
 
 const SignUp = () => {
 	const navigate = useNavigate();
@@ -36,6 +37,21 @@ const SignUp = () => {
 	function handleAgeGroup(e: ChangeEvent<HTMLSelectElement>) {
 		setAgeGroup(e.target.value);
 	}
+	const handleRegisterSubmit = async (event: React.MouseEvent<HTMLButtonElement>) => {
+		event.preventDefault();
+
+		// const { email, password, nickname, gender, ageGroup, goal } = data;
+
+		const data = await authApi.authRegisterRequest("/api/auth", {
+			email,
+			password,
+			// gender,
+			// ageGroup,
+			// nickname,
+			// goal,
+		});
+		console.log(data);
+	};
 
 	return (
 		<div className="grid justify-items-center mt-20">
