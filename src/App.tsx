@@ -9,17 +9,6 @@ const App = () => {
 	return (
 		<>
 			<Helmet>
-				<link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
-				<meta name="viewport" content="width=device-width, initial-scale=1" />
-				<meta name="theme-color" content="#000000" />
-				<link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
-
-				<link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
-				<link
-					rel="stylesheet"
-					as="style"
-					href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.6/dist/web/static/pretendard-dynamic-subset.css"
-				/>
 				<title>app title</title>
 			</Helmet>
 			<GlobalStyle />
