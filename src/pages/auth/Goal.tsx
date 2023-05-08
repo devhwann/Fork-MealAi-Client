@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { MouseEvent, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import GoalButtons from "@/components/organisms/GoalButtons";
 import BasicButton from "@/components/atoms/buttons/BasicButton";
+import { authApi } from "@/api/auth";
 
 const Goal = () => {
 	const navigate = useNavigate();
@@ -11,6 +12,26 @@ const Goal = () => {
 	function handleGoal(goal: string) {
 		setGoal(goal);
 	}
+
+	// 회원가입
+	// const handleRegisterSubmit = async (e: MouseEvent<HTMLButtonElement>) => {
+	// 	e.preventDefault();
+
+	// 	// const { email, password, nickname, gender, ageGroup, goal } = data;
+	// 	// const gender = "F";
+	// 	const goal = "balance";
+	// 	// const ageGroup = 1;
+
+	// 	const data = await authApi.authRegisterRequest("/api/users", {
+	// 		email,
+	// 		password,
+	// 		gender,
+	// 		age_group: ageGroup,
+	// 		nickname,
+	// 		goal,
+	// 	});
+	// 	console.log(data);
+	// };
 
 	console.log(goal);
 	return (

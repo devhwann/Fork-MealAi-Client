@@ -1,4 +1,4 @@
-import { ReactNode } from "react";
+import { MouseEventHandler, ReactNode } from "react";
 import getStyle from "@/utils/getStyle";
 
 export interface TinyButtonProps {
@@ -6,7 +6,8 @@ export interface TinyButtonProps {
 	name?: string;
 	type?: "button" | "reset" | "submit";
 	children: ReactNode;
-	onClick: () => void;
+	onClick: (e: React.MouseEvent<HTMLButtonElement>) => void;
+	// onClick: MouseEventHandler<HTMLButtonElement>;
 	style: "primary" | "bg" | "deactivated" | "gray";
 	deactivated?: boolean;
 }
