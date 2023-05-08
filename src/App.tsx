@@ -2,7 +2,7 @@ import AppRouter from "@/router/AppRouter";
 import { GlobalStyle } from "@/styles/GlobalStyles";
 import { ErrorBoundary } from "react-error-boundary";
 import Fallback from "@/components/errorrBoundary/CommonErrorBoundary";
-import { Helmet } from "react-helmet";
+import { Helmet } from "react-helmet-async";
 import MetaTag from "./utils/getMetaTag";
 
 const App = () => {
@@ -11,7 +11,6 @@ const App = () => {
 			<Helmet>
 				<title>app title</title>
 			</Helmet>
-			<h1>Hello World</h1>
 			<GlobalStyle />
 			<ErrorBoundary FallbackComponent={Fallback}>
 				<AppRouter />
