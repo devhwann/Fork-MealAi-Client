@@ -2,7 +2,6 @@ import AppRouter from "@/router/AppRouter";
 import { GlobalStyle } from "@/styles/GlobalStyles";
 import { ErrorBoundary } from "react-error-boundary";
 import Fallback from "@/components/errorrBoundary/CommonErrorBoundary";
-import { Helmet } from "react-helmet-async";
 import MetaTag from "./utils/getMetaTag";
 
 const App = () => {
