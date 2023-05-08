@@ -1,5 +1,5 @@
 import React from "react";
-import { Helmet } from "react-helmet-async";
+import { Helmet, HelmetProvider } from "react-helmet-async";
 
 interface TagContentProps {
 	locale: string;
@@ -11,6 +11,7 @@ interface TagContentProps {
 
 const MetaTag = (props: TagContentProps) => {
 	return (
+		// <HelmetProvider>
 		<Helmet>
 			<title>{props.title}</title>
 
@@ -31,6 +32,7 @@ const MetaTag = (props: TagContentProps) => {
 
 			<link rel="canonical" href={props.url} />
 		</Helmet>
+		// </HelmetProvider>
 	);
 };
 
