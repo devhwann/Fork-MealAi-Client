@@ -5,4 +5,8 @@ import { hydrate, render } from "react-dom";
 import { HelmetProvider } from "react-helmet-async";
 
 const root = ReactDOM.createRoot(document.getElementById("root") as HTMLElement);
-root.render(<App />);
+root.render(
+	<HelmetProvider>
+		<App />
+	</HelmetProvider>
+);
