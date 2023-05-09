@@ -42,7 +42,6 @@ export const authApi = Object.freeze({
 	async authCheckEmailRequest(endPoint: string, email: string) {
 		try {
 			const response = await axiosHandler.post(endPoint, { email });
-			console.log(response);
 			return response;
 		} catch (err: any) {
 			return err;
