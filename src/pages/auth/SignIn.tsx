@@ -52,12 +52,12 @@ const SignIn = () => {
 			return;
 		}
 
-		const data = await authApi.authLoginRequest("/api/auth/login", {
-			email,
-			password,
-		});
-
+		let data;
 		try {
+			data = await authApi.authLoginRequest("/api/auth/login", {
+				email,
+				password,
+			});
 			const accessToken: string = data.data.access_token;
 			const refreshToken: string = data.data.refresh_token;
 
@@ -68,6 +68,7 @@ const SignIn = () => {
 			setIsLoggedInState(true);
 			navigate("/");
 		} catch (err) {
+			console.log("로그인 에러는 catch", data);
 			alert(data.response.data.message);
 		}
 	};

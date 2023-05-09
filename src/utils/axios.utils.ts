@@ -16,12 +16,12 @@ const axiosHandler = axios.create(axiosOptions);
 axiosHandler.interceptors.request.use(
 	function (config) {
 		// 요청을 보내기 전에 수행할 일
-		config.headers["autorization-"] = `Bearer ${localStorage.getItem("accessToken")}`;
+		config.headers["authorization-"] = `Bearer ${localStorage.getItem("accessToken")}`;
 		return config;
 	},
 	function (error) {
 		// 오류 요청을 보내기전 수행할 일
-
+		console.log("토큰만료?");
 		return Promise.reject(error);
 	}
 );
@@ -31,12 +31,15 @@ axiosHandler.interceptors.response.use(
 		return res;
 	},
 	function (error) {
-		if (error.response.status >= 400 && error.response.status < 500) {
-			// return Promise.reject(error);
-			return error;
-		} else if (error.reponse.status >= 500) {
-			return AxiosError;
-		}
+		return Promise.reject(error);
+
+		// TODO : 리프레시 토큰 처리
+		// if (error.response.status >= 400 && error.response.status < 500) {
+		// 	// return Promise.reject(error);
+		// 	// return error;
+		// } else if (error.reponse.status >= 500) {
+		// 	return AxiosError;
+		// }
 	}
 );
 

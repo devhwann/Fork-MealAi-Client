@@ -1,6 +1,3 @@
-import { ChangeEvent } from "react";
-import SearchInput from "../atoms/inputs/SearchInput";
-
 interface SearchResultProps {
 	data?: string[];
 	onClick?: () => void;
@@ -9,17 +6,6 @@ interface SearchResultProps {
 // TODO : 검색 기능 구현
 // ^ type 1. (수정)항목 클릭 > 수정 모달의 인풋에 선택한 음식이 담김 > 수정버튼 눌러 최종 데이터 반영
 // ^ type 2. (추가) 항목 클릭 > 모달 꺼지며 선택한 음식이 데이터에 바로 1인분 중량으로 반영
-
-// 클릭하면 리스트에 추가되는거
-// function handleCheck(value: string) {
-//   const old = [...checkedCategoryNames];
-//   if (!old.includes(value)) {
-//     old.push(value);
-//   } else {
-//     old.splice(old.indexOf(value), 1);
-//   }
-//   setCheckedCategoryNames(old);
-// }
 
 const SearchResult = ({ data, onClick }: SearchResultProps) => {
 	return (

@@ -1,5 +1,3 @@
-import { RefObject } from "react";
-
 export interface AuthFormType {
 	email: string;
 	password: string;

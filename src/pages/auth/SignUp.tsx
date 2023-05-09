@@ -187,14 +187,6 @@ const SignUp = () => {
 				>
 					다음 단계
 				</BasicButton>
-
-				<button
-					onClick={(e) => {
-						handleRegisterSubmit(e);
-					}}
-				>
-					test button
-				</button>
 			</div>
 		</div>
 	);
