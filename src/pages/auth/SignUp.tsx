@@ -17,7 +17,7 @@ const SignUp = () => {
 	const [passwordConfirm, setPasswordConfirm] = useState("");
 	const [authCode, setAuthCode] = useState("");
 	const [nickname, setNickname] = useState("");
-	const [ageGroup, setAgeGroup] = useState("");
+	const [ageGroup, setAgeGroup] = useState<number>();
 
 	function handleEmailChange(e: ChangeEvent<HTMLInputElement>) {
 		setEmail(e.target.value);
@@ -35,23 +35,28 @@ const SignUp = () => {
 		setNickname(e.target.value);
 	}
 	function handleAgeGroup(e: ChangeEvent<HTMLSelectElement>) {
-		setAgeGroup(e.target.value);
+		const value = parseInt(e.target.value);
+		setAgeGroup(value);
 	}
 	const handleRegisterSubmit = async (event: React.MouseEvent<HTMLButtonElement>) => {
 		event.preventDefault();
 
 		// const { email, password, nickname, gender, ageGroup, goal } = data;
+		const gender = "M";
+		const goal = "balance";
 
-		const data = await authApi.authRegisterRequest("/api/auth", {
+		const data = await authApi.authRegisterRequest("/api/users", {
 			email,
 			password,
-			// gender,
-			// ageGroup,
-			// nickname,
-			// goal,
+			gender,
+			age_group: ageGroup,
+			nickname,
+			goal,
 		});
 		console.log(data);
 	};
+
+	// console.log(email, password, gender, ageGroup, nickname, goal);
 
 	return (
 		<div className="grid justify-items-center mt-20">
@@ -182,6 +187,14 @@ const SignUp = () => {
 				>
 					다음 단계
 				</BasicButton>
+
+				<button
+					onClick={(e) => {
+						handleRegisterSubmit(e);
+					}}
+				>
+					test button
+				</button>
 			</div>
 		</div>
 	);

@@ -1,10 +1,12 @@
+import { RefObject } from "react";
+
 export interface AuthFormType {
 	email: string;
 	password: string;
-	// gender: string;
-	// ageGroup: number;
-	// nickname: string;
-	// goal: string;
+	gender: string;
+	age_group?: number;
+	nickname: string;
+	goal: string;
 	// confirmPassword?: string;
 }
 
@@ -17,6 +19,10 @@ export interface CheckEmailParams {
 	authenticationNumber: number;
 }
 
+export interface RefreshParams {
+	refresh_token: string;
+}
+
 export interface ResetPasswordParams {
-	// string
+	email: string;
 }
