@@ -1,28 +1,93 @@
-import { ChangeEvent, useState } from "react";
-import { Link } from "react-router-dom";
+import { ChangeEvent, MouseEvent, useEffect, useRef, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { axios } from "@/utils/axios.utils";
+import { useRecoilState } from "recoil";
+import { isLoggedInState, isPasswordToastState } from "@/recoil/state";
+import { authApi } from "@/api/auth";
+
 import InputLabel from "@/components/atoms/inputs/InputLabel";
 import Input from "@/components/atoms/inputs/Input";
 import BasicButton from "@/components/atoms/buttons/BasicButton";
 import SocialButtons from "@/components/atoms/buttons/SocialButton";
+import Toast from "@/components/atoms/toast/Toast";
 
 const SignIn = () => {
+	const navigate = useNavigate();
+
+	const [isLoggedIn, setIsLoggedInState] = useRecoilState(isLoggedInState);
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
+	const emailInputRef = useRef<HTMLInputElement>(null);
+	const passwordInputRef = useRef<HTMLInputElement>(null);
 
+	// 비밀번호 재발급을 통해 페이지 진입한 경우 뜨는 toast 알림
+	const [isPasswordToast, setIsPasswordToast] = useRecoilState(isPasswordToastState);
+
+	useEffect(() => {
+		if (isPasswordToast) {
+			setTimeout(() => {
+				setIsPasswordToast(false);
+			}, 5000);
+		}
+	}, []);
+
+	// input value 추적
 	function handleEmailChange(e: ChangeEvent<HTMLInputElement>) {
-		setEmail(e.target.value);
+		if (emailInputRef.current) {
+			setEmail(emailInputRef.current.value);
+		}
 	}
 	function handlePasswordChange(e: ChangeEvent<HTMLInputElement>) {
-		setPassword(e.target.value);
+		if (passwordInputRef.current) {
+			setPassword(passwordInputRef.current.value);
+		}
 	}
+
+	// 로그인 함수
+	const handleLoginRequest = async (event: MouseEvent<HTMLButtonElement>) => {
+		event.preventDefault();
+
+		if (!email || !password) {
+			alert("이메일과 비밀번호를 입력해주세요.");
+			return;
+		}
+
+		const data = await authApi.authLoginRequest("/api/auth/login", {
+			email,
+			password,
+		});
+
+		try {
+			const accessToken: string = data.data.access_token;
+			const refreshToken: string = data.data.refresh_token;
+
+			localStorage.setItem("accessToken", accessToken);
+			localStorage.setItem("refreshToken", refreshToken);
+
+			axios.defaults.headers.common["authorization-"] = `Bearer ${accessToken}`;
+			setIsLoggedInState(true);
+			navigate("/");
+		} catch (err) {
+			alert(data.response.data.message);
+		}
+	};
 
 	return (
 		<div className="grid justify-items-center mt-20">
+			{isPasswordToast && <Toast />}
 			<h1 className="mb-14">로그인</h1>
 			<div className="w-96">
 				<div className="mb-4">
 					<InputLabel label="이메일" htmlFor="email" />
-					<Input type="text" name="email" id="email" placeholder="이메일" value={email} onChange={handleEmailChange} />
+					<Input
+						type="text"
+						name="email"
+						id="email"
+						placeholder="이메일"
+						value={email}
+						onChange={handleEmailChange}
+						ref={emailInputRef}
+					/>
 				</div>
 				<div className="mb-6">
 					<InputLabel label="비밀번호" htmlFor="password" />
@@ -33,10 +98,18 @@ const SignIn = () => {
 						placeholder="비밀번호"
 						value={password}
 						onChange={handlePasswordChange}
+						ref={passwordInputRef}
 					/>
 				</div>
 				<div className="mb-9">
-					<BasicButton type="submit" onClick={() => {}} width={true} style="primary">
+					<BasicButton
+						type="submit"
+						onClick={(e) => {
+							handleLoginRequest(e);
+						}}
+						width={true}
+						style="primary"
+					>
 						로그인
 					</BasicButton>
 				</div>

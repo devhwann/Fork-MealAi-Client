@@ -18,7 +18,6 @@ import GoalButtons from "@/components/organisms/GoalButtons";
 import Modal from "@/components/organisms/Modal";
 import MyGoalText from "@/components/organisms/MyGoalText";
 import SearchResult from "@/components/organisms/SearchResult";
-import SearchBadge from "@/components/atoms/badges/SearchBadge";
 import Thumb from "@/components/atoms/thumbnail/Thumbnail";
 import ReportInfoCards from "@/components/atoms/cards/ReportInfoCards";
 import SocialButtons from "@/components/atoms/buttons/SocialButton";
@@ -157,7 +156,6 @@ const Test = () => {
 			<SearchInput name="search" id="search" value="" onClick={() => {}} />
 			<br />
 			<SearchResult data={temp} onClick={() => {}} />
-			<SearchBadge />
 			<br />
 			<br />
 			<p>validation input</p>

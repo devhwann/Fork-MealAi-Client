@@ -28,9 +28,9 @@ const Goal = () => {
 			nickname: state.form.nickname,
 			goal,
 		};
-		console.log("form", form);
+		console.log("SignUp에서 넘어온 form state :", form);
 		const data = await authApi.authRegisterRequest("/api/users", form);
-		console.log("data", data);
+		console.log("회원가입 완료!", data);
 		navigate("/");
 	};
 

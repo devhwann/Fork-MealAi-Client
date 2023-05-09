@@ -1,8 +1,8 @@
 import AppRouter from "@/router/AppRouter";
-import { GlobalStyle } from "@/styles/GlobalStyles";
 import { ErrorBoundary } from "react-error-boundary";
 import Fallback from "@/components/errorrBoundary/CommonErrorBoundary";
 import MetaTag from "./utils/getMetaTag";
+import { GlobalStyle } from "@/styles/GlobalStyles";
 
 const App = () => {
 	return (

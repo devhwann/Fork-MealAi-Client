@@ -1,36 +1,74 @@
-import { ChangeEvent, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { ChangeEvent, MouseEvent, useRef, useState } from "react";
+import { useRecoilState } from "recoil";
+import { isPasswordToastState } from "@/recoil/state";
+import { authApi } from "@/api/auth";
+
 import BasicButton from "@/components/atoms/buttons/BasicButton";
-import InputWithLabel from "@/components/organisms/InputWithLabel";
+import InputLabel from "@/components/atoms/inputs/InputLabel";
+import Input from "@/components/atoms/inputs/Input";
 
 const FindPassword = () => {
+	const navigate = useNavigate();
+
 	const [email, setEmail] = useState("");
+	const emailInputRef = useRef<HTMLInputElement>(null);
+	const [isPasswordToast, setIsPasswordToast] = useRecoilState(isPasswordToastState);
 
 	function handleEmailChange(e: ChangeEvent<HTMLInputElement>) {
-		setEmail(e.target.value);
+		if (emailInputRef.current) {
+			setEmail(emailInputRef.current.value);
+		}
 	}
+
+	const handleFindPasswordRequest = async (event: MouseEvent<HTMLButtonElement>) => {
+		event.preventDefault();
+
+		if (!email) {
+			alert("이메일을 입력해주세요.");
+			return;
+		}
+
+		const data = await authApi.authFindRequest("/api/auth/reset_password", { email });
+
+		if (data.status === 200) {
+			setIsPasswordToast(true);
+			navigate("/auth/sign-in");
+		} else {
+			alert(data.response.data.message);
+		}
+	};
 
 	return (
 		<div className="grid justify-items-center mt-20">
 			<h1 className="mb-8">비밀번호 찾기</h1>
-			<p>가입시 사용한 이메일 주소를 입력해주세요.</p>
-			<p>소셜 회원은 비밀번호 재발급을 할 수 없습니다.</p>
+			<p className="text-base text-gray-3 text-center">
+				가입시 사용한 이메일 주소를 입력해주세요.
+				<br />
+				소셜 회원은 비밀번호 재발급을 할 수 없습니다.
+			</p>
 			<div className="w-96 mt-14">
 				<div className="mb-6">
-					<InputWithLabel
+					<InputLabel label="이메일" htmlFor="email" />
+					<Input
 						type="text"
 						name="email"
 						id="email"
-						value={email}
 						placeholder="이메일"
-						isError={false}
-						errorMessage="message test"
+						value={email}
 						onChange={handleEmailChange}
-						label="이메일"
-						htmlFor="email"
+						ref={emailInputRef}
 					/>
 				</div>
 				<div>
-					<BasicButton type="submit" onClick={() => {}} width={true} style="primary">
+					<BasicButton
+						type="submit"
+						onClick={(e) => {
+							handleFindPasswordRequest(e);
+						}}
+						width={true}
+						style="primary"
+					>
 						비밀번호 재발급
 					</BasicButton>
 				</div>

@@ -80,6 +80,8 @@ const SignUp = () => {
 	// 	setAgeGroup(value);
 	// }
 
+	// console.log(email, password, gender, ageGroup, nickname, goal);
+
 	return (
 		<div className="grid justify-items-center mt-20">
 			<h1 className="mb-14">회원가입</h1>
