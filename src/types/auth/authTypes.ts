@@ -16,7 +16,7 @@ export interface LoginParams {
 }
 
 export interface CheckEmailParams {
-	authenticationNumber: number;
+	email: string;
 }
 
 export interface RefreshParams {

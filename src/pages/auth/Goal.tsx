@@ -1,9 +1,9 @@
 import { MouseEvent, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import GoalButtons from "@/components/organisms/GoalButtons";
-import BasicButton from "@/components/atoms/buttons/BasicButton";
 import { authApi } from "@/api/auth";
 import { AuthFormType } from "@/types/auth/authTypes";
+import GoalButtons from "@/components/organisms/GoalButtons";
+import BasicButton from "@/components/atoms/buttons/BasicButton";
 
 const Goal = () => {
 	const navigate = useNavigate();
