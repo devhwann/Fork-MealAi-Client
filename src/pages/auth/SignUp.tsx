@@ -1,5 +1,6 @@
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, MouseEvent, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { authApi } from "@/api/auth";
 import BasicButton from "@/components/atoms/buttons/BasicButton";
 import SocialButtons from "@/components/atoms/buttons/SocialButton";
 import Input from "@/components/atoms/inputs/Input";
@@ -7,56 +8,154 @@ import InputLabel from "@/components/atoms/inputs/InputLabel";
 import InputWithLabel from "@/components/organisms/InputWithLabel";
 import SelectWithLabel from "@/components/organisms/SelectWithLabel";
 import RadioButton from "@/components/atoms/buttons/RadioButton";
-import { authApi } from "@/api/auth";
+import { validateConfirmPassword, validateEmail, validatePassword } from "@/utils/validation";
 
 const SignUp = () => {
 	const navigate = useNavigate();
 
-	const [email, setEmail] = useState("");
-	const [password, setPassword] = useState("");
-	const [passwordConfirm, setPasswordConfirm] = useState("");
-	const [authCode, setAuthCode] = useState("");
-	const [nickname, setNickname] = useState("");
-	const [ageGroup, setAgeGroup] = useState<number>();
+	// 사용자로부터 입력받은 정보 저장
+	const [form, setForm] = useState<{
+		email: string;
+		password: string;
+		confirmPassword: string;
+		gender: string;
+		nickname: string;
+		ageGroup: number | undefined;
+	}>({
+		email: "",
+		password: "",
+		confirmPassword: "",
+		gender: "",
+		nickname: "",
+		ageGroup: undefined,
+	});
 
-	function handleEmailChange(e: ChangeEvent<HTMLInputElement>) {
-		setEmail(e.target.value);
+	function handleChange(e: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLSelectElement>) {
+		const { name, value } = e.target;
+		// 입력값의 이름이 ageGroup인 경우에 value를 숫자형으로 변환함.
+		if (name === "ageGroup") {
+			setForm((current) => {
+				return {
+					...current,
+					[name]: parseInt(value),
+				};
+			});
+		} else {
+			setForm((current) => {
+				return {
+					...current,
+					[name]: value,
+				};
+			});
+		}
 	}
-	function handlePasswordChange(e: ChangeEvent<HTMLInputElement>) {
-		setPassword(e.target.value);
-	}
-	function handlePasswordConfirmChange(e: ChangeEvent<HTMLInputElement>) {
-		setPasswordConfirm(e.target.value);
-	}
-	function handleAuthCode(e: ChangeEvent<HTMLInputElement>) {
-		setAuthCode(e.target.value);
-	}
-	function handleNickname(e: ChangeEvent<HTMLInputElement>) {
-		setNickname(e.target.value);
-	}
-	function handleAgeGroup(e: ChangeEvent<HTMLSelectElement>) {
-		const value = parseInt(e.target.value);
-		setAgeGroup(value);
-	}
-	const handleRegisterSubmit = async (event: React.MouseEvent<HTMLButtonElement>) => {
-		event.preventDefault();
 
-		// const { email, password, nickname, gender, ageGroup, goal } = data;
-		const gender = "M";
-		const goal = "balance";
+	// 이메일 검증
+	const [emailErrorMessage, setEmailErrorMessage] = useState("");
+	const [isEmailError, setIsEmailError] = useState(false);
 
-		const data = await authApi.authRegisterRequest("/api/users", {
-			email,
-			password,
-			gender,
-			age_group: ageGroup,
-			nickname,
-			goal,
-		});
-		console.log(data);
+	function handleEmailError() {
+		const isValidate = validateEmail(form.email);
+		if (isValidate) {
+			setEmailErrorMessage("인증 버튼을 클릭해주세요.");
+			setIsEmailError(false);
+		} else {
+			setEmailErrorMessage("올바른 이메일 형식을 입력해주세요.");
+			setIsEmailError(true);
+		}
+	}
+
+	// 이메일 인증코드
+	const [authCode, setAuthCode] = useState<number>(); // 백엔드 서버에서 전송받는 인증코드
+	const [inputAuthCode, setInputAuthCode] = useState(""); // 사용자가 입력하는 인증코드
+	const [validateAuthCode, SetValidateAuthCode] = useState(true); // 인증번호 검증
+
+	// 사용자가 입력한 인증코드 state값으로 저장(string to integer)
+	function handleInputAuthCode(e: ChangeEvent<HTMLInputElement>) {
+		setInputAuthCode(e.target.value.replace(/\D/g, "")); // 입력된 값이 숫자가 아니면 제거하도록 정규표현식 적용
+	}
+
+	// 이메일 인증 및 중복체크 api
+	const handleCheckEmail = async (e: MouseEvent<HTMLButtonElement>) => {
+		e.preventDefault();
+
+		if (!form.email) {
+			alert("이메일을 입력해주세요.");
+			return;
+		}
+
+		const data = await authApi.authCheckEmailRequest("/api/auth/check_email", form.email);
+
+		if (data.status === 200) {
+			setAuthCode(data.data.authentication_number);
+		} else {
+			alert(data.response.data.message);
+		}
 	};
 
-	// console.log(email, password, gender, ageGroup, nickname, goal);
+	function handleCheckCode(e: MouseEvent<HTMLButtonElement>) {
+		e.preventDefault();
+
+		if (authCode === parseInt(inputAuthCode)) {
+			alert("이메일이 확인 되었습니다.");
+			SetValidateAuthCode(false);
+		} else {
+			alert("올바르지 않은 인증코드입니다. 다시 입력해주세요.");
+			SetValidateAuthCode(true);
+		}
+	}
+
+	// 비밀번호 검증
+	const [passwordErrorMessage, setPasswordErrorMessage] = useState("");
+	const [isPasswordError, setIsPasswordError] = useState(false);
+
+	function handlePasswordError() {
+		const isValidate = validatePassword(form.password);
+		if (isValidate) {
+			setPasswordErrorMessage("올바른 비밀번호입니다.");
+			setIsPasswordError(false);
+		} else {
+			setPasswordErrorMessage("6자리 이상 입력해주세요");
+			setIsPasswordError(true);
+		}
+	}
+
+	// 비밀번호 확인 검증
+	const [confirmPasswordErrorMessage, setConfirmPasswordErrorMessage] = useState("");
+	const [isConfirmPasswordError, setIsConfirmPasswordError] = useState(false);
+
+	function handleConfirmPasswordError() {
+		const isValidate = validateConfirmPassword(form.password, form.confirmPassword);
+		if (isValidate) {
+			setConfirmPasswordErrorMessage("비밀번호가 일치합니다.");
+			setIsConfirmPasswordError(false);
+		} else {
+			setConfirmPasswordErrorMessage("비밀번호가 일치하지 않습니다.");
+			setIsConfirmPasswordError(true);
+		}
+	}
+
+	// 상태 업데이트함수 비동기적 동작 해결
+	useEffect(() => {
+		if (form.email !== "") {
+			handleEmailError();
+		}
+		if (form.password !== "") {
+			handlePasswordError();
+		}
+		if (form.confirmPassword !== "") {
+			handleConfirmPasswordError();
+		}
+	}, [form.email, form.password, form.confirmPassword]);
+
+	// 모든 값이 올바르게 입력되어야 버튼 활성화 되도록 제어
+	// function handleButton() {
+	// 	if (validateAuthCode) {
+	// 		return true;
+	// 	} else {
+	// 		return false;
+	// 	}
+	// }
 
 	return (
 		<div className="grid justify-items-center mt-20">
@@ -84,42 +183,53 @@ const SignUp = () => {
 							type="text"
 							name="email"
 							id="email"
-							value={email}
+							value={form.email}
 							placeholder="이메일"
-							isError={false}
-							errorMessage="message test"
-							onChange={handleEmailChange}
+							isError={isEmailError}
+							errorMessage={emailErrorMessage}
+							onChange={(e) => {
+								handleChange(e);
+							}}
 							label="이메일"
 							htmlFor="email"
 						/>
 					</div>
 					<div className="pt-3">
-						<BasicButton type="submit" onClick={() => {}} width={false} style="bg">
+						<BasicButton type="submit" onClick={handleCheckEmail} width={false} style="bg">
 							인증
 						</BasicButton>
 					</div>
 				</div>
-				<div className="mb-4">
-					<InputLabel label="인증번호" htmlFor="authCode" />
-					<Input
-						type="text"
-						name="authCode"
-						id="authCode"
-						placeholder="인증번호"
-						value={authCode}
-						onChange={handleAuthCode}
-					/>
+				<div className="mb-4 flex items-center justify-between gap-2">
+					<div className="grow">
+						<InputLabel label="인증번호" htmlFor="authCode" />
+						<Input
+							type="text"
+							name="inputAuthCode"
+							id="inputAuthCode"
+							placeholder="인증번호"
+							value={inputAuthCode}
+							onChange={handleInputAuthCode}
+						/>
+					</div>
+					<div className="pt-8">
+						<BasicButton type="submit" onClick={handleCheckCode} width={false} style="bg">
+							확인
+						</BasicButton>
+					</div>
 				</div>
 				<div className="mb-4">
 					<InputWithLabel
 						type="password"
 						name="password"
 						id="password"
-						value={password}
+						value={form.password}
 						placeholder="비밀번호"
-						isError={false}
-						errorMessage="message test"
-						onChange={handlePasswordChange}
+						isError={isPasswordError}
+						errorMessage={passwordErrorMessage}
+						onChange={(e) => {
+							handleChange(e);
+						}}
 						label="비밀번호"
 						htmlFor="password"
 					/>
@@ -127,15 +237,17 @@ const SignUp = () => {
 				<div className="mb-4">
 					<InputWithLabel
 						type="password"
-						name="passwordConfirm"
-						id="passwordConfirm"
-						value={passwordConfirm}
+						name="confirmPassword"
+						id="confirmPassword"
+						value={form.confirmPassword || ""}
 						placeholder="비밀번호 확인"
-						isError={false}
-						errorMessage="message test"
-						onChange={handlePasswordConfirmChange}
+						isError={isConfirmPasswordError}
+						errorMessage={confirmPasswordErrorMessage}
+						onChange={(e) => {
+							handleChange(e);
+						}}
 						label="비밀번호 확인"
-						htmlFor="passwordConfirm"
+						htmlFor="confirmPassword"
 					/>
 				</div>
 				<div className="mb-4">
@@ -145,8 +257,8 @@ const SignUp = () => {
 						name="nickname"
 						id="nickName"
 						placeholder="닉네임"
-						value={nickname}
-						onChange={handleNickname}
+						value={form.nickname}
+						onChange={handleChange}
 					/>
 				</div>
 				<div className="mb-4">
@@ -156,34 +268,37 @@ const SignUp = () => {
 						defaultValue="연령대 선택"
 						label="연령대"
 						htmlFor="ageGroup"
-						onChange={handleAgeGroup}
+						onChange={handleChange}
+						value={form.ageGroup}
 					>
 						<option disabled>연령대 선택</option>
-						<option value="1">10대</option>
-						<option value="2">20대</option>
-						<option value="3">30대</option>
-						<option value="4">40대</option>
-						<option value="5">50대</option>
-						<option value="6">60대</option>
-						<option value="7">70대</option>
-						<option value="8">80대</option>
-						<option value="9">90대</option>
+						{Array.from({ length: 9 }, (_, i) => ({
+							value: i + 1,
+							label: `${(i + 1) * 10}대`,
+						})).map(({ label, value }) => (
+							<option key={label} value={value}>
+								{label}
+							</option>
+						))}
 					</SelectWithLabel>
 				</div>
 				<div className="mb-9">
 					<InputLabel label="성별" htmlFor="gender" />
 					<div className="flex gap-8">
-						<RadioButton type="radio" id="gender-m" name="gender" gender="M" onChange={() => {}} />
-						<RadioButton type="radio" id="gender-f" name="gender" gender="F" onChange={() => {}} />
+						<RadioButton type="radio" id="gender-m" name="gender" gender="M" onChange={handleChange} />
+						<RadioButton type="radio" id="gender-f" name="gender" gender="F" onChange={handleChange} />
 					</div>
 				</div>
 				<BasicButton
 					type="button"
 					onClick={() => {
-						navigate("/auth/sign-up/goal");
+						navigate("/auth/sign-up/goal", {
+							state: { form },
+						});
 					}}
 					width={true}
 					style="primary"
+					// deactivated={handleButton}
 				>
 					다음 단계
 				</BasicButton>

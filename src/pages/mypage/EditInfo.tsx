@@ -48,23 +48,11 @@ const EditInfo = () => {
 
 	// 회원 탈퇴시 비밀번호 확인
 	const [checkPassword, setCheckPassword] = useState("");
-	const checkPasswordInputRef = useRef<HTMLInputElement>(null);
 
 	function handleCheckPassword(e: ChangeEvent<HTMLInputElement>) {
-		const checkPasswordInput = checkPasswordInputRef?.current?.value as string;
-		if (checkPasswordInput.length === 0) {
-			alert("비밀번호를 입력해주세요");
-			return;
-		}
-		setCheckPassword(checkPasswordInput);
+		setCheckPassword(e.target.value);
 	}
 
-	// console.log(ageGroup);
-	// console.log(NewAgeGroup);
-	// console.log(nickname);
-	// console.log(NewNickname);
-	// console.log("gender", gender);
-	console.log(newGoal);
 	return (
 		<div className="grid justify-items-center mt-20">
 			<h1 className="mb-14">회원정보 수정</h1>
@@ -91,15 +79,14 @@ const EditInfo = () => {
 						onChange={handleAgeGroup}
 					>
 						<option disabled>연령대 선택</option>
-						<option value="1">10대</option>
-						<option value="2">20대</option>
-						<option value="3">30대</option>
-						<option value="4">40대</option>
-						<option value="5">50대</option>
-						<option value="6">60대</option>
-						<option value="7">70대</option>
-						<option value="8">80대</option>
-						<option value="9">90대</option>
+						{Array.from({ length: 9 }, (_, i) => ({
+							value: i + 1,
+							label: `${(i + 1) * 10}대`,
+						})).map(({ label, value }) => (
+							<option key={label} value={value}>
+								{label}
+							</option>
+						))}
 					</SelectWithLabel>
 				</div>
 				<div className="mb-14">
@@ -153,6 +140,7 @@ const EditInfo = () => {
 					</div>
 				</div>
 			</div>
+			{/* 회원 탈퇴 모달 */}
 			{withdrawalModal && (
 				<Modal onClose={handleWithdrawalModal} title="비밀번호 확인">
 					<div className="mb-6">
@@ -163,15 +151,13 @@ const EditInfo = () => {
 								해당 이메일로 재가입이 불가능 합니다.
 							</p>
 						</div>
-						<input
+						<Input
 							type="password"
 							name="password"
 							id="password"
 							value={checkPassword}
 							placeholder="비밀번호"
 							onChange={handleCheckPassword}
-							ref={checkPasswordInputRef}
-							className="input input-bordered w-full"
 						/>
 					</div>
 					<div className="flex justify-center gap-2">
