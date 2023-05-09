@@ -24,5 +24,5 @@ export interface RefreshParams {
 }
 
 export interface ResetPasswordParams {
-	// string
+	email: string;
 }

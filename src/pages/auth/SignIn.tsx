@@ -1,14 +1,15 @@
-import { ChangeEvent, MouseEvent, useRef, useState } from "react";
+import { ChangeEvent, MouseEvent, useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { axiosHandler } from "@/utils/axios.utils";
+import { axios } from "@/utils/axios.utils";
 import { useRecoilState } from "recoil";
-import { isLoggedInState } from "@/recoil/state";
+import { isLoggedInState, isPasswordToastState } from "@/recoil/state";
 import { authApi } from "@/api/auth";
 
 import InputLabel from "@/components/atoms/inputs/InputLabel";
 import Input from "@/components/atoms/inputs/Input";
 import BasicButton from "@/components/atoms/buttons/BasicButton";
 import SocialButtons from "@/components/atoms/buttons/SocialButton";
+import Toast from "@/components/atoms/toast/Toast";
 
 const SignIn = () => {
 	const navigate = useNavigate();
@@ -19,6 +20,18 @@ const SignIn = () => {
 	const emailInputRef = useRef<HTMLInputElement>(null);
 	const passwordInputRef = useRef<HTMLInputElement>(null);
 
+	// 비밀번호 재발급을 통해 페이지 진입한 경우 뜨는 toast 알림
+	const [isPasswordToast, setIsPasswordToast] = useRecoilState(isPasswordToastState);
+
+	useEffect(() => {
+		if (isPasswordToast) {
+			setTimeout(() => {
+				setIsPasswordToast(false);
+			}, 5000);
+		}
+	}, []);
+
+	// input value 추적
 	function handleEmailChange(e: ChangeEvent<HTMLInputElement>) {
 		if (emailInputRef.current) {
 			setEmail(emailInputRef.current.value);
@@ -30,6 +43,7 @@ const SignIn = () => {
 		}
 	}
 
+	// 로그인 함수
 	const handleLoginRequest = async (event: MouseEvent<HTMLButtonElement>) => {
 		event.preventDefault();
 
@@ -43,23 +57,24 @@ const SignIn = () => {
 			password,
 		});
 
-		if (data.status) {
+		try {
 			const accessToken: string = data.data.access_token;
 			const refreshToken: string = data.data.refresh_token;
 
 			localStorage.setItem("accessToken", accessToken);
 			localStorage.setItem("refreshToken", refreshToken);
 
-			axiosHandler.defaults.headers.common["authorization-"] = `Bearer ${accessToken}`;
+			axios.defaults.headers.common["authorization-"] = `Bearer ${accessToken}`;
 			setIsLoggedInState(true);
 			navigate("/");
-		} else {
+		} catch (err) {
 			alert(data.response.data.message);
 		}
 	};
 
 	return (
 		<div className="grid justify-items-center mt-20">
+			{isPasswordToast && <Toast />}
 			<h1 className="mb-14">로그인</h1>
 			<div className="w-96">
 				<div className="mb-4">
