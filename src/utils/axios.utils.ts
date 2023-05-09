@@ -16,6 +16,7 @@ const axiosHandler = axios.create(axiosOptions);
 axiosHandler.interceptors.request.use(
 	function (config) {
 		// 요청을 보내기 전에 수행할 일
+		config.headers["autorization-"] = `Bearer ${localStorage.getItem("accessToken")}`;
 		return config;
 	},
 	function (error) {
