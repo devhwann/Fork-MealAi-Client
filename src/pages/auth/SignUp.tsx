@@ -1,5 +1,6 @@
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, MouseEvent, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { authApi } from "@/api/auth";
 import BasicButton from "@/components/atoms/buttons/BasicButton";
 import SocialButtons from "@/components/atoms/buttons/SocialButton";
 import Input from "@/components/atoms/inputs/Input";
@@ -47,10 +48,40 @@ const SignUp = () => {
 	}
 
 	// 이메일 인증코드
-	const [authCode, setAuthCode] = useState("");
+	const [authCode, setAuthCode] = useState<number>();
+	const [inputAuthCode, setInputAuthCode] = useState<number>();
 
-	function handleAuthCode(e: ChangeEvent<HTMLInputElement>) {
-		setAuthCode(e.target.value);
+	function handleInputAuthCode(e: ChangeEvent<HTMLInputElement>) {
+		const value = parseInt(e.target.value);
+		setInputAuthCode(value);
+	}
+
+	// 이메일 인증 및 중복체크 api
+	const handleCheckEmail = async (e: MouseEvent<HTMLButtonElement>) => {
+		e.preventDefault();
+
+		if (!form.email) {
+			alert("이메일을 입력해주세요.");
+			return;
+		}
+
+		const data = await authApi.authCheckEmailRequest("/api/auth/check_email", form.email);
+
+		if (data.status === 200) {
+			setAuthCode(data.data.authentication_number);
+		} else {
+			alert(data.response.data.message);
+		}
+	};
+
+	function handleCheckCode(e: MouseEvent<HTMLButtonElement>) {
+		e.preventDefault();
+
+		if (authCode === inputAuthCode) {
+			alert("이메일이 확인 되었습니다.");
+		} else {
+			alert("올바르지 않은 인증코드입니다. 다시 입력해주세요.");
+		}
 	}
 
 	// const [email, setEmail] = useState("");
@@ -79,8 +110,6 @@ const SignUp = () => {
 	// 	const value = parseInt(e.target.value);
 	// 	setAgeGroup(value);
 	// }
-
-	// console.log(email, password, gender, ageGroup, nickname, goal);
 
 	return (
 		<div className="grid justify-items-center mt-20">
@@ -118,21 +147,28 @@ const SignUp = () => {
 						/>
 					</div>
 					<div className="pt-3">
-						<BasicButton type="submit" onClick={() => {}} width={false} style="bg">
+						<BasicButton type="submit" onClick={handleCheckEmail} width={false} style="bg">
 							인증
 						</BasicButton>
 					</div>
 				</div>
-				<div className="mb-4">
-					<InputLabel label="인증번호" htmlFor="authCode" />
-					<Input
-						type="text"
-						name="authCode"
-						id="authCode"
-						placeholder="인증번호"
-						value={authCode}
-						onChange={handleAuthCode}
-					/>
+				<div className="mb-4 flex items-center justify-between gap-2">
+					<div className="grow">
+						<InputLabel label="인증번호" htmlFor="authCode" />
+						<Input
+							type="text"
+							name="inputAuthCode"
+							id="inputAuthCode"
+							placeholder="인증번호"
+							value={inputAuthCode || ""}
+							onChange={handleInputAuthCode}
+						/>
+					</div>
+					<div className="pt-8">
+						<BasicButton type="submit" onClick={handleCheckCode} width={false} style="bg">
+							확인
+						</BasicButton>
+					</div>
 				</div>
 				<div className="mb-4">
 					<InputWithLabel

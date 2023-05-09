@@ -33,4 +33,13 @@ export const authApi = Object.freeze({
 			return err;
 		}
 	},
+	async authCheckEmailRequest(endPoint: string, email: string) {
+		try {
+			const response = await axiosHandler.post(endPoint, { email });
+			console.log(response);
+			return response;
+		} catch (err: any) {
+			return err;
+		}
+	},
 });
