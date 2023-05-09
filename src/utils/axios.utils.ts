@@ -8,7 +8,7 @@ const axiosOptions = {
 	headers: {
 		"Content-Type": "application/json",
 	},
-	timeout: 10000, //  3초 지나면 요청 중단, 임의로 해놨어요
+	timeout: 3000, //  3초 지나면 요청 중단, 임의로 해놨어요
 };
 
 const axiosHandler = axios.create(axiosOptions);
@@ -27,6 +27,8 @@ axiosHandler.interceptors.request.use(
 
 axiosHandler.interceptors.response.use(
 	function (res) {
+		console.log("resdata", res.data);
+		console.log("resstatus", res.status);
 		return res;
 	},
 	function (error) {

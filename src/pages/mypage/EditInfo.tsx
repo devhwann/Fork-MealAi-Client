@@ -53,12 +53,6 @@ const EditInfo = () => {
 		setCheckPassword(e.target.value);
 	}
 
-	// console.log(ageGroup);
-	// console.log(NewAgeGroup);
-	// console.log(nickname);
-	// console.log(NewNickname);
-	// console.log("gender", gender);
-	console.log(newGoal);
 	return (
 		<div className="grid justify-items-center mt-20">
 			<h1 className="mb-14">회원정보 수정</h1>
@@ -85,15 +79,14 @@ const EditInfo = () => {
 						onChange={handleAgeGroup}
 					>
 						<option disabled>연령대 선택</option>
-						<option value="1">10대</option>
-						<option value="2">20대</option>
-						<option value="3">30대</option>
-						<option value="4">40대</option>
-						<option value="5">50대</option>
-						<option value="6">60대</option>
-						<option value="7">70대</option>
-						<option value="8">80대</option>
-						<option value="9">90대</option>
+						{Array.from({ length: 9 }, (_, i) => ({
+							value: i + 1,
+							label: `${(i + 1) * 10}대`,
+						})).map(({ label, value }) => (
+							<option key={label} value={value}>
+								{label}
+							</option>
+						))}
 					</SelectWithLabel>
 				</div>
 				<div className="mb-14">

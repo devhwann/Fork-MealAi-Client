@@ -21,11 +21,11 @@ const Goal = () => {
 
 		const { state } = location;
 		const form: AuthFormType = {
-			email: state.email,
-			password: state.password,
-			gender: state.gender,
-			age_group: state.ageGroup,
-			nickname: state.nickname,
+			email: state.form.email,
+			password: state.form.password,
+			gender: state.form.gender,
+			age_group: state.form.ageGroup,
+			nickname: state.form.nickname,
 			goal,
 		};
 		console.log("form", form);

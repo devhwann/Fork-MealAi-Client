@@ -7,28 +7,55 @@ import InputLabel from "@/components/atoms/inputs/InputLabel";
 import InputWithLabel from "@/components/organisms/InputWithLabel";
 import SelectWithLabel from "@/components/organisms/SelectWithLabel";
 import RadioButton from "@/components/atoms/buttons/RadioButton";
-import { AuthFormType } from "@/types/auth/authTypes";
 
 const SignUp = () => {
 	const navigate = useNavigate();
 
-	const [form, setForm] = useState<AuthFormType>({
+	const [form, setForm] = useState<{
+		email: string;
+		password: string;
+		confirmPassword: string;
+		gender: string;
+		nickname: string;
+		ageGroup: number | undefined;
+	}>({
 		email: "",
 		password: "",
 		confirmPassword: "",
 		gender: "",
 		nickname: "",
-		age_group: undefined,
+		ageGroup: undefined,
 	});
 
-	function handleChange(key: keyof typeof form, e: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLSelectElement>) {
-		setForm({ ...form, [key]: e.target.value });
+	function handleChange(e: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLSelectElement>) {
+		const { name, value } = e.target;
+		if (name === "ageGroup") {
+			setForm((current) => {
+				return {
+					...current,
+					[name]: parseInt(value),
+				};
+			});
+		} else {
+			setForm((current) => {
+				return {
+					...current,
+					[name]: value,
+				};
+			});
+		}
+	}
+
+	// 이메일 인증코드
+	const [authCode, setAuthCode] = useState("");
+
+	function handleAuthCode(e: ChangeEvent<HTMLInputElement>) {
+		setAuthCode(e.target.value);
 	}
 
 	// const [email, setEmail] = useState("");
 	// const [password, setPassword] = useState("");
-	// const [passwordConfirm, setPasswordConfirm] = useState("");
-	const [authCode, setAuthCode] = useState("");
+	// const [confirmPassword, setConfirmPassword] = useState("");
 	// const [gender, setGender] = useState("");
 	// const [nickname, setNickname] = useState("");
 	// const [ageGroup, setAgeGroup] = useState<number>();
@@ -39,12 +66,9 @@ const SignUp = () => {
 	// function handlePassword(e: ChangeEvent<HTMLInputElement>) {
 	// 	setPassword(e.target.value);
 	// }
-	// function handlePasswordConfirm(e: ChangeEvent<HTMLInputElement>) {
-	// 	setPasswordConfirm(e.target.value);
+	// function handleConfirmPassword(e: ChangeEvent<HTMLInputElement>) {
+	// 	setConfirmPassword(e.target.value);
 	// }
-	function handleAuthCode(e: ChangeEvent<HTMLInputElement>) {
-		setAuthCode(e.target.value);
-	}
 	// function handleGender(e: ChangeEvent<HTMLInputElement>) {
 	// 	setGender(e.target.value);
 	// }
@@ -86,7 +110,7 @@ const SignUp = () => {
 							placeholder="이메일"
 							isError={false}
 							errorMessage="message test"
-							onChange={(e) => handleChange("email", e)}
+							onChange={handleChange}
 							label="이메일"
 							htmlFor="email"
 						/>
@@ -117,7 +141,7 @@ const SignUp = () => {
 						placeholder="비밀번호"
 						isError={false}
 						errorMessage="message test"
-						onChange={handlePassword}
+						onChange={handleChange}
 						label="비밀번호"
 						htmlFor="password"
 					/>
@@ -125,15 +149,15 @@ const SignUp = () => {
 				<div className="mb-4">
 					<InputWithLabel
 						type="password"
-						name="passwordConfirm"
-						id="passwordConfirm"
-						value={passwordConfirm}
+						name="confirmPassword"
+						id="confirmPassword"
+						value={form.confirmPassword || ""}
 						placeholder="비밀번호 확인"
 						isError={false}
 						errorMessage="message test"
-						onChange={handlePasswordConfirm}
+						onChange={handleChange}
 						label="비밀번호 확인"
-						htmlFor="passwordConfirm"
+						htmlFor="confirmPassword"
 					/>
 				</div>
 				<div className="mb-4">
@@ -143,8 +167,8 @@ const SignUp = () => {
 						name="nickname"
 						id="nickName"
 						placeholder="닉네임"
-						value={nickname}
-						onChange={handleNickname}
+						value={form.nickname}
+						onChange={handleChange}
 					/>
 				</div>
 				<div className="mb-4">
@@ -154,10 +178,19 @@ const SignUp = () => {
 						defaultValue="연령대 선택"
 						label="연령대"
 						htmlFor="ageGroup"
-						onChange={handleAgeGroup}
+						onChange={handleChange}
+						value={form.ageGroup}
 					>
 						<option disabled>연령대 선택</option>
-						<option value="1">10대</option>
+						{Array.from({ length: 9 }, (_, i) => ({
+							value: i + 1,
+							label: `${(i + 1) * 10}대`,
+						})).map(({ label, value }) => (
+							<option key={label} value={value}>
+								{label}
+							</option>
+						))}
+						{/* <option value="1">10대</option>
 						<option value="2">20대</option>
 						<option value="3">30대</option>
 						<option value="4">40대</option>
@@ -165,27 +198,21 @@ const SignUp = () => {
 						<option value="6">60대</option>
 						<option value="7">70대</option>
 						<option value="8">80대</option>
-						<option value="9">90대</option>
+						<option value="9">90대</option> */}
 					</SelectWithLabel>
 				</div>
 				<div className="mb-9">
 					<InputLabel label="성별" htmlFor="gender" />
 					<div className="flex gap-8">
-						<RadioButton type="radio" id="gender-m" name="gender" gender="M" onChange={handleGender} />
-						<RadioButton type="radio" id="gender-f" name="gender" gender="F" onChange={handleGender} />
+						<RadioButton type="radio" id="gender-m" name="gender" gender="M" onChange={handleChange} />
+						<RadioButton type="radio" id="gender-f" name="gender" gender="F" onChange={handleChange} />
 					</div>
 				</div>
 				<BasicButton
 					type="button"
 					onClick={() => {
 						navigate("/auth/sign-up/goal", {
-							state: {
-								email,
-								password,
-								gender,
-								ageGroup,
-								nickname,
-							},
+							state: { form },
 						});
 					}}
 					width={true}
