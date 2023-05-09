@@ -6,8 +6,8 @@ export interface AuthFormType {
 	gender: string;
 	age_group?: number;
 	nickname: string;
-	goal: string;
-	// confirmPassword?: string;
+	goal?: string;
+	confirmPassword?: string;
 }
 
 export interface LoginParams {
