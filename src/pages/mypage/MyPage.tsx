@@ -25,8 +25,9 @@ const MyPage = () => {
 				setNickname(data.data.nickname);
 				setGoal(data.data.goal);
 			} catch (err) {
-				navigate("/");
+				navigate("/auth/sign-in");
 				alert("다시 로그인 해주세요.");
+				localStorage.clear();
 			}
 		}
 		fetchData();

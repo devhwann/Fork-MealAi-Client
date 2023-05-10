@@ -1,4 +1,4 @@
-import { ChangePasswordType, CheckPasswordType } from "@/types/user/userTypes";
+import { ChangePasswordType, CheckPasswordType, EditUserInfoType } from "@/types/user/userTypes";
 import { axiosHandler, axios, API_ENDPOINT } from "@/utils/axios.utils";
 
 /**
@@ -19,14 +19,24 @@ export const userApi = Object.freeze({
 		}
 	},
 	async checkPasswordRequest(endPoint: string, params: CheckPasswordType) {
-		// const response = await axiosHandler.post(endPoint, params);
-		// return response;
 		try {
 			const response = await axiosHandler.post(endPoint, params);
 			return response;
 		} catch (err: any) {
 			return err;
 		}
+	},
+	async editUserInfoRequest(endPoint: string, params: EditUserInfoType) {
+		try {
+			const response = await axiosHandler.patch(endPoint, params);
+			return response;
+		} catch (err: any) {
+			return err;
+		}
+	},
+	async deleteUserRequest(endPoint: string) {
+		const response = axiosHandler.delete(endPoint);
+		return response;
 	},
 	// async findUserById(userId: string) {
 	// 	const response = await axiosHandler.get(`/api/users?user_id=${userId}`);
