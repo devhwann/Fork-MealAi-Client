@@ -10,12 +10,74 @@ import InputWithLabel from "@/components/organisms/InputWithLabel";
 import InputLabel from "@/components/atoms/inputs/InputLabel";
 import TempImage from "@/assets/temp_image.jpg"; // TODO : 실제 데이터 연동 후 지우기
 import { validateConfirmPassword, validatePassword } from "@/utils/validation";
+import { feedsApi } from "@/api/feeds";
 
 const MyPage = () => {
 	const navigate = useNavigate();
 
 	const [nickname, setNickname] = useState("");
 	const [goal, setGoal] = useState<GoalType>("balance");
+	const [myLikesFeeds, setMyLikesFeeds] = useState([]);
+
+	// const temp = [
+	// 	{
+	// 		feed_id: 1,
+	// 		user_id: 0,
+	// 		image_url: "string",
+	// 		user_name: "string",
+	// 		meal_time: "breakfast",
+	// 		date: "2019-08-24",
+	// 		likes: 0,
+	// 		kcal: 0,
+	// 		carbohydrate: 0,
+	// 		protein: 0,
+	// 		fat: 0,
+	// 		foods: [],
+	// 		created_at: "2019-08-24T14:15:22Z",
+	// 		updated_at: "2019-08-24T14:15:22Z",
+	// 		open: true,
+	// 		goal: "balance",
+	// 		my_like: true,
+	// 	},
+	// 	{
+	// 		feed_id: 2,
+	// 		user_id: 0,
+	// 		image_url: "string",
+	// 		user_name: "string",
+	// 		meal_time: "breakfast",
+	// 		date: "2019-08-24",
+	// 		likes: 0,
+	// 		kcal: 0,
+	// 		carbohydrate: 0,
+	// 		protein: 0,
+	// 		fat: 0,
+	// 		foods: [],
+	// 		created_at: "2019-08-24T14:15:22Z",
+	// 		updated_at: "2019-08-24T14:15:22Z",
+	// 		open: true,
+	// 		goal: "balance",
+	// 		my_like: true,
+	// 	},
+	// 	{
+	// 		feed_id: 3,
+	// 		user_id: 0,
+	// 		image_url: "string",
+	// 		user_name: "string",
+	// 		meal_time: "breakfast",
+	// 		date: "2019-08-24",
+	// 		likes: 0,
+	// 		kcal: 0,
+	// 		carbohydrate: 0,
+	// 		protein: 0,
+	// 		fat: 0,
+	// 		foods: [],
+	// 		created_at: "2019-08-24T14:15:22Z",
+	// 		updated_at: "2019-08-24T14:15:22Z",
+	// 		open: true,
+	// 		goal: "balance",
+	// 		my_like: true,
+	// 	},
+	// ];
 
 	useEffect(() => {
 		async function fetchData() {
@@ -31,6 +93,18 @@ const MyPage = () => {
 			}
 		}
 		fetchData();
+
+		// test
+		async function test() {
+			let data;
+			try {
+				data = await feedsApi.getMyLikesRequest("/api/feeds/likes");
+				console.log("data!!", data);
+			} catch (err) {
+				console.log("err!!", err);
+			}
+		}
+		test();
 	}, []);
 
 	// TODO : 소셜 기능 추가시 > 소셜 회원 여부도 받아서 비밀번호 변경 버튼 숨김처리 해야 함
@@ -82,7 +156,6 @@ const MyPage = () => {
 		}
 	};
 
-	// TODO : 비밀번호 validation
 	// 비밀번호 변경
 	const handleChangePassword = async (event: MouseEvent<HTMLButtonElement>) => {
 		event.preventDefault();
@@ -170,6 +243,11 @@ const MyPage = () => {
 			</div>
 			<div className="flex flex-col w-1200 mt-16">
 				<h4>내가 좋아한 식단</h4>
+				{myLikesFeeds.length === 0 && (
+					<div>
+						<p>좋아요💛를 누른 피드가 없어요.</p>
+					</div>
+				)}
 				<div className="flex flex-wrap mt-6 gap-6">
 					{/* TODO : API 명세 받은 후 map함수 적용 */}
 					<Thumb
