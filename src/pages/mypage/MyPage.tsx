@@ -82,7 +82,6 @@ const MyPage = () => {
 		}
 	};
 
-	// TODO : 비밀번호 validation
 	// 비밀번호 변경
 	const handleChangePassword = async (event: MouseEvent<HTMLButtonElement>) => {
 		event.preventDefault();
