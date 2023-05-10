@@ -153,13 +153,20 @@ const SignUp = () => {
 	}, [form.email, form.password, form.confirmPassword]);
 
 	// 모든 값이 올바르게 입력되어야 버튼 활성화 되도록 제어
-	// function handleButton() {
-	// 	if (validateAuthCode) {
-	// 		return true;
-	// 	} else {
-	// 		return false;
-	// 	}
-	// }
+	function hadleButtonActivated() {
+		if (
+			validateAuthCode ||
+			isEmailError ||
+			isPasswordError ||
+			isConfirmPasswordError ||
+			!form.ageGroup ||
+			!form.nickname ||
+			!form.gender
+		) {
+			return true;
+		}
+		return false;
+	}
 
 	return (
 		<div className="grid justify-items-center mt-20">
@@ -302,7 +309,7 @@ const SignUp = () => {
 					}}
 					width={true}
 					style="primary"
-					// deactivated={handleButton}
+					deactivated={hadleButtonActivated()}
 				>
 					다음 단계
 				</BasicButton>

@@ -29,10 +29,14 @@ const Goal = () => {
 			nickname: state.form.nickname,
 			goal,
 		};
-		console.log("SignUp에서 넘어온 form state :", form);
+
 		const data = await authApi.authRegisterRequest("/api/users", form);
-		console.log("회원가입 완료!", data);
-		navigate("/");
+
+		if (data.status === 201) {
+			navigate("/");
+		} else {
+			alert(data.message);
+		}
 	};
 
 	return (
@@ -49,6 +53,7 @@ const Goal = () => {
 					}}
 					width={true}
 					style="primary"
+					deactivated={!goal}
 				>
 					회원가입 완료
 				</BasicButton>

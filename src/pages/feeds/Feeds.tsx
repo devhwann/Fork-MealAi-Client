@@ -1,8 +1,31 @@
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import Thumb from "@/components/atoms/thumbnail/Thumbnail";
 import TempImage from "@/assets/temp_image.jpg"; // TODO : 실제 데이터 연동 후 지우기
+import { feedsApi } from "@/api/feeds";
+import { GetFeedsTypes } from "@/types/feeds/feedsRequestTypes";
+import { GetFeedsResponseTypes } from "@/types/feeds/feedsResponseTypes";
 
 const Feeds = () => {
+	// 인피니트 스크롤 설정
+	const [currentPage, setCurrentPage] = useState(1);
+	const params: GetFeedsTypes = { page: currentPage, per_page: 10 };
+
+	const [feeds, setFeeds] = useState<GetFeedsResponseTypes[]>();
+
+	// 처음 진입시 전체 피드 불러오기(최신순&모든 목표)
+	useEffect(() => {
+		const getFeeds = async () => {
+			let data;
+			try {
+				data = await feedsApi.getFeedsRequest("/api/feeds", params);
+				setFeeds(data.data);
+			} catch (err) {
+				alert(data.response.data.message);
+			}
+		};
+		getFeeds();
+	}, []);
+
 	// 좋아요버튼
 	const [isLike, setIsLike] = useState(false);
 
@@ -99,66 +122,22 @@ const Feeds = () => {
 			</div>
 			<div className="flex flex-wrap w-1200 mt-8 gap-6">
 				{/* TODO : API 명세 받은 후 map함수 적용 */}
-				<Thumb
-					src={TempImage}
-					id={1}
-					size="md"
-					type="like"
-					isLike={isLike}
-					onClick={() => {
-						setIsLike(!isLike);
-					}}
-				/>
-				<Thumb
-					src={TempImage}
-					id={1}
-					size="md"
-					type="like"
-					isLike={isLike}
-					onClick={() => {
-						setIsLike(!isLike);
-					}}
-				/>
-				<Thumb
-					src={TempImage}
-					id={1}
-					size="md"
-					type="like"
-					isLike={isLike}
-					onClick={() => {
-						setIsLike(!isLike);
-					}}
-				/>{" "}
-				<Thumb
-					src={TempImage}
-					id={1}
-					size="md"
-					type="like"
-					isLike={isLike}
-					onClick={() => {
-						setIsLike(!isLike);
-					}}
-				/>
-				<Thumb
-					src={TempImage}
-					id={1}
-					size="md"
-					type="like"
-					isLike={isLike}
-					onClick={() => {
-						setIsLike(!isLike);
-					}}
-				/>
-				<Thumb
-					src={TempImage}
-					id={1}
-					size="md"
-					type="like"
-					isLike={isLike}
-					onClick={() => {
-						setIsLike(!isLike);
-					}}
-				/>
+				{feeds &&
+					feeds.map((v, i) => {
+						return (
+							<Thumb
+								src={v.image_url}
+								id={v.feed_id}
+								size="md"
+								type="like"
+								isLike={isLike}
+								onClick={() => {
+									setIsLike(!isLike);
+								}}
+								key={i}
+							/>
+						);
+					})}
 			</div>
 		</div>
 	);
