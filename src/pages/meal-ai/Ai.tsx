@@ -46,10 +46,10 @@ const Ai = () => {
 							defaultValue="식사 시간 선택"
 						>
 							<option disabled>식사 시간 선택</option>
-							<option value="B">아침</option>
-							<option value="L">점심</option>
-							<option value="D">저녁</option>
-							<option value="S">간식</option>
+							<option value="breakfast">아침</option>
+							<option value="lunch">점심</option>
+							<option value="dinner">저녁</option>
+							<option value="snack">간식</option>
 						</select>
 					</div>
 					<AddImageFileButton imageUrl={imageUrl} onChange={handleFileChange} />

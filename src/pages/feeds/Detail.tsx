@@ -9,8 +9,6 @@ import getMealTime from "@/utils/getMealTime";
 import LikeWithCount from "@/components/organisms/LikeWithCount";
 import GoalText from "@/components/organisms/GoalText";
 
-import PrevIcon from "@/assets/icon_prev.svg";
-import NextIcon from "@/assets/icon_next.svg";
 import TempImage from "@/assets/temp_image.jpg"; // TODO : 실제 데이터 연동 후 지우기
 import ArrowButton from "@/components/atoms/buttons/ArrowButton";
 
@@ -22,13 +20,13 @@ interface TempProps {
 	nickname: string;
 	date: string;
 	goal: string;
-	mealTime?: "B" | "L" | "D" | "S";
+	mealTime?: "breakfast" | "lunch" | "dinner" | "snack";
 }
 const temp: TempProps = {
 	nickname: "황금늑대",
 	date: "2023-04-27",
 	goal: "balance",
-	mealTime: "B",
+	mealTime: "breakfast",
 };
 
 const Detail = () => {
