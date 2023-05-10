@@ -4,6 +4,7 @@ import { authApi } from "@/api/auth";
 import { AuthFormType } from "@/types/auth/authTypes";
 import GoalButtons from "@/components/organisms/GoalButtons";
 import BasicButton from "@/components/atoms/buttons/BasicButton";
+import { GoalType } from "@/components/organisms/GoalText";
 
 const Goal = () => {
 	const navigate = useNavigate();
@@ -11,7 +12,7 @@ const Goal = () => {
 	// 목표 설정
 	const [goal, setGoal] = useState("");
 
-	function handleGoal(goal: string) {
+	function handleGoal(goal: GoalType) {
 		setGoal(goal);
 	}
 

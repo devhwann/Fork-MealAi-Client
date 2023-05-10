@@ -7,39 +7,58 @@ import RadioButton from "@/components/atoms/buttons/RadioButton";
 import GoalButtons from "@/components/organisms/GoalButtons";
 import BasicButton from "@/components/atoms/buttons/BasicButton";
 import Modal from "@/components/organisms/Modal";
+import { userApi } from "@/api/user";
+import { GoalType } from "@/components/organisms/GoalText";
 
 const EditInfo = () => {
 	const navigate = useNavigate();
 
 	// TODO : 유저 데이터 받아온 후 로직 구현
 	// 유저 기존 정보
-	const nickname = "황금늑대";
-	const ageGroup = "1";
-	const userGender = "F";
-	const goal = "diet";
+	// const nickname = "황금늑대";
+	// const ageGroup = "1";
+	// const userGender = "F";
+	// const goal = "diet";
 
 	// 유저 변경 정보
-	const [NewNickname, setNewNickname] = useState("");
-	const [NewAgeGroup, setNewAgeGroup] = useState("");
 	const [gender, setGender] = useState("M");
-	const [newGoal, setNewGoal] = useState("balance");
+	const [ageGroup, setAgeGroup] = useState<number>();
+	const [nickname, setNickname] = useState("");
+	const [goal, setGoal] = useState<GoalType>("balance");
+
+	// useEffect(() => {
+	// 	setGender(userGender);
+	// 	setNewGoal(goal);
+	// }, []);
 
 	useEffect(() => {
-		setGender(userGender);
-		setNewGoal(goal);
+		async function fetchData() {
+			let data;
+			try {
+				data = await userApi.userInfoRequest("/api/users");
+				setGender(data.data.gender);
+				setAgeGroup(data.data.age_group);
+				setNickname(data.data.nickname);
+				setGoal(data.data.goal);
+			} catch (err) {
+				navigate("/");
+				alert("다시 로그인 해주세요.");
+			}
+		}
+		fetchData();
 	}, []);
 
 	function handleNickname(e: ChangeEvent<HTMLInputElement>) {
-		setNewNickname(e.target.value);
+		setNickname(e.target.value);
 	}
 	function handleAgeGroup(e: ChangeEvent<HTMLSelectElement>) {
-		setNewAgeGroup(e.target.value);
+		setAgeGroup(parseInt(e.target.value));
 	}
 	function handleGender(e: ChangeEvent<HTMLInputElement>) {
 		setGender(e.target.value);
 	}
-	function handleNewGoal(goal: "balance" | "diet" | "muscle" | "lchf") {
-		setNewGoal(goal);
+	function handleNewGoal(goal: GoalType) {
+		setGoal(goal);
 	}
 
 	// 탈퇴 모달
@@ -65,7 +84,7 @@ const EditInfo = () => {
 						name="nickname"
 						id="nickName"
 						placeholder={nickname}
-						value={NewNickname}
+						value={nickname}
 						onChange={handleNickname}
 					/>
 				</div>
@@ -78,7 +97,6 @@ const EditInfo = () => {
 						htmlFor="ageGroup"
 						onChange={handleAgeGroup}
 					>
-						<option disabled>연령대 선택</option>
 						{Array.from({ length: 9 }, (_, i) => ({
 							value: i + 1,
 							label: `${(i + 1) * 10}대`,
@@ -112,7 +130,7 @@ const EditInfo = () => {
 				</div>
 				<h4 className="mb-6">목표설정</h4>
 				<div className="mb-6">
-					<GoalButtons handleGoal={handleNewGoal} currentGoal={newGoal} />
+					<GoalButtons handleGoal={handleNewGoal} currentGoal={goal} />
 				</div>
 				<div className="flex justify-center gap-2">
 					<BasicButton

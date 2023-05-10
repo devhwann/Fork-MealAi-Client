@@ -4,7 +4,7 @@ import InputLabel, { InputLabelProps } from "../atoms/inputs/InputLabel";
 interface SelectProps extends InputLabelProps {
 	name: string;
 	id: string;
-	defaultValue?: string;
+	defaultValue?: string | number;
 	onChange: (e: ChangeEvent<HTMLSelectElement>) => void;
 	children: ReactNode;
 	value?: number;

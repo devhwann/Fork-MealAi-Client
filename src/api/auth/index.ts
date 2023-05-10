@@ -1,4 +1,4 @@
-import { axiosHandler } from "@/utils/axios.utils";
+import { axios, axiosHandler } from "@/utils/axios.utils";
 import {
 	AuthFormType,
 	CheckEmailParams,
