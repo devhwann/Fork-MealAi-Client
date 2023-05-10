@@ -28,7 +28,7 @@ export const authApi = Object.freeze({
 	},
 	async authLogoutRequest(endPoint: string) {
 		// 그냥 클라이언트에 발급받은 토큰을 삭제하면 끝(따로 API 호출이 필요없다)
-		const response = axiosHandler.delete(endPoint);
+		const response = axiosHandler.post(endPoint);
 		return response;
 	},
 	async authRefreshRequest(endPoint: string, params: RefreshParams) {

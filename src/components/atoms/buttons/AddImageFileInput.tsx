@@ -6,7 +6,6 @@ interface AddImageFileInputProps {
 	onChange: (e: ChangeEvent<HTMLInputElement>) => void;
 }
 
-// TODO : 업로드한 이미지 보이게 처리
 const AddImageFileInput = ({ imageUrl, onChange }: AddImageFileInputProps) => {
 	const handleClick = () => {
 		const inputFileEl = document.querySelector("#upload") as HTMLInputElement;

@@ -30,7 +30,6 @@ const Home = () => {
 		} else if ((scroll / divHeight) * 100 > 100) {
 			scrollRate = 100;
 		}
-		console.log(scrollRate);
 		setCurrentScroll(scrollRate);
 	};
 
