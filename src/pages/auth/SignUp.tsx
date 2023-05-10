@@ -137,6 +137,10 @@ const SignUp = () => {
 
 	// 상태 업데이트함수 비동기적 동작 해결
 	useEffect(() => {
+		if (localStorage.getItem("accessToken") || localStorage.getItem("refreshToken")) {
+			alert("로그아웃 후 이용해주세요.");
+			navigate("/");
+		}
 		if (form.email !== "") {
 			handleEmailError();
 		}

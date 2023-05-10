@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { ChangeEvent, MouseEvent, useRef, useState } from "react";
+import { ChangeEvent, MouseEvent, useEffect, useRef, useState } from "react";
 import { useRecoilState } from "recoil";
 import { isPasswordToastState } from "@/recoil/state";
 import { authApi } from "@/api/auth";
@@ -38,6 +38,13 @@ const FindPassword = () => {
 			alert(data.response.data.message);
 		}
 	};
+
+	useEffect(() => {
+		if (localStorage.getItem("accessToken") || localStorage.getItem("refreshToken")) {
+			alert("로그아웃 후 이용해주세요.");
+			navigate("/");
+		}
+	}, []);
 
 	return (
 		<div className="grid justify-items-center mt-20">
