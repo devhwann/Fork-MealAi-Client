@@ -1,7 +1,7 @@
 import { MouseEvent, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { authApi } from "@/api/auth";
-import { AuthFormType } from "@/types/auth/authTypes";
+import { AuthFormTypes } from "@/types/auth/authTypes";
 import GoalButtons from "@/components/organisms/GoalButtons";
 import BasicButton from "@/components/atoms/buttons/BasicButton";
 import { GoalType } from "@/components/organisms/GoalText";
@@ -21,7 +21,7 @@ const Goal = () => {
 		e.preventDefault();
 
 		const { state } = location;
-		const form: AuthFormType = {
+		const form: AuthFormTypes = {
 			email: state.form.email,
 			password: state.form.password,
 			gender: state.form.gender,

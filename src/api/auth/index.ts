@@ -1,10 +1,10 @@
-import { axios, axiosHandler } from "@/utils/axios.utils";
-import { AuthFormType, LoginParams, RefreshParams, ResetPasswordParams } from "@/types/auth/authTypes";
+import { axiosHandler } from "@/utils/axios.utils";
+import { AuthFormTypes, LoginParams, RefreshParams, ResetPasswordParams } from "@/types/auth/authTypes";
 
-// 객체를 동결시켜 수정을 방지, API쵸청시 응답 데이터가 수정되지 않도록 보호 할 수 있음.. (freeze)
+// 객체를 동결시켜 수정을 방지, API요청시 응답 데이터가 수정되지 않도록 보호 할 수 있음.. (freeze)
 
 export const authApi = Object.freeze({
-	async authRegisterRequest(endPoint: string, params: AuthFormType) {
+	async authRegisterRequest(endPoint: string, params: AuthFormTypes) {
 		try {
 			const response = await axiosHandler.post(endPoint, params);
 			return response;
@@ -45,14 +45,4 @@ export const authApi = Object.freeze({
 			return err;
 		}
 	},
-	// TODO : api 전송시 422 형식 오류 발생. 변경 가능한지 백엔드에 문의
-	// async authCheckEmailRequest(endPoint: string, params: CheckEmailParams) {
-	// 	try {
-	// 		const response = await axiosHandler.post(endPoint, { params });
-	// 		console.log(response);
-	// 		return response;
-	// 	} catch (err: any) {
-	// 		return err;
-	// 	}
-	// },
 });
