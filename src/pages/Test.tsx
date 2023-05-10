@@ -312,7 +312,7 @@ const Test = () => {
 					setIsLike(!isLike);
 				}}
 			/>
-			<Thumb src={TempImage} id={1} size="md" type="log" mealTime="B" open={true} onClick={() => {}} />
+			<Thumb src={TempImage} id={1} size="md" type="log" mealTime="breakfast" open={true} onClick={() => {}} />
 			<Thumb src={null} size="sm" type="none" />
 			<br />
 			<br />
