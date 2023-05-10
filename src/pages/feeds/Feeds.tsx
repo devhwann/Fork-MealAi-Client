@@ -1,4 +1,4 @@
-import { ChangeEvent, useEffect, useState } from "react";
+import { ChangeEvent, MouseEvent, useEffect, useState } from "react";
 import Thumb from "@/components/atoms/thumbnail/Thumbnail";
 import TempImage from "@/assets/temp_image.jpg"; // TODO : 실제 데이터 연동 후 지우기
 import { feedsApi } from "@/api/feeds";
@@ -19,12 +19,28 @@ const Feeds = () => {
 			try {
 				data = await feedsApi.getFeedsRequest("/api/feeds", params);
 				setFeeds(data.data);
+				console.log("전체 피드(최신순&모든 목표) 불러오기 성공!");
 			} catch (err) {
 				alert(data.response.data.message);
 			}
 		};
 		getFeeds();
 	}, []);
+
+	// 인기순 피드 불러오기
+	const popularityParams: GetFeedsTypes = { page: currentPage, per_page: 10, filter: "popularity" };
+	const handlePopularity = async (e: MouseEvent<HTMLButtonElement>) => {
+		e.preventDefault();
+
+		let data;
+		try {
+			data = await feedsApi.getFeedsRequest("/api/feeds", popularityParams);
+			setFeeds(data.data);
+			console.log("인기순 피드 불러오기 성공!");
+		} catch (err) {
+			alert(data.response.data.message);
+		}
+	};
 
 	// 좋아요버튼
 	const [isLike, setIsLike] = useState(false);
@@ -102,7 +118,8 @@ const Feeds = () => {
 					<p>|</p>
 					<button
 						className={`text-gray-5 font-bold ${clickPopularity ? "text-primary-1" : ""}`}
-						onClick={() => {
+						onClick={(e) => {
+							handlePopularity(e);
 							setClickPopularity(true);
 							setClickNewest(false);
 						}}
@@ -121,7 +138,6 @@ const Feeds = () => {
 				</>
 			</div>
 			<div className="flex flex-wrap w-1200 mt-8 gap-6">
-				{/* TODO : API 명세 받은 후 map함수 적용 */}
 				{feeds &&
 					feeds.map((v, i) => {
 						return (
