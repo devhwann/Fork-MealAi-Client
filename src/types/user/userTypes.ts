@@ -6,3 +6,10 @@ export interface ChangePasswordType {
 export interface CheckPasswordType {
 	password: string;
 }
+
+export interface EditUserInfoType {
+	gender: string;
+	age_group?: number;
+	nickname: string;
+	goal: string;
+}

@@ -16,7 +16,7 @@ const Header = () => {
 	useEffect(() => {
 		const isLoggedInValid = localStorage.getItem("accessToken") ? true : false;
 		setIsLoggedInState(isLoggedInValid);
-	}, [isLoggedIn]);
+	}, [isLoggedIn, localStorage.getItem("refreshToken")]);
 
 	const handleLogout = async () => {
 		await authApi.authLogoutRequest("/api/auth/logout");

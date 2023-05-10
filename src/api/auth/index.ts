@@ -1,11 +1,5 @@
 import { axios, axiosHandler } from "@/utils/axios.utils";
-import {
-	AuthFormType,
-	CheckEmailParams,
-	LoginParams,
-	RefreshParams,
-	ResetPasswordParams,
-} from "@/types/auth/authTypes";
+import { AuthFormType, LoginParams, RefreshParams, ResetPasswordParams } from "@/types/auth/authTypes";
 
 // 객체를 동결시켜 수정을 방지, API쵸청시 응답 데이터가 수정되지 않도록 보호 할 수 있음.. (freeze)
 
