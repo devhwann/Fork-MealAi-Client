@@ -1,16 +1,16 @@
 import { axios, axiosHandler } from "@/utils/axios.utils";
 import {
-	AuthFormType,
+	AuthFormTypes,
 	CheckEmailParams,
 	LoginParams,
 	RefreshParams,
 	ResetPasswordParams,
 } from "@/types/auth/authTypes";
 
-// 객체를 동결시켜 수정을 방지, API쵸청시 응답 데이터가 수정되지 않도록 보호 할 수 있음.. (freeze)
+// 객체를 동결시켜 수정을 방지, API요청시 응답 데이터가 수정되지 않도록 보호 할 수 있음.. (freeze)
 
 export const authApi = Object.freeze({
-	async authRegisterRequest(endPoint: string, params: AuthFormType) {
+	async authRegisterRequest(endPoint: string, params: AuthFormTypes) {
 		try {
 			const response = await axiosHandler.post(endPoint, params);
 			return response;

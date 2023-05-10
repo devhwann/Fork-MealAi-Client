@@ -1,4 +1,4 @@
-export interface ChangePasswordType {
+export interface ChangePasswordTypes {
 	current_password: string;
 	change_password: string;
 }
