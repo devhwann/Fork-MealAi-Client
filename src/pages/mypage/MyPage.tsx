@@ -9,6 +9,7 @@ import Input from "@/components/atoms/inputs/Input";
 import InputWithLabel from "@/components/organisms/InputWithLabel";
 import InputLabel from "@/components/atoms/inputs/InputLabel";
 import TempImage from "@/assets/temp_image.jpg"; // TODO : 실제 데이터 연동 후 지우기
+import { validateConfirmPassword, validatePassword } from "@/utils/validation";
 
 const MyPage = () => {
 	const navigate = useNavigate();
@@ -17,11 +18,6 @@ const MyPage = () => {
 	const [goal, setGoal] = useState<GoalType>("balance");
 
 	useEffect(() => {
-		if (!localStorage.getItem("accessToken")) {
-			alert("로그인이 필요한 서비스 입니다.");
-			navigate("/");
-		}
-
 		async function fetchData() {
 			let data;
 			try {
@@ -29,8 +25,8 @@ const MyPage = () => {
 				setNickname(data.data.nickname);
 				setGoal(data.data.goal);
 			} catch (err) {
-				alert("로그인이 필요한 서비스 입니다.");
 				navigate("/");
+				alert("다시 로그인 해주세요.");
 			}
 		}
 		fetchData();
@@ -109,8 +105,47 @@ const MyPage = () => {
 		} else {
 			alert(data.response.data.message);
 		}
-		console.log("비번", data);
 	};
+
+	// 비밀번호 검증
+	const [passwordErrorMessage, setPasswordErrorMessage] = useState("");
+	const [isPasswordError, setIsPasswordError] = useState(false);
+
+	function handlePasswordError() {
+		const isValidate = validatePassword(newPassword);
+		if (isValidate) {
+			setPasswordErrorMessage("올바른 비밀번호입니다.");
+			setIsPasswordError(false);
+		} else {
+			setPasswordErrorMessage("6자리 이상 입력해주세요");
+			setIsPasswordError(true);
+		}
+	}
+
+	// 비밀번호 확인 검증
+	const [confirmPasswordErrorMessage, setConfirmPasswordErrorMessage] = useState("");
+	const [isConfirmPasswordError, setIsConfirmPasswordError] = useState(false);
+
+	function handleConfirmPasswordError() {
+		const isValidate = validateConfirmPassword(newPassword, confirmPassword);
+		if (isValidate) {
+			setConfirmPasswordErrorMessage("비밀번호가 일치합니다.");
+			setIsConfirmPasswordError(false);
+		} else {
+			setConfirmPasswordErrorMessage("비밀번호가 일치하지 않습니다.");
+			setIsConfirmPasswordError(true);
+		}
+	}
+
+	// 상태 업데이트함수 비동기적 동작 해결
+	useEffect(() => {
+		if (newPassword !== "") {
+			handlePasswordError();
+		}
+		if (confirmPassword !== "") {
+			handleConfirmPasswordError();
+		}
+	}, [newPassword, confirmPassword]);
 
 	return (
 		<div className="flex flex-col items-center mt-20">
@@ -254,8 +289,8 @@ const MyPage = () => {
 							id="newPassword"
 							value={newPassword}
 							placeholder="변경할 비밀번호"
-							isError={false}
-							errorMessage="message test"
+							isError={isPasswordError}
+							errorMessage={passwordErrorMessage}
 							onChange={(e) => setNewPassword(e.target.value)}
 							label="변경할 비밀번호"
 							htmlFor="newPassword"
@@ -266,8 +301,8 @@ const MyPage = () => {
 							id="confirmPassword"
 							value={confirmPassword}
 							placeholder="비밀번호 확인"
-							isError={false}
-							errorMessage="message test"
+							isError={isConfirmPasswordError}
+							errorMessage={confirmPasswordErrorMessage}
 							onChange={(e) => setConfirmPassword(e.target.value)}
 							label="비밀번호 확인"
 							htmlFor="confirmPassword"

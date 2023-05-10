@@ -68,7 +68,6 @@ const SignIn = () => {
 			setIsLoggedInState(true);
 			navigate("/");
 		} catch (err) {
-			console.log("로그인 에러는 catch", data);
 			alert(data.response.data.message);
 		}
 	};
