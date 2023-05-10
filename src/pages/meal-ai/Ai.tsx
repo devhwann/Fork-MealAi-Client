@@ -7,9 +7,7 @@ import AiRule from "@/components/atoms/aiRule/AiRule";
 import BasicButton from "@/components/atoms/buttons/BasicButton";
 import TinyButton from "@/components/atoms/buttons/TinyButton";
 
-// TODO : 1. 이미지 첨부 후 화면에 띄우기
-// TODO : 2. 날짜, 식사시간, 이미지 -> 서버로 post & 분석
-
+// TODO : 날짜, 식사시간, 이미지 -> 서버로 post & 분석
 const Ai = () => {
 	const navigate = useNavigate();
 

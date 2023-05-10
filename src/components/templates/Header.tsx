@@ -18,8 +18,8 @@ const Header = () => {
 		setIsLoggedInState(isLoggedInValid);
 	}, [isLoggedIn]);
 
-	const handleLogout = () => {
-		authApi.authLogoutRequest("/api/auth/logout");
+	const handleLogout = async () => {
+		await authApi.authLogoutRequest("/api/auth/logout");
 		localStorage.removeItem("accessToken");
 		localStorage.removeItem("refreshToken");
 		setIsLoggedInState(false);
@@ -38,9 +38,11 @@ const Header = () => {
 
 	return (
 		<div className="flex flex-row w-full h-90 gap-12 items-center bg-white border-solid border-b border-gray-7 z-50 fixed top-0">
-			<Link to="/">
-				<img src={Logo} width="115" height="27" className="ml-20" />
-			</Link>
+			<div className="ml-20">
+				<Link to="/">
+					<img src={Logo} width="115" height="27" />
+				</Link>
+			</div>
 			{menuObj.map(({ name, path }: MenuObjProps) => (
 				<Link to={path} key={path}>
 					<p key={name} className="text-gray-1 font-bold text-xl">

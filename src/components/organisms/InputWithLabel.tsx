@@ -16,7 +16,7 @@ const InputWithLabel = ({
 	htmlFor,
 }: InputWithLabelProps) => {
 	return (
-		<>
+		<div>
 			<InputLabel label={label} htmlFor={htmlFor} />
 			<ValidationInput
 				type={type}
@@ -28,7 +28,7 @@ const InputWithLabel = ({
 				isError={isError}
 				errorMessage={errorMessage}
 			/>
-		</>
+		</div>
 	);
 };
 
