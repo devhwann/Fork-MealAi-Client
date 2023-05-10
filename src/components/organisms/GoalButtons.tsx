@@ -1,12 +1,13 @@
 import { getIcon, goalTypes } from "@/utils/getGoalData";
+import { GoalType } from "./GoalText";
 
 interface GoalButtonsProps {
-	handleGoal: (goal: "balance" | "diet" | "muscle" | "lchf") => void;
+	handleGoal: (goal: GoalType) => void;
 	currentGoal?: string;
 }
 
 interface GoalButtonProps extends GoalButtonsProps {
-	goal: "balance" | "diet" | "muscle" | "lchf";
+	goal: GoalType;
 }
 
 const GoalButton = ({ goal, handleGoal, currentGoal }: GoalButtonProps) => {

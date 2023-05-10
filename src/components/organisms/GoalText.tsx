@@ -1,7 +1,7 @@
 import { goalTypes } from "@/utils/getGoalData";
 import Badge from "../atoms/badges/Badge";
 
-export type GoalType = "balance" | "diet" | "protein" | "lchf";
+export type GoalType = "balance" | "diet" | "muscle" | "lchf";
 export interface GoalTextProps {
 	goal: GoalType;
 }
