@@ -11,8 +11,12 @@ import {
 
 export const authApi = Object.freeze({
 	async authRegisterRequest(endPoint: string, params: AuthFormType) {
-		const response = await axiosHandler.post(endPoint, params);
-		return response;
+		try {
+			const response = await axiosHandler.post(endPoint, params);
+			return response;
+		} catch (err: any) {
+			return err;
+		}
 	},
 	async authLoginRequest(endPoint: string, params: LoginParams) {
 		try {
