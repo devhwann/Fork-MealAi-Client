@@ -24,6 +24,10 @@ const SignIn = () => {
 	const [isPasswordToast, setIsPasswordToast] = useRecoilState(isPasswordToastState);
 
 	useEffect(() => {
+		if (localStorage.getItem("accessToken") || localStorage.getItem("refreshToken")) {
+			alert("로그아웃 후 이용해주세요.");
+			navigate("/");
+		}
 		if (isPasswordToast) {
 			setTimeout(() => {
 				setIsPasswordToast(false);
