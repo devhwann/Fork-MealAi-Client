@@ -52,6 +52,7 @@ const Goal = () => {
 					}}
 					width={true}
 					style="primary"
+					deactivated={!goal}
 				>
 					회원가입 완료
 				</BasicButton>
