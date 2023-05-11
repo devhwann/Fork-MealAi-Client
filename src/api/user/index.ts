@@ -1,4 +1,4 @@
-import { ChangePasswordTypes, CheckPasswordType, EditUserInfoType } from "@/types/user/userTypes";
+import { ChangePasswordTypes, CheckPasswordType, EditUserInfoTypes } from "@/types/user/userTypes";
 import { axiosHandler } from "@/utils/axios.utils";
 
 /**
@@ -26,7 +26,7 @@ export const userApi = Object.freeze({
 			return err;
 		}
 	},
-	async editUserInfoRequest(endPoint: string, params: EditUserInfoType) {
+	async editUserInfoRequest(endPoint: string, params: EditUserInfoTypes) {
 		try {
 			const response = await axiosHandler.patch(endPoint, params);
 			return response;
