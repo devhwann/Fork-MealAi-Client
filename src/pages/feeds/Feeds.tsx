@@ -1,11 +1,11 @@
-import { ChangeEvent, MouseEvent, useEffect, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useRecoilValue } from "recoil";
 import { isLoggedInState } from "@/recoil/state";
 import { feedsApi } from "@/api/feeds";
 import { GetFeedsTypes } from "@/types/feeds/feedsRequestTypes";
 import { GetFeedsResponseTypes } from "@/types/feeds/feedsResponseTypes";
-import useIntersectionObserver from "@/hooks/useIntersectionObserver";
+// import useIntersectionObserver from "@/hooks/useIntersectionObserver";
 import Thumb from "@/components/atoms/thumbnail/Thumbnail";
 
 const Feeds = () => {
@@ -14,8 +14,9 @@ const Feeds = () => {
 	// 로그인 여부 확인
 	const isLoggedin = useRecoilValue(isLoggedInState);
 
-	const [currentPage, setCurrentPage] = useState(1);
+	const [page, setPage] = useState(1);
 	const [feeds, setFeeds] = useState<GetFeedsResponseTypes[]>([]);
+	const [lastFeed, setLastFeed] = useState<HTMLDivElement | null>(null);
 
 	// // 인피니트 스크롤 설정
 	// const onIntersect: IntersectionObserverCallback = ([{ isIntersecting }]) => {
@@ -29,41 +30,78 @@ const Feeds = () => {
 	const [filterGoal, setFilterGoal] = useState("all");
 
 	// api request params
-	const params: GetFeedsTypes = { page: currentPage, per_page: 10, filter: filter, goal: filterGoal };
+	const params: GetFeedsTypes = { page: page, per_page: 10, filter: filter, goal: filterGoal };
 
 	function handleGoal(e: ChangeEvent<HTMLSelectElement>) {
 		setFilterGoal(e.target.value);
 	}
 
-	// 처음 진입시 전체 피드 불러오기(최신순&모든 목표)
-	useEffect(() => {
-		const getAllFeeds = async () => {
-			let data;
-			try {
-				data = await feedsApi.getFeedsRequest("/api/feeds", params);
-				setFeeds(data.data);
-				console.log("전체 피드(최신순&모든 목표) 불러오기 성공!");
-			} catch (err) {
-				alert(data.response.data.message);
-			}
-		};
-		getAllFeeds();
-	}, []);
+	const getFeeds = async () => {
+		let data;
+		try {
+			data = await feedsApi.getFeedsRequest("/api/feeds", params);
+			setFeeds(data.data);
+			console.log("피드 불러오기 성공!");
+		} catch (err) {
+			alert(data.response.data.message);
+		}
+	};
 
-	// 피드 불러오기
-	useEffect(() => {
-		const getFeeds = async () => {
-			let data;
-			try {
-				data = await feedsApi.getFeedsRequest("/api/feeds", params);
-				setFeeds(data.data);
-				console.log("필터별 피드 불러오기 성공!");
-			} catch (err) {
-				alert(data.response.data.message);
+	// observer 콜백함수
+	const onIntersect: IntersectionObserverCallback = (entries, observer) => {
+		entries.forEach((entry) => {
+			if (entry.isIntersecting) {
+				//뷰포트에 마지막 이미지가 들어오고, page값에 1을 더하여 새 fetch 요청을 보내게됨 (useEffect의 dependency배열에 page가 있음)
+				setPage((prev) => prev + 1);
+				// 현재 타겟을 unobserver함
+				observer.unobserve(entry.target);
 			}
-		};
+		});
+	};
+
+	useEffect(() => {
 		getFeeds();
-	}, [params.filter, params.goal]);
+	}, [page, params.filter, params.goal]);
+
+	useEffect(() => {
+		let observer: IntersectionObserver;
+		if (lastFeed) {
+			observer = new IntersectionObserver(onIntersect, { threshold: 0.5 });
+			//observer 생성 시 observe할 target 요소는 불러온 이미지의 마지막아이템(feeds 배열의 마지막 아이템)으로 지정
+			observer.observe(lastFeed);
+		}
+		return () => observer && observer.disconnect();
+	}, [lastFeed]);
+
+	// // 처음 진입시 전체 피드 불러오기(최신순&모든 목표)
+	// useEffect(() => {
+	// 	const getAllFeeds = async () => {
+	// 		let data;
+	// 		try {
+	// 			data = await feedsApi.getFeedsRequest("/api/feeds", params);
+	// 			setFeeds(data.data);
+	// 			console.log("전체 피드(최신순&모든 목표) 불러오기 성공!");
+	// 		} catch (err) {
+	// 			alert(data.response.data.message);
+	// 		}
+	// 	};
+	// 	getAllFeeds();
+	// }, []);
+
+	// // 피드 불러오기
+	// useEffect(() => {
+	// 	const getFeeds = async () => {
+	// 		let data;
+	// 		try {
+	// 			data = await feedsApi.getFeedsRequest("/api/feeds", params);
+	// 			setFeeds(data.data);
+	// 			console.log("필터별 피드 불러오기 성공!");
+	// 		} catch (err) {
+	// 			alert(data.response.data.message);
+	// 		}
+	// 	};
+	// 	getFeeds();
+	// }, [params.filter, params.goal]);
 
 	// 좋아요버튼
 	const toggleLike = async (i: number, feedId: number) => {
@@ -170,21 +208,20 @@ const Feeds = () => {
 				</>
 			</div>
 			{/* ref={setRef} */}
-			<div className="flex flex-wrap w-1200 mt-8 gap-6">
-				{feeds &&
-					feeds.map((v, i) => {
-						return (
-							<Thumb
-								src={v.image_url}
-								id={v.feed_id}
-								size="md"
-								type="like"
-								isLike={v.my_like}
-								onClick={() => toggleLike(i, v.feed_id)}
-								key={i}
-							/>
-						);
-					})}
+			<div ref={setLastFeed} className="flex flex-wrap w-1200 mt-8 gap-6 feedBox">
+				{feeds?.map((v, i) => {
+					return (
+						<Thumb
+							src={v.image_url}
+							id={v.feed_id}
+							size="md"
+							type="like"
+							isLike={v.my_like}
+							onClick={() => toggleLike(i, v.feed_id)}
+							key={i}
+						/>
+					);
+				})}
 			</div>
 		</div>
 	);

@@ -27,7 +27,7 @@ export default function useIntersectionObserver({
 	return { setRef };
 }
 
-// import { useState, useEffect, useCallback, RefObject } from "react";
+// import { useState, useEffect, useCallback, RefObject, SetStateAction, Dispatch } from "react";
 
 // interface UseIntersectionObserverProps {
 // 	root?: HTMLElement | null;
@@ -43,10 +43,36 @@ export default function useIntersectionObserver({
 // 	rootMargin: "0px",
 // };
 
-// export default function UseIntersectionObserver(
+// export default function useIntersectionObserver(
 // 	onIntersect: OnIntersectCallback,
-// 	option: UseIntersectionObserverProps = defaultOption) : [RefObject<HTMLDivElement>, React.Dispatch<React.SetStateAction<null>] {
+// 	option: UseIntersectionObserverProps = defaultOption
+// ): [RefObject<HTMLDivElement>, React.Dispatch<React.SetStateAction<null>>] {
+// 	const [ref, setRef] = useState<HTMLDivElement | null>(null);
 
-// 	}
+// 	const checkIntersection = useCallback(
+// 		([entry]: IntersectionObserverEntry[], obserber: IntersectionObserver) => {
+// 			if (entry.isIntersecting) {
+// 				onIntersect(entry, obserber);
+// 			}
+// 		},
+// 		[onIntersect]
+// 	);
 
-// );
+// 	useEffect(() => {
+// 		let observer: IntersectionObserver | null = null;
+
+// 		if (ref) {
+// 			observer = new IntersectionObserver(checkIntersection, {
+// 				...defaultOption,
+// 				...option,
+// 			});
+// 			observer.observe(ref);
+// 		}
+
+// 		return () => {
+// 			observer?.disconnect();
+// 		};
+// 	}, [ref, option.root, option.rootMargin, option.threshold, checkIntersection]);
+
+// 	return [ref, setRef];
+// }
