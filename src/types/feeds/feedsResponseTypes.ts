@@ -16,7 +16,7 @@ export interface GetFeedsResponseTypes {
 	carbohydrate: number;
 	protein: number;
 	fat: number;
-	foods: FoodsTypes;
+	foods: FoodsTypes[];
 	created_at: string;
 	update_at: string;
 	open: boolean;

@@ -53,7 +53,7 @@ const Thumb = ({ src, id, size, type, mealTime, open, isLike, onClick }: Thumbna
 				{type === "log" && (
 					<>
 						<p className="absolute top-3 left-3 z-10">
-							<Badge text={getMealTime(mealTime)} color="gray" />
+							<Badge text={getMealTime(mealTime!)} color="gray" />
 						</p>
 						{open === false && (
 							<p className="absolute top-3 right-3 z-10">

@@ -12,7 +12,7 @@ const Feeds = () => {
 	const navigate = useNavigate();
 
 	// 로그인 여부 확인
-	const isLoggedin = useRecoilValue(isLoggedInState);
+	const isLoggedIn = useRecoilValue(isLoggedInState);
 
 	// 인피니트 스크롤 설정
 	const [currentPage, setCurrentPage] = useState(1);
@@ -64,7 +64,7 @@ const Feeds = () => {
 
 	// 좋아요버튼
 	const toggleLike = async (i: number, feedId: number) => {
-		if (!isLoggedin) {
+		if (!isLoggedIn) {
 			navigate("../auth/sign-in");
 			return;
 		}
@@ -73,8 +73,13 @@ const Feeds = () => {
 		copyFeeds[i].my_like = !feeds![i].my_like;
 		setFeeds(copyFeeds);
 
-		await feedsApi.patchLikesRequest(`/api/feeds/likes/${feedId}`);
-		return;
+		const patchLikes = await feedsApi.patchLikesRequest(`/api/feeds/likes/${feedId}`);
+
+		if (patchLikes.status !== 200) {
+			navigate("/auth/sign-in");
+			alert("다시 로그인 해주세요.");
+			localStorage.clear();
+		}
 	};
 
 	// 최신순, 인기순 클릭시 색상 변경

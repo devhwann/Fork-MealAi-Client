@@ -21,7 +21,7 @@ const GoalText = ({ goal }: GoalTextProps) => {
 	return (
 		<div className="max-w-max">
 			<Badge text="목표" color="primary2" />
-			<span className="text-base font-semibold text-gray-4 ml-2">{title}</span>
+			<span className="text-base font-semibold text-gray-4 ml-2">{title} </span>
 			<span className="text-gray-6">({desc})</span>
 		</div>
 	);

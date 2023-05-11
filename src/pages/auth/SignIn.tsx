@@ -14,7 +14,7 @@ import Toast from "@/components/atoms/toast/Toast";
 const SignIn = () => {
 	const navigate = useNavigate();
 
-	const setIsLoggedInState = useSetRecoilState(isLoggedInState);
+	const setisLoggedInState = useSetRecoilState(isLoggedInState);
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
 	const emailInputRef = useRef<HTMLInputElement>(null);
@@ -69,7 +69,7 @@ const SignIn = () => {
 			localStorage.setItem("refreshToken", refreshToken);
 
 			axios.defaults.headers.common["authorization-"] = `Bearer ${accessToken}`;
-			setIsLoggedInState(true);
+			setisLoggedInState(true);
 			navigate("/");
 		} catch (err) {
 			alert(data.response.data.message);
