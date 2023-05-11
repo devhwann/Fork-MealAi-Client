@@ -55,7 +55,7 @@ const Header = () => {
 					<Link to="/mypage">
 						<p>마이페이지</p>
 					</Link>
-					<Link to="/mylog">
+					<Link to={`/mylog/${1}`}>
 						<p>식단일지</p>
 					</Link>
 					<Link to="/" onClick={handleLogout}>
