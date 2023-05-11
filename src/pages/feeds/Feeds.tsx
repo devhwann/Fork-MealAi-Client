@@ -52,10 +52,6 @@ const Feeds = () => {
 		}
 	}, [params]);
 
-	// useEffect(() => {
-	// 	getFeeds();
-	// }, [params.filter, params.goal]);
-
 	useEffect(() => {
 		// observerTarget.current와 hashNextPage가 모두 truthy일 때만 실행
 		if (!observerTarget.current || !hashNextPage) return;
@@ -69,6 +65,10 @@ const Feeds = () => {
 
 		return () => io.disconnect();
 	}, [getFeeds, hashNextPage]);
+
+	// useEffect(() => {
+	// 	getFeeds();
+	// }, [params.filter, params.goal]);
 
 	// observer 콜백함수
 	// const onIntersect: IntersectionObserverCallback = (entries, observer) => {
