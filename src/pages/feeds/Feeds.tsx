@@ -1,4 +1,4 @@
-import { ChangeEvent, useCallback, useEffect, useState } from "react";
+import { ChangeEvent, useCallback, useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useRecoilValue } from "recoil";
 import { isLoggedInState } from "@/recoil/state";
@@ -13,9 +13,12 @@ const Feeds = () => {
 	// 로그인 여부 확인
 	const isLoggedin = useRecoilValue(isLoggedInState);
 
-	const [page, setPage] = useState(1);
 	const [feeds, setFeeds] = useState<GetFeedsResponseTypes[]>([]);
-	const [lastFeed, setLastFeed] = useState<HTMLDivElement | null>(null);
+	// const page = useRef<number>(1);
+	const [page, setPage] = useState(1);
+	const [hashNextPage, setHashNextPage] = useState<boolean>(true);
+	const observerTarget = useRef<HTMLDivElement>(null);
+	// const [lastFeed, setLastFeed] = useState<HTMLDivElement | null>(null);
 
 	// 최신순 인기순 필터 & 목표 검색 카테고리
 	const [filter, setFilter] = useState("newest");
@@ -29,45 +32,64 @@ const Feeds = () => {
 	function handleGoal(e: ChangeEvent<HTMLSelectElement>) {
 		setFilterGoal(e.target.value);
 	}
+	console.log(filter, filterGoal);
 
 	// api request params
 	const params: GetFeedsTypes = { page: page, per_page: 10, filter: filter, goal: filterGoal };
 
 	const getFeeds = useCallback(async () => {
-		let data;
+		let data: any;
 		try {
 			data = await feedsApi.getFeedsRequest("/api/feeds", params);
-			setFeeds(data.data);
+			setFeeds((prev) => [...prev, ...data.data]);
+			setHashNextPage(data.data.length === params.per_page);
+			if (hashNextPage) {
+				setPage((page) => page + 1);
+			}
 			console.log("피드 불러오기 성공!");
 		} catch (err) {
 			alert(data.response.data.message);
 		}
-	}, [page]);
+	}, [params]);
+
+	// useEffect(() => {
+	// 	getFeeds();
+	// }, [params.filter, params.goal]);
 
 	useEffect(() => {
-		getFeeds();
-	}, [page, params.filter, params.goal]);
+		// observerTarget.current와 hashNextPage가 모두 truthy일 때만 실행
+		if (!observerTarget.current || !hashNextPage) return;
+
+		const io = new IntersectionObserver((entries, observer) => {
+			if (entries[0].isIntersecting) {
+				getFeeds();
+			}
+		});
+		io.observe(observerTarget.current);
+
+		return () => io.disconnect();
+	}, [getFeeds, hashNextPage]);
 
 	// observer 콜백함수
-	const onIntersect: IntersectionObserverCallback = (entries, observer) => {
-		const entry = entries[0];
-		if (entry.isIntersecting) {
-			//뷰포트에 마지막 이미지가 들어오고, page값에 1을 더하여 새 fetch 요청을 보내게됨 (useEffect의 dependency배열에 page가 있음)
-			setPage((prev) => prev + 1);
-			// 현재 타겟을 unobserver함
-			observer.unobserve(entry.target);
-		}
-	};
+	// const onIntersect: IntersectionObserverCallback = (entries, observer) => {
+	// 	const entry = entries[0];
+	// 	if (entry.isIntersecting) {
+	// 		//뷰포트에 마지막 이미지가 들어오고, page값에 1을 더하여 새 fetch 요청을 보내게됨 (useEffect의 dependency배열에 page가 있음)
+	// 		setCurrentPage((prev) => prev + 1);
+	// 		// 현재 타겟을 unobserver함
+	// 		observer.unobserve(entry.target);
+	// 	}
+	// };
 
-	useEffect(() => {
-		let observer: IntersectionObserver;
-		if (lastFeed) {
-			observer = new IntersectionObserver(onIntersect, { threshold: 0.5 });
-			//observer 생성 시 observe할 target 요소는 불러온 이미지의 마지막아이템(feeds 배열의 마지막 아이템)으로 지정
-			observer.observe(lastFeed);
-		}
-		return () => observer && observer.disconnect();
-	}, [lastFeed]);
+	// useEffect(() => {
+	// 	let observer: IntersectionObserver;
+	// 	if (lastFeed) {
+	// 		observer = new IntersectionObserver(onIntersect, { threshold: 0.5 });
+	// 		//observer 생성 시 observe할 target 요소는 불러온 이미지의 마지막아이템(feeds 배열의 마지막 아이템)으로 지정
+	// 		observer.observe(lastFeed);
+	// 	}
+	// 	return () => observer && observer.disconnect();
+	// }, [lastFeed]);
 
 	// // 처음 진입시 전체 피드 불러오기(최신순&모든 목표)
 	// useEffect(() => {
@@ -199,8 +221,7 @@ const Feeds = () => {
 					</select>
 				</>
 			</div>
-			{/* ref={setRef} */}
-			<div ref={setLastFeed} className="flex flex-wrap w-1200 mt-8 gap-6 feedBox">
+			<div className="flex flex-wrap w-1200 mt-8 gap-6 feedBox">
 				{feeds?.map((v, i) => {
 					return (
 						<Thumb
@@ -215,6 +236,7 @@ const Feeds = () => {
 					);
 				})}
 			</div>
+			<div ref={observerTarget}></div>
 		</div>
 	);
 };
