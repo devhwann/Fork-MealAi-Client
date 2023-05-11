@@ -19,4 +19,8 @@ export const feedsApi = Object.freeze({
 		const response = axiosHandler.get(endPoint);
 		return response;
 	},
+	async patchLikesRequest(endPoint: string) {
+		const response = axiosHandler.patch(endPoint);
+		return response;
+	},
 });
