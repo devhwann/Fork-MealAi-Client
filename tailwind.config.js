@@ -61,5 +61,6 @@ export default {
 		utils: true,
 		logs: true,
 		rtl: false,
+		darkMode: false,
 	},
 };
