@@ -1,4 +1,4 @@
-import { ChangeEvent, useEffect, useState } from "react";
+import { ChangeEvent, useCallback, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useRecoilValue } from "recoil";
 import { isLoggedInState } from "@/recoil/state";
@@ -21,10 +21,19 @@ const Feeds = () => {
 	const [filter, setFilter] = useState("newest");
 	const [filterGoal, setFilterGoal] = useState("all");
 
+	// 최신순, 인기순 클릭시 색상 변경
+	const [clickNewest, setClickNewest] = useState(true);
+	const [clickPopularity, setClickPopularity] = useState(false);
+
+	// 목표 카테고리 설정
+	function handleGoal(e: ChangeEvent<HTMLSelectElement>) {
+		setFilterGoal(e.target.value);
+	}
+
 	// api request params
 	const params: GetFeedsTypes = { page: page, per_page: 10, filter: filter, goal: filterGoal };
 
-	const getFeeds = async () => {
+	const getFeeds = useCallback(async () => {
 		let data;
 		try {
 			data = await feedsApi.getFeedsRequest("/api/feeds", params);
@@ -33,27 +42,21 @@ const Feeds = () => {
 		} catch (err) {
 			alert(data.response.data.message);
 		}
-	};
+	}, [page]);
 
 	useEffect(() => {
 		getFeeds();
 	}, [page, params.filter, params.goal]);
 
-	// 목표 카테고리 설정
-	function handleGoal(e: ChangeEvent<HTMLSelectElement>) {
-		setFilterGoal(e.target.value);
-	}
-
 	// observer 콜백함수
 	const onIntersect: IntersectionObserverCallback = (entries, observer) => {
-		entries.forEach((entry) => {
-			if (entry.isIntersecting) {
-				//뷰포트에 마지막 이미지가 들어오고, page값에 1을 더하여 새 fetch 요청을 보내게됨 (useEffect의 dependency배열에 page가 있음)
-				setPage((prev) => prev + 1);
-				// 현재 타겟을 unobserver함
-				observer.unobserve(entry.target);
-			}
-		});
+		const entry = entries[0];
+		if (entry.isIntersecting) {
+			//뷰포트에 마지막 이미지가 들어오고, page값에 1을 더하여 새 fetch 요청을 보내게됨 (useEffect의 dependency배열에 page가 있음)
+			setPage((prev) => prev + 1);
+			// 현재 타겟을 unobserver함
+			observer.unobserve(entry.target);
+		}
 	};
 
 	useEffect(() => {
@@ -110,10 +113,6 @@ const Feeds = () => {
 		await feedsApi.patchLikesRequest(`/api/feeds/likes/${feedId}`);
 		return;
 	};
-
-	// 최신순, 인기순 클릭시 색상 변경
-	const [clickNewest, setClickNewest] = useState(true);
-	const [clickPopularity, setClickPopularity] = useState(false);
 
 	return (
 		<div className="flex flex-col items-center mt-20">
