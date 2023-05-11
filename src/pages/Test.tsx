@@ -245,7 +245,7 @@ const Test = () => {
 			<br />
 			<br />
 			<div className="w-96 p-10 border-solid border border-gray-7 rounded-lg">
-				<HorizontalProgressBars
+				{/* <HorizontalProgressBars
 					kcalValue={982}
 					kcalMax={2200}
 					carboValue={8}
@@ -254,12 +254,12 @@ const Test = () => {
 					proteinMax={20}
 					fatValue={12}
 					fatMax={16}
-				/>
+				/> */}
 			</div>
 			<br />
 			<br />
 			<div className="flex gap-10">
-				<VerticalProgressBars
+				{/* <VerticalProgressBars
 					kcalValue={982}
 					kcalMax={2200}
 					carboValue={8}
@@ -291,7 +291,7 @@ const Test = () => {
 					fatValue={12}
 					fatMax={16}
 					day="수"
-				/>
+				/> */}
 			</div>
 			<br />
 			<br />
@@ -356,7 +356,7 @@ const Test = () => {
 			</div>
 			<br />
 			<br />
-			<ReportInfoCards
+			{/* <ReportInfoCards
 				kcalValue={2200}
 				kcalMax={2200}
 				carboValue={8}
@@ -365,7 +365,7 @@ const Test = () => {
 				proteinMax={20}
 				fatValue={80}
 				fatMax={16}
-			/>
+			/> */}
 		</>
 	);
 };

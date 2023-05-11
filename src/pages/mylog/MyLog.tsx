@@ -8,34 +8,52 @@ import TinyButton from "@/components/atoms/buttons/TinyButton";
 import Thumb from "@/components/atoms/thumbnail/Thumbnail";
 
 import TempImage from "@/assets/temp_image.jpg"; // TODO : 실제 데이터 연동 후 지우기
+import { UserDailyNutrientTypes } from "@/types/feeds/feedsResponseTypes";
 import { reportApi } from "@/api/report";
 
 // TODO : 페이지 처음 진입할 때 params ?
 const MyLog = () => {
 	const navigate = useNavigate();
-
 	const { week } = useParams();
+
+	// 바그래프 임시데이터임
+	const [nutry, setNutry] = useState<UserDailyNutrientTypes>({
+		kcal: 0,
+		carbohydrate: 0,
+		protein: 0,
+		fat: 0,
+	});
+	const [usersNutry, setUsersNutry] = useState<UserDailyNutrientTypes>({
+		kcal: 0,
+		carbohydrate: 0,
+		protein: 0,
+		fat: 0,
+	});
 
 	// 좋아요버튼
 	const [isLike, setIsLike] = useState(false);
 
 	useEffect(() => {
-		// async function fetchReport() {
-		// 	let reportWeek;
-		// 	try {
-		// 		reportWeek = await reportApi.getMylogsRequest(`/api/reports/history/${week}`);
-		// 		console.log(reportWeek);
-		// 	} catch (err) {
-		// 		console.log("error", err);
-		// 	}
-		// }
-		// fetchReport();
+		async function fetchReport() {
+			let reportWeek;
+			try {
+				reportWeek = await reportApi.getMylogsRequest(`/api/reports/history/${week}`);
+				console.log(reportWeek);
+			} catch (err) {
+				console.log("error", err);
+			}
+		}
+		fetchReport();
 	}, [week]);
 
 	const prevClick = () => {
 		navigate(`/mylog/${parseInt(week!) + 1}`);
 	};
 	const nextClick = () => {
+		if (week && Number(week) <= 1) {
+			alert("가장 최근 주 입니다.");
+			return;
+		}
 		navigate(`/mylog/${parseInt(week!) - 1}`);
 	};
 	return (
@@ -51,7 +69,7 @@ const MyLog = () => {
 							<BasicButton
 								type="button"
 								onClick={() => {
-									navigate("/mylog/weekly-report/:week");
+									navigate(`/mylog/weekly-report/${week}`);
 								}}
 								width={false}
 								style="primary"
@@ -60,16 +78,7 @@ const MyLog = () => {
 							</BasicButton>
 						</div>
 						<div className="my-auto w-80 max-h-fit items-center">
-							<HorizontalProgressBars
-								kcalValue={982}
-								kcalMax={2200}
-								carboValue={8}
-								carboMax={113}
-								proteinValue={25}
-								proteinMax={20}
-								fatValue={12}
-								fatMax={16}
-							/>
+							<HorizontalProgressBars nutry={nutry} usersNutry={usersNutry} />
 						</div>
 					</div>
 					<ArrowButton direction="next" onClick={nextClick} />
@@ -86,16 +95,7 @@ const MyLog = () => {
 					<div className="flex flex-wrap w-1200 mt-6 gap-6">
 						<div className="w-220 h-220 px-6 py-5 border-solid border border-gray-7 rounded-lg">
 							<div className="scale-90">
-								<HorizontalProgressBars
-									kcalValue={982}
-									kcalMax={2200}
-									carboValue={8}
-									carboMax={113}
-									proteinValue={25}
-									proteinMax={20}
-									fatValue={12}
-									fatMax={16}
-								/>
+								<HorizontalProgressBars nutry={nutry} usersNutry={usersNutry} />
 							</div>
 						</div>
 						<Thumb src={TempImage} id={1} size="md" type="log" mealTime="breakfast" open={true} />
@@ -116,16 +116,7 @@ const MyLog = () => {
 					<div className="flex flex-wrap w-1200 mt-6 gap-6">
 						<div className="w-220 h-220 px-6 py-5 border-solid border border-gray-7 rounded-lg">
 							<div className="scale-90">
-								<HorizontalProgressBars
-									kcalValue={982}
-									kcalMax={2200}
-									carboValue={8}
-									carboMax={113}
-									proteinValue={25}
-									proteinMax={20}
-									fatValue={12}
-									fatMax={16}
-								/>
+								<HorizontalProgressBars nutry={nutry} usersNutry={usersNutry} />
 							</div>
 						</div>
 						<Thumb src={TempImage} id={1} size="md" type="log" mealTime="lunch" open={true} />

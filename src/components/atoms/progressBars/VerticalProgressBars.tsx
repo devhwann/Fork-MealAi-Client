@@ -23,24 +23,14 @@ const ProgressBar = ({ type, value, max }: ProgressBarProps) => {
 };
 
 // 모음 구성
-const VerticalProgressBars = ({
-	kcalValue,
-	kcalMax,
-	carboValue,
-	carboMax,
-	proteinValue,
-	proteinMax,
-	fatValue,
-	fatMax,
-	day,
-}: VerticalProgressBarsProps) => {
+const VerticalProgressBars = ({ day, nutry, usersNutry }: VerticalProgressBarsProps) => {
 	return (
 		<div className="w-14">
 			<div className="flex gap-2">
-				<ProgressBar type="칼로리" value={kcalValue} max={kcalMax} />
-				<ProgressBar type="탄수화물" value={carboValue} max={carboMax} />
-				<ProgressBar type="단백질" value={proteinValue} max={proteinMax} />
-				<ProgressBar type="지방" value={fatValue} max={fatMax} />
+				<ProgressBar type="칼로리" value={nutry.kcal} max={usersNutry.kcal} />
+				<ProgressBar type="탄수화물" value={nutry.carbohydrate} max={usersNutry.carbohydrate} />
+				<ProgressBar type="단백질" value={nutry.protein} max={usersNutry.protein} />
+				<ProgressBar type="지방" value={nutry.fat} max={usersNutry.fat} />
 			</div>
 
 			<div className="h-px mt-4 mb-2 bg-gray-8"></div>

@@ -1,7 +1,8 @@
 import { ChangeEvent, MouseEvent, useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { userApi } from "@/api/user";
 import { validateConfirmPassword, validatePassword } from "@/utils/validation";
+import { axios } from "@/utils/axios.utils";
+import { userApi } from "@/api/user";
 import { feedsApi } from "@/api/feeds";
 import { GetFeedsResponseTypes } from "@/types/feeds/feedsResponseTypes";
 import BasicButton from "@/components/atoms/buttons/BasicButton";
@@ -11,10 +12,6 @@ import Modal from "@/components/organisms/Modal";
 import Input from "@/components/atoms/inputs/Input";
 import InputWithLabel from "@/components/organisms/InputWithLabel";
 import InputLabel from "@/components/atoms/inputs/InputLabel";
-import TempImage from "@/assets/temp_image.jpg"; // TODO : 실제 데이터 연동 후 지우기
-import { axios, axiosHandler } from "@/utils/axios.utils";
-import { useRecoilValue } from "recoil";
-import { isLoggedInState } from "@/recoil/state";
 
 const MyPage = () => {
 	const navigate = useNavigate();
@@ -23,6 +20,7 @@ const MyPage = () => {
 	const [goal, setGoal] = useState<GoalType>("balance");
 	const [myLikesFeeds, setMyLikesFeeds] = useState<GetFeedsResponseTypes[]>();
 
+	// TODO : 내가 좋아한 식단 인피니티 스크롤 구현
 	useEffect(() => {
 		axios
 			.all([userApi.userInfoRequest("/api/users"), feedsApi.getMyLikesRequest("/api/feeds/likes")])
@@ -34,38 +32,11 @@ const MyPage = () => {
 				})
 			)
 			.catch((err) => {
-				// console.log(err);
+				console.log(err);
 				navigate("/auth/sign-in");
 				alert("다시 로그인 해주세요.");
 				localStorage.clear();
 			});
-
-		// TODO : axios 개별 코드 (디버깅 후 삭제 예정; 지영)
-		// async function fetchData() {
-		// 	let data;
-		// 	try {
-		// 		data = await userApi.userInfoRequest("/api/users");
-		// 		setNickname(data.data.nickname);
-		// 		setGoal(data.data.goal);
-		// 	} catch (err) {
-		// 		navigate("/auth/sign-in");
-		// 		alert("다시 로그인 해주세요.");
-		// 		localStorage.clear();
-		// 	}
-		// }
-		// fetchData();
-
-		// // test
-		// async function test() {
-		// 	let data;
-		// 	try {
-		// 		data = await feedsApi.getMyLikesRequest("/api/feeds/likes");
-		// 		console.log("좋아요 피드", data.data);
-		// 	} catch (err) {
-		// 		console.log("err!!", err);
-		// 	}
-		// }
-		// test();
 	}, []);
 
 	// TODO : 소셜 기능 추가시 > 소셜 회원 여부도 받아서 비밀번호 변경 버튼 숨김처리 해야 함

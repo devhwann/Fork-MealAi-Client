@@ -1,6 +1,6 @@
 import { ChangeEvent, MouseEvent, useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { axios } from "@/utils/axios.utils";
+import { axios, axiosHandler } from "@/utils/axios.utils";
 import { useRecoilState, useSetRecoilState } from "recoil";
 import { isLoggedInState, isPasswordToastState } from "@/recoil/state";
 import { authApi } from "@/api/auth";
@@ -68,7 +68,7 @@ const SignIn = () => {
 			localStorage.setItem("accessToken", accessToken);
 			localStorage.setItem("refreshToken", refreshToken);
 
-			axios.defaults.headers.common["authorization-"] = `Bearer ${accessToken}`;
+			axiosHandler.defaults.headers.common["authorization-"] = `Bearer ${accessToken}`;
 			setisLoggedInState(true);
 			navigate("/");
 		} catch (err) {

@@ -11,6 +11,7 @@ import ToggleButton from "@/components/atoms/buttons/ToggleButton";
 import HorizontalProgressBars from "@/components/atoms/progressBars/HorizontalProgressBars";
 
 import TempImage from "@/assets/temp_image.jpg"; // TODO : 실제 데이터 연동 후 지우기
+import { UserDailyNutrientTypes } from "@/types/feeds/feedsResponseTypes";
 
 // 검색 결과 임시 데이터
 const temp = [
@@ -34,6 +35,21 @@ const temp = [
 const Result = () => {
 	const navigate = useNavigate();
 
+	// data set
+	// 바그래프 임시데이터임
+	const [nutry, setNutry] = useState<UserDailyNutrientTypes>({
+		kcal: 0,
+		carbohydrate: 0,
+		protein: 0,
+		fat: 0,
+	});
+	const [usersNutry, setUsersNutry] = useState<UserDailyNutrientTypes>({
+		kcal: 0,
+		carbohydrate: 0,
+		protein: 0,
+		fat: 0,
+	});
+
 	// 토글버튼
 	const [isChecked, setIsChecked] = useState(true);
 
@@ -47,11 +63,10 @@ const Result = () => {
 	const [searchModal, setSearchModal] = useState(false);
 	const handleSearchModal = () => setSearchModal(!searchModal);
 
-	// 데이터
+	// 검색
 	const [searchKeyWord, setSearchKeyWord] = useState<string>();
 	const searchInputRef = useRef<HTMLInputElement>(null);
 
-	// 검색
 	function handleSearch() {
 		const searchTextValue = searchInputRef?.current?.value as string;
 		if (searchTextValue.length === 0) {
@@ -87,16 +102,7 @@ const Result = () => {
 							<h4 className="mb-4">영양소 정보</h4>
 							<div className="w-96 p-8 border-solid border border-gray-7 rounded-lg">
 								<p className="text-sm text-gray-5 mb-6 text-right">일일 영양 섭취량 대비</p>
-								<HorizontalProgressBars
-									kcalValue={982}
-									kcalMax={2200}
-									carboValue={8}
-									carboMax={113}
-									proteinValue={25}
-									proteinMax={20}
-									fatValue={12}
-									fatMax={16}
-								/>
+								<HorizontalProgressBars nutry={nutry} usersNutry={usersNutry} />
 							</div>
 						</div>
 					</div>
@@ -146,7 +152,7 @@ const Result = () => {
 						handleSearchModal();
 						setSearchKeyWord("");
 					}}
-					title="검색"
+					title="음식 검색"
 				>
 					<SearchInput name="search" id="search" value={searchKeyWord} onClick={handleSearch} ref={searchInputRef} />
 					<SearchResult
