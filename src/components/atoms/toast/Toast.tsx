@@ -1,9 +1,9 @@
-import { useRecoilState } from "recoil";
+import { useSetRecoilState } from "recoil";
 import { isPasswordToastState } from "@/recoil/state";
 import CloaseIcon from "@/assets/icon_toast_close.svg";
 
 const Toast = () => {
-	const [isPasswordToast, setIsPasswordToast] = useRecoilState(isPasswordToastState);
+	const setIsPasswordToast = useSetRecoilState(isPasswordToastState);
 
 	return (
 		<div

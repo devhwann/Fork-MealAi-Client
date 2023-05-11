@@ -1,5 +1,7 @@
-import { ChangeEvent, useEffect, useRef, useState } from "react";
+import { ChangeEvent, MouseEvent, useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { userApi } from "@/api/user";
+import { GoalType } from "@/components/organisms/GoalText";
 import Input from "@/components/atoms/inputs/Input";
 import InputLabel from "@/components/atoms/inputs/InputLabel";
 import SelectWithLabel from "@/components/organisms/SelectWithLabel";
@@ -7,29 +9,14 @@ import RadioButton from "@/components/atoms/buttons/RadioButton";
 import GoalButtons from "@/components/organisms/GoalButtons";
 import BasicButton from "@/components/atoms/buttons/BasicButton";
 import Modal from "@/components/organisms/Modal";
-import { userApi } from "@/api/user";
-import { GoalType } from "@/components/organisms/GoalText";
 
 const EditInfo = () => {
 	const navigate = useNavigate();
 
-	// TODO : 유저 데이터 받아온 후 로직 구현
-	// 유저 기존 정보
-	// const nickname = "황금늑대";
-	// const ageGroup = "1";
-	// const userGender = "F";
-	// const goal = "diet";
-
-	// 유저 변경 정보
 	const [gender, setGender] = useState("M");
 	const [ageGroup, setAgeGroup] = useState<number>();
 	const [nickname, setNickname] = useState("");
 	const [goal, setGoal] = useState<GoalType>("balance");
-
-	// useEffect(() => {
-	// 	setGender(userGender);
-	// 	setNewGoal(goal);
-	// }, []);
 
 	useEffect(() => {
 		async function fetchData() {
@@ -41,36 +28,69 @@ const EditInfo = () => {
 				setNickname(data.data.nickname);
 				setGoal(data.data.goal);
 			} catch (err) {
-				navigate("/");
+				navigate("/auth/sign-in");
 				alert("다시 로그인 해주세요.");
+				localStorage.clear();
 			}
 		}
 		fetchData();
 	}, []);
 
-	function handleNickname(e: ChangeEvent<HTMLInputElement>) {
-		setNickname(e.target.value);
-	}
-	function handleAgeGroup(e: ChangeEvent<HTMLSelectElement>) {
-		setAgeGroup(parseInt(e.target.value));
-	}
-	function handleGender(e: ChangeEvent<HTMLInputElement>) {
-		setGender(e.target.value);
-	}
-	function handleNewGoal(goal: GoalType) {
-		setGoal(goal);
-	}
+	const handleNickname = (e: ChangeEvent<HTMLInputElement>) => setNickname(e.target.value);
+	const handleAgeGroup = (e: ChangeEvent<HTMLSelectElement>) => setAgeGroup(parseInt(e.target.value));
+	const handleGender = (e: ChangeEvent<HTMLInputElement>) => setGender(e.target.value);
+	const handleNewGoal = (goal: GoalType) => setGoal(goal);
+
+	// 회원정보 수정
+	const handleChangeUserInfo = async (event: MouseEvent<HTMLButtonElement>) => {
+		event.preventDefault();
+
+		if (!nickname) {
+			alert("닉네임을 입력해주세요.");
+			window.scrollTo({ top: 0, behavior: "smooth" });
+			return;
+		}
+
+		await userApi.editUserInfoRequest("/api/users", { gender, age_group: ageGroup, nickname, goal });
+		alert("회원정보가 수정되었습니다.");
+		window.scrollTo({ top: 0, behavior: "smooth" });
+	};
 
 	// 탈퇴 모달
 	const [withdrawalModal, setWithdrawalModal] = useState(false);
 	const handleWithdrawalModal = () => setWithdrawalModal(!withdrawalModal);
 
-	// 회원 탈퇴시 비밀번호 확인
-	const [checkPassword, setCheckPassword] = useState("");
+	// 회원 탈퇴
+	const [currentPassword, setCurrentPassword] = useState("");
+	const currentPasswordInputRef = useRef<HTMLInputElement>(null);
 
 	function handleCheckPassword(e: ChangeEvent<HTMLInputElement>) {
-		setCheckPassword(e.target.value);
+		if (currentPasswordInputRef.current) {
+			setCurrentPassword(currentPasswordInputRef.current.value);
+		}
 	}
+
+	const handleDeleteUserInfo = async (event: MouseEvent<HTMLButtonElement>) => {
+		event.preventDefault();
+		if (!currentPassword) {
+			alert("비밀번호를 입력해주세요.");
+			return;
+		}
+
+		const data = await userApi.checkPasswordRequest("/api/users/check_password", { password: currentPassword });
+
+		if (data.status === 200) {
+			const result = await userApi.deleteUserRequest("/api/users");
+
+			if (result.status === 200) {
+				alert("탈퇴되셨습니다. 다음에 또 만나요. 👋");
+				localStorage.clear();
+				navigate("/");
+			}
+		} else {
+			alert(data.response.data.message);
+		}
+	};
 
 	return (
 		<div className="grid justify-items-center mt-20">
@@ -143,7 +163,7 @@ const EditInfo = () => {
 					>
 						취소
 					</BasicButton>
-					<BasicButton type="submit" onClick={() => {}} width={false} style="primary">
+					<BasicButton type="submit" onClick={handleChangeUserInfo} width={false} style="primary">
 						정보수정
 					</BasicButton>
 				</div>
@@ -173,16 +193,17 @@ const EditInfo = () => {
 							type="password"
 							name="password"
 							id="password"
-							value={checkPassword}
+							value={currentPassword}
 							placeholder="비밀번호"
 							onChange={handleCheckPassword}
+							ref={currentPasswordInputRef}
 						/>
 					</div>
 					<div className="flex justify-center gap-2">
 						<BasicButton type="button" onClick={handleWithdrawalModal} width={false} style="bg">
 							취소
 						</BasicButton>
-						<BasicButton type="button" onClick={() => {}} width={false} style="gray">
+						<BasicButton type="button" onClick={handleDeleteUserInfo} width={false} style="gray">
 							탈퇴
 						</BasicButton>
 					</div>

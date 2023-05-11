@@ -98,11 +98,11 @@ const MyLog = () => {
 								/>
 							</div>
 						</div>
-						<Thumb src={TempImage} id={1} size="md" type="log" mealTime="B" open={true} />
-						<Thumb src={TempImage} id={1} size="md" type="log" mealTime="L" open={true} />
-						<Thumb src={TempImage} id={1} size="md" type="log" mealTime="S" open={false} />
-						<Thumb src={TempImage} id={1} size="md" type="log" mealTime="D" open={true} />
-						<Thumb src={TempImage} id={1} size="md" type="log" mealTime="S" open={false} />
+						<Thumb src={TempImage} id={1} size="md" type="log" mealTime="breakfast" open={true} />
+						<Thumb src={TempImage} id={1} size="md" type="log" mealTime="lunch" open={true} />
+						<Thumb src={TempImage} id={1} size="md" type="log" mealTime="snack" open={false} />
+						<Thumb src={TempImage} id={1} size="md" type="log" mealTime="dinner" open={true} />
+						<Thumb src={TempImage} id={1} size="md" type="log" mealTime="snack" open={false} />
 					</div>
 				</div>
 
@@ -128,9 +128,9 @@ const MyLog = () => {
 								/>
 							</div>
 						</div>
-						<Thumb src={TempImage} id={1} size="md" type="log" mealTime="L" open={true} />
-						<Thumb src={TempImage} id={1} size="md" type="log" mealTime="D" open={true} />
-						<Thumb src={TempImage} id={1} size="md" type="log" mealTime="S" open={false} />
+						<Thumb src={TempImage} id={1} size="md" type="log" mealTime="lunch" open={true} />
+						<Thumb src={TempImage} id={1} size="md" type="log" mealTime="dinner" open={true} />
+						<Thumb src={TempImage} id={1} size="md" type="log" mealTime="snack" open={false} />
 					</div>
 				</div>
 			</div>

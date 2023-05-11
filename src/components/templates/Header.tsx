@@ -11,18 +11,18 @@ interface MenuObjProps {
 }
 
 const Header = () => {
-	const [isLoggedIn, setIsLoggedInState] = useRecoilState(isLoggedInState);
+	const [isLoggedIn, setisLoggedInState] = useRecoilState(isLoggedInState);
 
 	useEffect(() => {
 		const isLoggedInValid = localStorage.getItem("accessToken") ? true : false;
-		setIsLoggedInState(isLoggedInValid);
-	}, [isLoggedIn]);
+		setisLoggedInState(isLoggedInValid);
+	}, [isLoggedIn, localStorage.getItem("refreshToken")]);
 
 	const handleLogout = async () => {
 		await authApi.authLogoutRequest("/api/auth/logout");
 		localStorage.removeItem("accessToken");
 		localStorage.removeItem("refreshToken");
-		setIsLoggedInState(false);
+		setisLoggedInState(false);
 	};
 
 	const menuObj: MenuObjProps[] = [

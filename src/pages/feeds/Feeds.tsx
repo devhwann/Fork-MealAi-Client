@@ -1,21 +1,145 @@
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useCallback, useEffect, useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useRecoilValue } from "recoil";
+import { isLoggedInState } from "@/recoil/state";
+import { feedsApi } from "@/api/feeds";
+import { GetFeedsTypes } from "@/types/feeds/feedsRequestTypes";
+import { GetFeedsResponseTypes } from "@/types/feeds/feedsResponseTypes";
 import Thumb from "@/components/atoms/thumbnail/Thumbnail";
-import TempImage from "@/assets/temp_image.jpg"; // TODO : 실제 데이터 연동 후 지우기
 
 const Feeds = () => {
-	// 좋아요버튼
-	const [isLike, setIsLike] = useState(false);
+	const navigate = useNavigate();
+
+	// 로그인 여부 확인
+	const isLoggedIn = useRecoilValue(isLoggedInState);
+
+	const [feeds, setFeeds] = useState<GetFeedsResponseTypes[]>([]);
+	// const page = useRef<number>(1);
+	const [page, setPage] = useState(1);
+	const [hashNextPage, setHashNextPage] = useState<boolean>(true);
+	const observerTarget = useRef<HTMLDivElement>(null);
+	// const [lastFeed, setLastFeed] = useState<HTMLDivElement | null>(null);
+
+	// 최신순 인기순 필터 & 목표 검색 카테고리
+	const [filter, setFilter] = useState("newest");
+	const [filterGoal, setFilterGoal] = useState("all");
 
 	// 최신순, 인기순 클릭시 색상 변경
 	const [clickNewest, setClickNewest] = useState(true);
 	const [clickPopularity, setClickPopularity] = useState(false);
 
-	// 목표 검색 카테고리
-	const [isGoal, setIsGoal] = useState("");
-
+	// 목표 카테고리 설정
 	function handleGoal(e: ChangeEvent<HTMLSelectElement>) {
-		setIsGoal(e.target.value);
+		setFilterGoal(e.target.value);
 	}
+	console.log(filter, filterGoal);
+
+	// api request params
+	const params: GetFeedsTypes = { page: page, per_page: 10, filter: filter, goal: filterGoal };
+
+	const getFeeds = useCallback(async () => {
+		let data: any;
+		try {
+			data = await feedsApi.getFeedsRequest("/api/feeds", params);
+			setFeeds((prev) => [...prev, ...data.data]);
+			setHashNextPage(data.data.length === params.per_page);
+			if (hashNextPage) {
+				setPage((page) => page + 1);
+			}
+			console.log("피드 불러오기 성공!");
+		} catch (err) {
+			alert(data.response.data.message);
+		}
+	}, [params]);
+
+	useEffect(() => {
+		// observerTarget.current와 hashNextPage가 모두 truthy일 때만 실행
+		if (!observerTarget.current || !hashNextPage) return;
+
+		const io = new IntersectionObserver((entries, observer) => {
+			if (entries[0].isIntersecting) {
+				getFeeds();
+			}
+		});
+		io.observe(observerTarget.current);
+
+		return () => io.disconnect();
+	}, [getFeeds, hashNextPage]);
+
+	// useEffect(() => {
+	// 	getFeeds();
+	// }, [params.filter, params.goal]);
+
+	// observer 콜백함수
+	// const onIntersect: IntersectionObserverCallback = (entries, observer) => {
+	// 	const entry = entries[0];
+	// 	if (entry.isIntersecting) {
+	// 		//뷰포트에 마지막 이미지가 들어오고, page값에 1을 더하여 새 fetch 요청을 보내게됨 (useEffect의 dependency배열에 page가 있음)
+	// 		setCurrentPage((prev) => prev + 1);
+	// 		// 현재 타겟을 unobserver함
+	// 		observer.unobserve(entry.target);
+	// 	}
+	// };
+
+	// useEffect(() => {
+	// 	let observer: IntersectionObserver;
+	// 	if (lastFeed) {
+	// 		observer = new IntersectionObserver(onIntersect, { threshold: 0.5 });
+	// 		//observer 생성 시 observe할 target 요소는 불러온 이미지의 마지막아이템(feeds 배열의 마지막 아이템)으로 지정
+	// 		observer.observe(lastFeed);
+	// 	}
+	// 	return () => observer && observer.disconnect();
+	// }, [lastFeed]);
+
+	// // 처음 진입시 전체 피드 불러오기(최신순&모든 목표)
+	// useEffect(() => {
+	// 	const getAllFeeds = async () => {
+	// 		let data;
+	// 		try {
+	// 			data = await feedsApi.getFeedsRequest("/api/feeds", params);
+	// 			setFeeds(data.data);
+	// 			console.log("전체 피드(최신순&모든 목표) 불러오기 성공!");
+	// 		} catch (err) {
+	// 			alert(data.response.data.message);
+	// 		}
+	// 	};
+	// 	getAllFeeds();
+	// }, []);
+
+	// // 피드 불러오기
+	// useEffect(() => {
+	// 	const getFeeds = async () => {
+	// 		let data;
+	// 		try {
+	// 			data = await feedsApi.getFeedsRequest("/api/feeds", params);
+	// 			setFeeds(data.data);
+	// 			console.log("필터별 피드 불러오기 성공!");
+	// 		} catch (err) {
+	// 			alert(data.response.data.message);
+	// 		}
+	// 	};
+	// 	getFeeds();
+	// }, [params.filter, params.goal]);
+
+	// 좋아요버튼
+	const toggleLike = async (i: number, feedId: number) => {
+		if (!isLoggedIn) {
+			navigate("../auth/sign-in");
+			return;
+		}
+
+		const copyFeeds = [...feeds!];
+		copyFeeds[i].my_like = !feeds![i].my_like;
+		setFeeds(copyFeeds);
+
+		const patchLikes = await feedsApi.patchLikesRequest(`/api/feeds/likes/${feedId}`);
+
+		if (patchLikes.status !== 200) {
+			navigate("/auth/sign-in");
+			alert("다시 로그인 해주세요.");
+			localStorage.clear();
+		}
+	};
 
 	return (
 		<div className="flex flex-col items-center mt-20">
@@ -32,34 +156,37 @@ const Feeds = () => {
 					{/* TODO : API 명세 받은 후 map함수 돌려서 상위 3개 적용 */}
 					<div className="flex gap-6">
 						<Thumb
-							src={TempImage}
+							src={null}
 							id={1}
 							size="md"
 							type="like"
-							isLike={isLike}
-							onClick={() => {
-								setIsLike(!isLike);
-							}}
+							isLike={false}
+							onClick={() => {}}
+							// TODO : map 돌릴 때 밑에 두 개로 대체하세요
+							// isLike={v.my_like}
+							// onClick={() => toggleLike(i, v.feed_id)}
 						/>
 						<Thumb
-							src={TempImage}
+							src={null}
 							id={1}
 							size="md"
 							type="like"
-							isLike={isLike}
-							onClick={() => {
-								setIsLike(!isLike);
-							}}
+							isLike={false}
+							onClick={() => {}}
+							// TODO : map 돌릴 때 밑에 두 개로 대체하세요
+							// isLike={v.my_like}
+							// onClick={() => toggleLike(i, v.feed_id)}
 						/>
 						<Thumb
-							src={TempImage}
+							src={null}
 							id={1}
 							size="md"
 							type="like"
-							isLike={isLike}
-							onClick={() => {
-								setIsLike(!isLike);
-							}}
+							isLike={false}
+							onClick={() => {}}
+							// TODO : map 돌릴 때 밑에 두 개로 대체하세요
+							// isLike={v.my_like}
+							// onClick={() => toggleLike(i, v.feed_id)}
 						/>
 					</div>
 				</div>
@@ -70,6 +197,7 @@ const Feeds = () => {
 					<button
 						className={`text-gray-5 font-bold ${clickNewest ? "text-primary-1" : ""}`}
 						onClick={() => {
+							setFilter("newest");
 							setClickNewest(true);
 							setClickPopularity(false);
 						}}
@@ -80,6 +208,7 @@ const Feeds = () => {
 					<button
 						className={`text-gray-5 font-bold ${clickPopularity ? "text-primary-1" : ""}`}
 						onClick={() => {
+							setFilter("popularity");
 							setClickPopularity(true);
 							setClickNewest(false);
 						}}
@@ -88,8 +217,8 @@ const Feeds = () => {
 					</button>
 				</div>
 				<>
-					<select className="select select-bordered max-w-xs ml-9" onChange={handleGoal} defaultValue="목표 검색">
-						<option disabled>목표 검색</option>
+					<select className="select select-bordered max-w-xs ml-9" onChange={handleGoal} defaultValue="all">
+						<option value="all">모두 보기</option>
 						<option value="balance">균형잡힌 식단</option>
 						<option value="diet">다이어트</option>
 						<option value="muscle">근력보강</option>
@@ -97,69 +226,22 @@ const Feeds = () => {
 					</select>
 				</>
 			</div>
-			<div className="flex flex-wrap w-1200 mt-8 gap-6">
-				{/* TODO : API 명세 받은 후 map함수 적용 */}
-				<Thumb
-					src={TempImage}
-					id={1}
-					size="md"
-					type="like"
-					isLike={isLike}
-					onClick={() => {
-						setIsLike(!isLike);
-					}}
-				/>
-				<Thumb
-					src={TempImage}
-					id={1}
-					size="md"
-					type="like"
-					isLike={isLike}
-					onClick={() => {
-						setIsLike(!isLike);
-					}}
-				/>
-				<Thumb
-					src={TempImage}
-					id={1}
-					size="md"
-					type="like"
-					isLike={isLike}
-					onClick={() => {
-						setIsLike(!isLike);
-					}}
-				/>{" "}
-				<Thumb
-					src={TempImage}
-					id={1}
-					size="md"
-					type="like"
-					isLike={isLike}
-					onClick={() => {
-						setIsLike(!isLike);
-					}}
-				/>
-				<Thumb
-					src={TempImage}
-					id={1}
-					size="md"
-					type="like"
-					isLike={isLike}
-					onClick={() => {
-						setIsLike(!isLike);
-					}}
-				/>
-				<Thumb
-					src={TempImage}
-					id={1}
-					size="md"
-					type="like"
-					isLike={isLike}
-					onClick={() => {
-						setIsLike(!isLike);
-					}}
-				/>
+			<div className="flex flex-wrap w-1200 mt-8 gap-6 feedBox">
+				{feeds?.map((v, i) => {
+					return (
+						<Thumb
+							src={v.image_url}
+							id={v.feed_id}
+							size="md"
+							type="like"
+							isLike={v.my_like}
+							onClick={() => toggleLike(i, v.feed_id)}
+							key={i}
+						/>
+					);
+				})}
 			</div>
+			<div ref={observerTarget}></div>
 		</div>
 	);
 };

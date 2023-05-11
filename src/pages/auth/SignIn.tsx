@@ -1,7 +1,7 @@
 import { ChangeEvent, MouseEvent, useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { axios } from "@/utils/axios.utils";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useSetRecoilState } from "recoil";
 import { isLoggedInState, isPasswordToastState } from "@/recoil/state";
 import { authApi } from "@/api/auth";
 
@@ -14,7 +14,7 @@ import Toast from "@/components/atoms/toast/Toast";
 const SignIn = () => {
 	const navigate = useNavigate();
 
-	const [isLoggedIn, setIsLoggedInState] = useRecoilState(isLoggedInState);
+	const setisLoggedInState = useSetRecoilState(isLoggedInState);
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
 	const emailInputRef = useRef<HTMLInputElement>(null);
@@ -69,7 +69,7 @@ const SignIn = () => {
 			localStorage.setItem("refreshToken", refreshToken);
 
 			axios.defaults.headers.common["authorization-"] = `Bearer ${accessToken}`;
-			setIsLoggedInState(true);
+			setisLoggedInState(true);
 			navigate("/");
 		} catch (err) {
 			alert(data.response.data.message);

@@ -1,14 +1,18 @@
 import { MouseEvent, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import { useSetRecoilState } from "recoil";
+import { isLoggedInState } from "@/recoil/state";
 import { authApi } from "@/api/auth";
-import { AuthFormType } from "@/types/auth/authTypes";
+import { AuthFormTypes, LoginParams } from "@/types/auth/authTypes";
 import GoalButtons from "@/components/organisms/GoalButtons";
 import BasicButton from "@/components/atoms/buttons/BasicButton";
 import { GoalType } from "@/components/organisms/GoalText";
+import { axiosHandler } from "@/utils/axios.utils";
 
 const Goal = () => {
 	const navigate = useNavigate();
 	const location = useLocation();
+	const setisLoggedInState = useSetRecoilState(isLoggedInState);
 	// 목표 설정
 	const [goal, setGoal] = useState("");
 
@@ -21,7 +25,7 @@ const Goal = () => {
 		e.preventDefault();
 
 		const { state } = location;
-		const form: AuthFormType = {
+		const form: AuthFormTypes = {
 			email: state.form.email,
 			password: state.form.password,
 			gender: state.form.gender,
@@ -30,12 +34,28 @@ const Goal = () => {
 			goal,
 		};
 
+		const userData: LoginParams = {
+			email: form.email,
+			password: form.password,
+		};
+
+		// 회원가입 api호출
 		const data = await authApi.authRegisterRequest("/api/users", form);
 
 		if (data.status === 201) {
+			// 로그인 api  호출
+			const res = await authApi.authLoginRequest("/api/auth/login", userData);
+			const accessToken: string = res.data.access_token;
+			const refreshToken: string = res.data.refresh_token;
+
+			localStorage.setItem("accessToken", accessToken);
+			localStorage.setItem("refreshToken", refreshToken);
+
+			axiosHandler.defaults.headers.common["authorization-"] = `Bearer ${accessToken}`;
+			setisLoggedInState(true);
 			navigate("/");
 		} else {
-			alert(data.message);
+			alert("회원가입에 실패했습니다!");
 		}
 	};
 

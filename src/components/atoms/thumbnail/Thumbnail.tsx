@@ -10,7 +10,7 @@ export interface ThumbnailProps extends LikeButtonProps {
 	id?: number; // params
 	size: "lg" | "md" | "sm"; // 이미지 사이즈
 	type: "like" | "log" | "none"; // 이미지에 얹어지는 요소 타입
-	mealTime?: "B" | "L" | "D" | "S"; // 아침,점심,저녁,간식
+	mealTime?: "breakfast" | "lunch" | "dinner" | "snack"; // 아침,점심,저녁,간식
 	open?: boolean; // 공개 여부
 }
 
@@ -53,7 +53,7 @@ const Thumb = ({ src, id, size, type, mealTime, open, isLike, onClick }: Thumbna
 				{type === "log" && (
 					<>
 						<p className="absolute top-3 left-3 z-10">
-							<Badge text={getMealTime(mealTime)} color="gray" />
+							<Badge text={getMealTime(mealTime!)} color="gray" />
 						</p>
 						{open === false && (
 							<p className="absolute top-3 right-3 z-10">

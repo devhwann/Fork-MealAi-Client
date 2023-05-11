@@ -1,14 +1,14 @@
-import { ThumbnailProps } from "@/components/atoms/thumbnail/Thumbnail";
+export type MealType = "breakfast" | "lunch" | "dinner" | "snack";
 
-export default function getMealTime(time: ThumbnailProps["mealTime"]) {
+export default function getMealTime(time: MealType) {
 	switch (time) {
-		case "B":
+		case "breakfast":
 			return "아침";
-		case "L":
+		case "lunch":
 			return "점심";
-		case "D":
+		case "dinner":
 			return "저녁";
-		case "S":
+		case "snack":
 			return "간식";
 	}
 }
