@@ -9,7 +9,7 @@ import { GetFeedsTypes } from "@/types/feeds/feedsRequestTypes";
 export const feedsApi = Object.freeze({
 	async getFeedsRequest(endPoint: string, params: GetFeedsTypes) {
 		try {
-			const response = await axiosHandler.get(endPoint, { params: { params } });
+			const response = await axiosHandler.get(endPoint, { params });
 			return response;
 		} catch (err: any) {
 			return err;

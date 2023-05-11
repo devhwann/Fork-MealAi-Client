@@ -88,6 +88,7 @@ const SignUp = () => {
 
 		if (data.status === 200) {
 			setAuthCode(data.data.authentication_number);
+			alert("인증번호가 전송되었습니다.");
 		} else {
 			alert(data.response.data.message);
 		}
