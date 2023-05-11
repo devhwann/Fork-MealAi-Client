@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { ChangeEvent, MouseEvent, useEffect, useRef, useState } from "react";
-import { useRecoilState } from "recoil";
+import { useSetRecoilState } from "recoil";
 import { isPasswordToastState } from "@/recoil/state";
 import { authApi } from "@/api/auth";
 
@@ -13,7 +13,7 @@ const FindPassword = () => {
 
 	const [email, setEmail] = useState("");
 	const emailInputRef = useRef<HTMLInputElement>(null);
-	const [isPasswordToast, setIsPasswordToast] = useRecoilState(isPasswordToastState);
+	const setIsPasswordToast = useSetRecoilState(isPasswordToastState);
 
 	function handleEmailChange(e: ChangeEvent<HTMLInputElement>) {
 		if (emailInputRef.current) {
