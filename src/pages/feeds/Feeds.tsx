@@ -1,21 +1,28 @@
 import { ChangeEvent, MouseEvent, useEffect, useState } from "react";
-import Thumb from "@/components/atoms/thumbnail/Thumbnail";
-import TempImage from "@/assets/temp_image.jpg"; // TODO : 실제 데이터 연동 후 지우기
+import { useNavigate } from "react-router-dom";
+import { useRecoilValue } from "recoil";
+import { isLoggedInState } from "@/recoil/state";
 import { feedsApi } from "@/api/feeds";
 import { GetFeedsTypes } from "@/types/feeds/feedsRequestTypes";
 import { GetFeedsResponseTypes } from "@/types/feeds/feedsResponseTypes";
 import useIntersectionObserver from "@/hooks/useIntersectionObserver";
+import Thumb from "@/components/atoms/thumbnail/Thumbnail";
 
 const Feeds = () => {
+	const navigate = useNavigate();
+
+	// 로그인 여부 확인
+	const isLoggedin = useRecoilValue(isLoggedInState);
+
 	const [currentPage, setCurrentPage] = useState(1);
 	const [feeds, setFeeds] = useState<GetFeedsResponseTypes[]>([]);
 
-	// 인피니트 스크롤 설정
-	const onIntersect: IntersectionObserverCallback = ([{ isIntersecting }]) => {
-		console.log(`감지결과 : ${isIntersecting}`);
-		// setCurrentPage((page) => page + 1);
-	};
-	const { setRef } = useIntersectionObserver({ onIntersect });
+	// // 인피니트 스크롤 설정
+	// const onIntersect: IntersectionObserverCallback = ([{ isIntersecting }]) => {
+	// 	console.log(`감지결과 : ${isIntersecting}`);
+	// 	// setCurrentPage((page) => page + 1);
+	// };
+	// const { setRef } = useIntersectionObserver({ onIntersect });
 
 	// 최신순 인기순 필터 & 목표 검색 카테고리
 	const [filter, setFilter] = useState("newest");
@@ -59,7 +66,19 @@ const Feeds = () => {
 	}, [params.filter, params.goal]);
 
 	// 좋아요버튼
-	const [isLike, setIsLike] = useState(false);
+	const toggleLike = async (i: number, feedId: number) => {
+		if (!isLoggedin) {
+			navigate("../auth/sign-in");
+			return;
+		}
+
+		const copyFeeds = [...feeds!];
+		copyFeeds[i].my_like = !feeds![i].my_like;
+		setFeeds(copyFeeds);
+
+		await feedsApi.patchLikesRequest(`/api/feeds/likes/${feedId}`);
+		return;
+	};
 
 	// 최신순, 인기순 클릭시 색상 변경
 	const [clickNewest, setClickNewest] = useState(true);
@@ -80,34 +99,37 @@ const Feeds = () => {
 					{/* TODO : API 명세 받은 후 map함수 돌려서 상위 3개 적용 */}
 					<div className="flex gap-6">
 						<Thumb
-							src={TempImage}
+							src={null}
 							id={1}
 							size="md"
 							type="like"
-							isLike={isLike}
-							onClick={() => {
-								setIsLike(!isLike);
-							}}
+							isLike={false}
+							onClick={() => {}}
+							// TODO : map 돌릴 때 밑에 두 개로 대체하세요
+							// isLike={v.my_like}
+							// onClick={() => toggleLike(i, v.feed_id)}
 						/>
 						<Thumb
-							src={TempImage}
+							src={null}
 							id={1}
 							size="md"
 							type="like"
-							isLike={isLike}
-							onClick={() => {
-								setIsLike(!isLike);
-							}}
+							isLike={false}
+							onClick={() => {}}
+							// TODO : map 돌릴 때 밑에 두 개로 대체하세요
+							// isLike={v.my_like}
+							// onClick={() => toggleLike(i, v.feed_id)}
 						/>
 						<Thumb
-							src={TempImage}
+							src={null}
 							id={1}
 							size="md"
 							type="like"
-							isLike={isLike}
-							onClick={() => {
-								setIsLike(!isLike);
-							}}
+							isLike={false}
+							onClick={() => {}}
+							// TODO : map 돌릴 때 밑에 두 개로 대체하세요
+							// isLike={v.my_like}
+							// onClick={() => toggleLike(i, v.feed_id)}
 						/>
 					</div>
 				</div>
@@ -139,7 +161,6 @@ const Feeds = () => {
 				</div>
 				<>
 					<select className="select select-bordered max-w-xs ml-9" onChange={handleGoal} defaultValue="all">
-						<option disabled>목표 검색</option>
 						<option value="all">모두 보기</option>
 						<option value="balance">균형잡힌 식단</option>
 						<option value="diet">다이어트</option>
@@ -148,7 +169,8 @@ const Feeds = () => {
 					</select>
 				</>
 			</div>
-			<div ref={setRef} className="flex flex-wrap w-1200 mt-8 gap-6">
+			{/* ref={setRef} */}
+			<div className="flex flex-wrap w-1200 mt-8 gap-6">
 				{feeds &&
 					feeds.map((v, i) => {
 						return (
@@ -157,10 +179,8 @@ const Feeds = () => {
 								id={v.feed_id}
 								size="md"
 								type="like"
-								isLike={isLike}
-								onClick={() => {
-									setIsLike(!isLike);
-								}}
+								isLike={v.my_like}
+								onClick={() => toggleLike(i, v.feed_id)}
 								key={i}
 							/>
 						);

@@ -7,7 +7,7 @@ export interface CheckPasswordType {
 	password: string;
 }
 
-export interface EditUserInfoType {
+export interface EditUserInfoTypes {
 	gender: string;
 	age_group?: number;
 	nickname: string;
