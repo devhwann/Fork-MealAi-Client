@@ -11,7 +11,7 @@ const Feeds = () => {
 	const navigate = useNavigate();
 
 	// 로그인 여부 확인
-	const isLoggedin = useRecoilValue(isLoggedInState);
+	const isLoggedIn = useRecoilValue(isLoggedInState);
 
 	const [feeds, setFeeds] = useState<GetFeedsResponseTypes[]>([]);
 	// const page = useRef<number>(1);
@@ -123,7 +123,7 @@ const Feeds = () => {
 
 	// 좋아요버튼
 	const toggleLike = async (i: number, feedId: number) => {
-		if (!isLoggedin) {
+		if (!isLoggedIn) {
 			navigate("../auth/sign-in");
 			return;
 		}
@@ -132,8 +132,13 @@ const Feeds = () => {
 		copyFeeds[i].my_like = !feeds![i].my_like;
 		setFeeds(copyFeeds);
 
-		await feedsApi.patchLikesRequest(`/api/feeds/likes/${feedId}`);
-		return;
+		const patchLikes = await feedsApi.patchLikesRequest(`/api/feeds/likes/${feedId}`);
+
+		if (patchLikes.status !== 200) {
+			navigate("/auth/sign-in");
+			alert("다시 로그인 해주세요.");
+			localStorage.clear();
+		}
 	};
 
 	return (

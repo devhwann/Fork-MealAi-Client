@@ -185,8 +185,13 @@ const MyPage = () => {
 		copyFeeds[i].my_like = !myLikesFeeds![i].my_like;
 		setMyLikesFeeds(copyFeeds);
 
-		await feedsApi.patchLikesRequest(`/api/feeds/likes/${feedId}`);
-		return;
+		const patchLikes = await feedsApi.patchLikesRequest(`/api/feeds/likes/${feedId}`);
+
+		if (patchLikes.status !== 200) {
+			navigate("/auth/sign-in");
+			alert("다시 로그인 해주세요.");
+			localStorage.clear();
+		}
 	};
 
 	return (
