@@ -1,22 +1,47 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { HeadContainer, IntroContainer } from "./Home.style";
+import { GetFeedsTypes } from "@/types/feeds/feedsRequestTypes";
+import { GetFeedsResponseTypes } from "@/types/feeds/feedsResponseTypes";
+import { feedsApi } from "@/api/feeds";
+import { useRecoilValue } from "recoil";
+import { isLoggedInState } from "@/recoil/state";
+
 import WhiteLogo from "@/assets/logo_white.svg";
 import Logo from "@/assets/logo.svg";
 import Thumb from "@/components/atoms/thumbnail/Thumbnail";
-
 import PeopleImage from "@/assets/image_intro_people.svg";
 import Food1Image from "@/assets/image_intro_food1.svg";
 import Food2Image from "@/assets/image_intro_food2.svg";
 import Food3Image from "@/assets/image_intro_food3.svg";
 import Food4Image from "@/assets/image_intro_food4.svg";
 
-import TempImage from "@/assets/temp_image.jpg"; // TODO : 실제 데이터 연동 후 지우기
-
 const Home = () => {
 	const navigate = useNavigate();
-	// 애니메이션
+
+	// 로그인 여부 확인
+	const isLoggedIn = useRecoilValue(isLoggedInState);
+
+	// 피드 불러오기
+	const params: GetFeedsTypes = { per_page: 10 };
+	const [feeds, setFeeds] = useState<GetFeedsResponseTypes[]>();
+
+	useEffect(() => {
+		const getAllFeeds = async () => {
+			let data;
+			try {
+				data = await feedsApi.getFeedsRequest("/api/feeds", params);
+				setFeeds(data.data);
+			} catch (err) {
+				alert(data.response.data.message);
+			}
+		};
+		getAllFeeds();
+	}, []);
+
+	// 애니메이션 처리를 위한 스크롤 위치 탐지
 	const [currentScroll, setCurrentScroll] = useState<number>(0);
+
 	window.onscroll = () => {
 		const parentDiv = document.querySelector(".scroll_info");
 		const viewportHeight = window.innerHeight;
@@ -34,7 +59,24 @@ const Home = () => {
 	};
 
 	// 좋아요버튼
-	const [isLike, setIsLike] = useState(false);
+	const toggleLike = async (i: number, feedId: number) => {
+		if (!isLoggedIn) {
+			navigate("../auth/sign-in");
+			return;
+		}
+
+		const copyFeeds = [...feeds!];
+		copyFeeds[i].my_like = !feeds![i].my_like;
+		setFeeds(copyFeeds);
+
+		const patchLikes = await feedsApi.patchLikesRequest(`/api/feeds/likes/${feedId}`);
+
+		if (patchLikes.status !== 200) {
+			navigate("/auth/sign-in");
+			alert("다시 로그인 해주세요.");
+			localStorage.clear();
+		}
+	};
 
 	return (
 		<div>
@@ -84,67 +126,20 @@ const Home = () => {
 					궁금할 땐 식단톡!
 				</h2>
 				<div className="flex flex-wrap w-1200 pt-16 gap-6">
-					{/* TODO : API 명세 받은 후 map함수 적용 */}
-					<Thumb
-						src={TempImage}
-						id={1}
-						size="md"
-						type="like"
-						isLike={isLike}
-						onClick={() => {
-							setIsLike(!isLike);
-						}}
-					/>
-					<Thumb
-						src={TempImage}
-						id={1}
-						size="md"
-						type="like"
-						isLike={isLike}
-						onClick={() => {
-							setIsLike(!isLike);
-						}}
-					/>
-					<Thumb
-						src={TempImage}
-						id={1}
-						size="md"
-						type="like"
-						isLike={isLike}
-						onClick={() => {
-							setIsLike(!isLike);
-						}}
-					/>{" "}
-					<Thumb
-						src={TempImage}
-						id={1}
-						size="md"
-						type="like"
-						isLike={isLike}
-						onClick={() => {
-							setIsLike(!isLike);
-						}}
-					/>
-					<Thumb
-						src={TempImage}
-						id={1}
-						size="md"
-						type="like"
-						isLike={isLike}
-						onClick={() => {
-							setIsLike(!isLike);
-						}}
-					/>
-					<Thumb
-						src={TempImage}
-						id={1}
-						size="md"
-						type="like"
-						isLike={isLike}
-						onClick={() => {
-							setIsLike(!isLike);
-						}}
-					/>
+					{feeds &&
+						feeds.map((v, i) => {
+							return (
+								<Thumb
+									src={v.image_url}
+									id={v.feed_id}
+									size="md"
+									type="like"
+									isLike={v.my_like}
+									onClick={() => toggleLike(i, v.feed_id)}
+									key={i}
+								/>
+							);
+						})}
 				</div>
 				<button
 					className="mt-16 bg-wite border border-solid border-primary-1 rounded-full py-6 px-16 text-6 text-primary-1 font-bold duration-1000 ease-out hover:scale-105 hover:drop-shadow-2xl hover:bg-bg-1"
