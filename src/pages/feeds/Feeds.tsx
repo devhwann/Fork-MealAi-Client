@@ -5,7 +5,6 @@ import { isLoggedInState } from "@/recoil/state";
 import { feedsApi } from "@/api/feeds";
 import { GetFeedsTypes } from "@/types/feeds/feedsRequestTypes";
 import { GetFeedsResponseTypes } from "@/types/feeds/feedsResponseTypes";
-// import useIntersectionObserver from "@/hooks/useIntersectionObserver";
 import Thumb from "@/components/atoms/thumbnail/Thumbnail";
 
 const Feeds = () => {
@@ -18,23 +17,12 @@ const Feeds = () => {
 	const [feeds, setFeeds] = useState<GetFeedsResponseTypes[]>([]);
 	const [lastFeed, setLastFeed] = useState<HTMLDivElement | null>(null);
 
-	// // 인피니트 스크롤 설정
-	// const onIntersect: IntersectionObserverCallback = ([{ isIntersecting }]) => {
-	// 	console.log(`감지결과 : ${isIntersecting}`);
-	// 	// setCurrentPage((page) => page + 1);
-	// };
-	// const { setRef } = useIntersectionObserver({ onIntersect });
-
 	// 최신순 인기순 필터 & 목표 검색 카테고리
 	const [filter, setFilter] = useState("newest");
 	const [filterGoal, setFilterGoal] = useState("all");
 
 	// api request params
 	const params: GetFeedsTypes = { page: page, per_page: 10, filter: filter, goal: filterGoal };
-
-	function handleGoal(e: ChangeEvent<HTMLSelectElement>) {
-		setFilterGoal(e.target.value);
-	}
 
 	const getFeeds = async () => {
 		let data;
@@ -47,6 +35,15 @@ const Feeds = () => {
 		}
 	};
 
+	useEffect(() => {
+		getFeeds();
+	}, [page, params.filter, params.goal]);
+
+	// 목표 카테고리 설정
+	function handleGoal(e: ChangeEvent<HTMLSelectElement>) {
+		setFilterGoal(e.target.value);
+	}
+
 	// observer 콜백함수
 	const onIntersect: IntersectionObserverCallback = (entries, observer) => {
 		entries.forEach((entry) => {
@@ -58,10 +55,6 @@ const Feeds = () => {
 			}
 		});
 	};
-
-	useEffect(() => {
-		getFeeds();
-	}, [page, params.filter, params.goal]);
 
 	useEffect(() => {
 		let observer: IntersectionObserver;
