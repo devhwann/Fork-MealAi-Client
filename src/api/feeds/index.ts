@@ -20,7 +20,19 @@ export const feedsApi = Object.freeze({
 		return response;
 	},
 	async patchLikesRequest(endPoint: string) {
-		const response = axiosHandler.patch(endPoint);
-		return response;
+		try {
+			const response = await axiosHandler.patch(endPoint);
+			return response;
+		} catch (err: any) {
+			return err;
+		}
+	},
+	async getFeedRequest(endPoint: string) {
+		try {
+			const response = await axiosHandler.get(endPoint);
+			return response;
+		} catch (err: any) {
+			return err;
+		}
 	},
 });
