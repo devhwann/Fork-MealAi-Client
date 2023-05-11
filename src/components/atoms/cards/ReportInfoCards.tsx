@@ -73,22 +73,13 @@ const ReportInfoCard = ({ type, value, max }: ProgressBarProps) => {
 };
 
 // 전체 카드 모음
-const ReportInfoCards = ({
-	kcalValue,
-	kcalMax,
-	carboValue,
-	carboMax,
-	proteinValue,
-	proteinMax,
-	fatValue,
-	fatMax,
-}: ProgressBarsProps) => {
+const ReportInfoCards = ({ nutry, usersNutry }: ProgressBarsProps) => {
 	return (
 		<div className="flex gap-6">
-			<ReportInfoCard type="칼로리" value={kcalValue} max={kcalMax} />
-			<ReportInfoCard type="탄수화물" value={carboValue} max={carboMax} />
-			<ReportInfoCard type="단백질" value={proteinValue} max={proteinMax} />
-			<ReportInfoCard type="지방" value={fatValue} max={fatMax} />
+			<ReportInfoCard type="칼로리" value={nutry.kcal} max={usersNutry.kcal} />
+			<ReportInfoCard type="탄수화물" value={nutry.carbohydrate} max={usersNutry.carbohydrate} />
+			<ReportInfoCard type="단백질" value={nutry.protein} max={usersNutry.protein} />
+			<ReportInfoCard type="지방" value={nutry.fat} max={usersNutry.fat} />
 		</div>
 	);
 };

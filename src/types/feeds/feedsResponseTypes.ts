@@ -1,12 +1,13 @@
+import { GoalType } from "@/components/organisms/GoalText";
 import { MealType } from "@/utils/getMealTime";
 
-interface FoodsTypes {
+export interface FoodsTypes {
 	food_id: number;
-	image_url: string;
+	image_url: string | null;
 	weight: number;
 }
 
-interface UserDailyNutrientTypes {
+export interface UserDailyNutrientTypes {
 	kcal: number;
 	carbohydrate: number;
 	protein: number;
@@ -16,11 +17,11 @@ interface UserDailyNutrientTypes {
 export interface GetFeedsResponseTypes {
 	feed_id: number;
 	user_id: number;
-	image_url: string;
+	image_url: string | null;
 	user_name: string;
-	mealtime: MealType;
+	meal_time: MealType;
 	date: string;
-	user_daily_nutrient: UserDailyNutrientTypes | null;
+	user_daily_nutrient: UserDailyNutrientTypes;
 	likes: number;
 	kcal: number;
 	carbohydrate: number;
@@ -30,7 +31,7 @@ export interface GetFeedsResponseTypes {
 	created_at: string;
 	update_at: string;
 	open: boolean;
-	goal: string;
+	goal: GoalType;
 	my_like: boolean;
 	is_mine: boolean;
 }

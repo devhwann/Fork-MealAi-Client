@@ -38,6 +38,7 @@ export default {
 				"184": "184px",
 				"220": "220px",
 				"282": "282px",
+				"792": "792px",
 				"1200": "1200px",
 			},
 			margin: {
@@ -61,5 +62,6 @@ export default {
 		utils: true,
 		logs: true,
 		rtl: false,
+		darkMode: false,
 	},
 };

@@ -29,11 +29,6 @@ const FoodCardButton = ({ role, onClick }: FoodCardButtonProps) => {
 	);
 };
 
-/*
-src, size, type : 이미지 썸네일 관련 props
-name : 음식 이름
-weight : 중량
-*/
 const FoodCard = ({
 	src,
 	size,
@@ -62,14 +57,16 @@ const FoodCard = ({
 					<div className="mb-6 flex gap-4">
 						<Thumb src={src} size="sm" type="none" />
 						<div className="w-60 flex flex-col gap-3">
-							<Input type="text" name="name" id="name" value={name} placeholder="음식명" onChange={() => {}} />
+							<div onClick={handleSearchModal}>
+								<Input type="text" name="name" id="name" value={name} placeholder="음식명" onChange={() => {}} />
+							</div>
 							<div>
 								<Input type="number" name="weight" id="weight" value={weight} placeholder="중량" onChange={() => {}} />
 							</div>
 							<div className="flex justify-between">
-								<p className="text-sm text-gray-4">{name}이(가) 아닌가요?</p>
+								<p className="text-sm text-gray-4">다른 음식인가요?</p>
 								<TinyButton type="button" onClick={handleSearchModal} style="gray" deactivated={false}>
-									검색
+									음식 검색
 								</TinyButton>
 							</div>
 						</div>

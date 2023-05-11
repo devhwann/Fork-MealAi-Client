@@ -3,12 +3,41 @@ import MyGoalText from "@/components/organisms/MyGoalText";
 import HorizontalProgressBars from "@/components/atoms/progressBars/HorizontalProgressBars";
 import VerticalProgressBars from "@/components/atoms/progressBars/VerticalProgressBars";
 import ReportInfoCards from "@/components/atoms/cards/ReportInfoCards";
+import { useState } from "react";
+import { UserDailyNutrientTypes } from "@/types/feeds/feedsResponseTypes";
 
 const WeeklyReport = () => {
 	const { week } = useParams();
 	const navigate = useNavigate();
 	// TODO : 주별 날짜 구해야 함 -> h4자리에 넣기
 	const weeklyDates = () => {};
+
+	// data set
+	const [weeklyNutry, setWeeklyNutry] = useState<UserDailyNutrientTypes>({
+		kcal: 0,
+		carbohydrate: 0,
+		protein: 0,
+		fat: 0,
+	});
+	const [weeklyNutryGoal, setWeeklyNutryGoal] = useState<UserDailyNutrientTypes>({
+		kcal: 0,
+		carbohydrate: 0,
+		protein: 0,
+		fat: 0,
+	});
+
+	const [nutry, setNutry] = useState<UserDailyNutrientTypes>({
+		kcal: 0,
+		carbohydrate: 0,
+		protein: 0,
+		fat: 0,
+	});
+	const [usersNutry, setUsersNutry] = useState<UserDailyNutrientTypes>({
+		kcal: 0,
+		carbohydrate: 0,
+		protein: 0,
+		fat: 0,
+	});
 
 	return (
 		<>
@@ -24,16 +53,7 @@ const WeeklyReport = () => {
 						<MyGoalText goal="balance" />
 					</div>
 					<div className="w-96 h-64 p-10 mt-20 bg-white border-solid border border-gray-7 rounded-lg">
-						<HorizontalProgressBars
-							kcalValue={982}
-							kcalMax={2200}
-							carboValue={8}
-							carboMax={113}
-							proteinValue={25}
-							proteinMax={20}
-							fatValue={12}
-							fatMax={16}
-						/>
+						<HorizontalProgressBars nutry={nutry} usersNutry={usersNutry} />
 					</div>
 				</div>
 			</div>
@@ -65,99 +85,20 @@ const WeeklyReport = () => {
 					</div>
 					<div className="flex gap-10 items-center mr-20">
 						{/* TODO : 데이터 받아서 map함수 적용 */}
-						<VerticalProgressBars
-							kcalValue={982}
-							kcalMax={2200}
-							carboValue={8}
-							carboMax={113}
-							proteinValue={25}
-							proteinMax={20}
-							fatValue={12}
-							fatMax={16}
-							day="월"
-						/>
-						<VerticalProgressBars
-							kcalValue={982}
-							kcalMax={2200}
-							carboValue={8}
-							carboMax={113}
-							proteinValue={25}
-							proteinMax={20}
-							fatValue={12}
-							fatMax={16}
-							day="화"
-						/>
-						<VerticalProgressBars
-							kcalValue={982}
-							kcalMax={2200}
-							carboValue={8}
-							carboMax={113}
-							proteinValue={25}
-							proteinMax={20}
-							fatValue={12}
-							fatMax={16}
-							day="수"
-						/>
-						<VerticalProgressBars
-							kcalValue={982}
-							kcalMax={2200}
-							carboValue={8}
-							carboMax={113}
-							proteinValue={25}
-							proteinMax={20}
-							fatValue={12}
-							fatMax={16}
-							day="목"
-						/>
-						<VerticalProgressBars
-							kcalValue={982}
-							kcalMax={2200}
-							carboValue={8}
-							carboMax={113}
-							proteinValue={25}
-							proteinMax={20}
-							fatValue={12}
-							fatMax={16}
-							day="금"
-						/>
-						<VerticalProgressBars
-							kcalValue={982}
-							kcalMax={2200}
-							carboValue={8}
-							carboMax={113}
-							proteinValue={25}
-							proteinMax={20}
-							fatValue={12}
-							fatMax={16}
-							day="토"
-						/>
-						<VerticalProgressBars
-							kcalValue={982}
-							kcalMax={2200}
-							carboValue={8}
-							carboMax={113}
-							proteinValue={25}
-							proteinMax={20}
-							fatValue={12}
-							fatMax={16}
-							day="일"
-						/>
+						<VerticalProgressBars nutry={nutry} usersNutry={usersNutry} day="월" />
+						<VerticalProgressBars nutry={nutry} usersNutry={usersNutry} day="화" />
+						<VerticalProgressBars nutry={nutry} usersNutry={usersNutry} day="수" />
+						<VerticalProgressBars nutry={nutry} usersNutry={usersNutry} day="목" />
+						<VerticalProgressBars nutry={nutry} usersNutry={usersNutry} day="금" />
+						<VerticalProgressBars nutry={nutry} usersNutry={usersNutry} day="토" />
+						<VerticalProgressBars nutry={nutry} usersNutry={usersNutry} day="일" />
 					</div>
 				</div>
 			</div>
 			<div className="flex justify-center mt-16">
 				<div className="w-1200">
 					<h4 className="mb-6">영양소별 섭취 평가</h4>
-					<ReportInfoCards
-						kcalValue={2200}
-						kcalMax={2200}
-						carboValue={8}
-						carboMax={113}
-						proteinValue={18}
-						proteinMax={20}
-						fatValue={80}
-						fatMax={16}
-					/>
+					<ReportInfoCards nutry={weeklyNutry} usersNutry={weeklyNutryGoal} />
 				</div>
 			</div>
 		</>

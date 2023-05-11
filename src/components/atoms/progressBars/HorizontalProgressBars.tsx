@@ -1,15 +1,18 @@
+import { UserDailyNutrientTypes } from "@/types/feeds/feedsResponseTypes";
 import getProgressBarColor from "@/utils/getProgressBarColor";
 import getProgressBarPercent from "@/utils/getProgressBarPercent";
 
 export interface ProgressBarsProps {
-	kcalValue: number;
-	kcalMax: number;
-	carboValue: number;
-	carboMax: number;
-	proteinValue: number;
-	proteinMax: number;
-	fatValue: number;
-	fatMax: number;
+	nutry: UserDailyNutrientTypes;
+	usersNutry: UserDailyNutrientTypes;
+	// kcalValue: number;
+	// kcalMax: number;
+	// carboValue: number;
+	// carboMax: number;
+	// proteinValue: number;
+	// proteinMax: number;
+	// fatValue: number;
+	// fatMax: number;
 }
 
 export interface ProgressBarProps extends DataProps {
@@ -48,22 +51,13 @@ const ProgressBar = ({ type, value, max }: ProgressBarProps) => {
 };
 
 // 모음 구성
-const HorizontalProgressBars = ({
-	kcalValue,
-	kcalMax,
-	carboValue,
-	carboMax,
-	proteinValue,
-	proteinMax,
-	fatValue,
-	fatMax,
-}: ProgressBarsProps) => {
+const HorizontalProgressBars = ({ nutry, usersNutry }: ProgressBarsProps) => {
 	return (
 		<div className="flex flex-col gap-4">
-			<ProgressBar type="칼로리" value={kcalValue} max={kcalMax} />
-			<ProgressBar type="탄수화물" value={carboValue} max={carboMax} />
-			<ProgressBar type="단백질" value={proteinValue} max={proteinMax} />
-			<ProgressBar type="지방" value={fatValue} max={fatMax} />
+			<ProgressBar type="칼로리" value={nutry.kcal} max={usersNutry.kcal} />
+			<ProgressBar type="탄수화물" value={nutry.carbohydrate} max={usersNutry.carbohydrate} />
+			<ProgressBar type="단백질" value={nutry.protein} max={usersNutry.protein} />
+			<ProgressBar type="지방" value={nutry.fat} max={usersNutry.fat} />
 		</div>
 	);
 };

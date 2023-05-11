@@ -73,7 +73,7 @@ const routes = createBrowserRouter([
 				element: <Edit />,
 			},
 			{
-				path: "/mylog",
+				path: "/mylog/:week",
 				element: <MyLog />,
 			},
 			{

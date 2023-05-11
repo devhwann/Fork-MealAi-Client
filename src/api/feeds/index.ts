@@ -9,15 +9,36 @@ import { GetFeedsTypes } from "@/types/feeds/feedsRequestTypes";
 export const feedsApi = Object.freeze({
 	async getFeedsRequest(endPoint: string, params: GetFeedsTypes) {
 		try {
-			const response = await axiosHandler.get(endPoint, { params: { params } });
+			const response = await axiosHandler.get(endPoint, { params });
+			return response;
+		} catch (err: any) {
+			return err;
+		}
+	},
+	async postFeedRequest(endPoint: string, params: GetFeedsTypes) {
+		try {
+			const response = await axiosHandler.post(
+				endPoint,
+				{ params },
+				{
+					headers: {
+						"Content-Type": "multipart/form-data",
+					},
+				}
+			);
 			return response;
 		} catch (err: any) {
 			return err;
 		}
 	},
 	async getMyLikesRequest(endPoint: string) {
-		const response = axiosHandler.get(endPoint);
-		return response;
+		try {
+			const response = await axiosHandler.get(endPoint);
+			return response;
+		} catch (err: any) {
+			console.log("?", err);
+			return err;
+		}
 	},
 	async patchLikesRequest(endPoint: string) {
 		try {
@@ -34,5 +55,9 @@ export const feedsApi = Object.freeze({
 		} catch (err: any) {
 			return err;
 		}
+	},
+	async deleteFeedRequest(endPoint: string) {
+		const response = await axiosHandler.delete(endPoint);
+		return response;
 	},
 });
