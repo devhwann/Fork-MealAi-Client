@@ -53,10 +53,10 @@ const Feeds = () => {
 			const params: GetFeedsParamsTypes = { page: page, per_page: 10, filter: filter, goal: filterGoal };
 			data = await feedsApi.getFeedsRequest("/api/feeds", params);
 
-			if (page === 1) {
-				setFeeds(data.data.feeds);
-			} else {
-				setFeeds((prev) => [...prev, ...data.data.feeds]);
+			setFeeds((prev) => [...prev, ...data.data.feeds]);
+			setHashNextPage(data.data.feeds.length === params.per_page);
+			if (hashNextPage) {
+				setPage((page) => page + 1);
 			}
 
 			// 서버에서 다음 페이지가 있는지 확인.
