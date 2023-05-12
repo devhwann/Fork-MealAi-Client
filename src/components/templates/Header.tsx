@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { isLoggedInState } from "@/recoil/state";
 import { useRecoilState } from "recoil";
@@ -19,10 +19,10 @@ const Header = () => {
 	}, [isLoggedIn, localStorage.getItem("refreshToken")]);
 
 	const handleLogout = async () => {
-		await authApi.authLogoutRequest("/api/auth/logout");
 		localStorage.removeItem("accessToken");
 		localStorage.removeItem("refreshToken");
 		setisLoggedInState(false);
+		await authApi.authLogoutRequest("/api/auth/logout");
 	};
 
 	const menuObj: MenuObjProps[] = [

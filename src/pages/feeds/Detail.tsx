@@ -13,7 +13,7 @@ import LikeWithCount from "@/components/organisms/LikeWithCount";
 import GoalText from "@/components/organisms/GoalText";
 import ArrowButton from "@/components/atoms/buttons/ArrowButton";
 
-import { GetFeedsResponseTypes, UserDailyNutrientTypes } from "@/types/feeds/feedsResponseTypes";
+import { GetFeedsTypes, UserDailyNutrientTypes } from "@/types/feeds/feedsResponseTypes";
 
 // TODO : 이전글 다음글 구현? 안되면 주석 삭제하기
 
@@ -25,7 +25,7 @@ const Detail = () => {
 	const [isLoggedIn, setIsLoggedIn] = useRecoilState(isLoggedInState);
 
 	// data set
-	const [feedDetail, setFeedDetail] = useState<GetFeedsResponseTypes>();
+	const [feedDetail, setFeedDetail] = useState<GetFeedsTypes>();
 	const [isLike, setIsLike] = useState(false);
 	const [likeCount, setLikeCount] = useState<number>();
 	const [nutry, setNutry] = useState<UserDailyNutrientTypes>({
@@ -47,16 +47,17 @@ const Detail = () => {
 			const data = await feedsApi.getFeedRequest(`/api/feeds/${id}`);
 
 			if (data.status === 200) {
-				// 좋아요, 좋아요수, 피드영양정보 외 데이터는 묶어서 set처리
+				console.log(data.data);
+				// 좋아요, 좋아요 수, 피드영양정보 외 데이터는 묶어서 set처리
 				setFeedDetail(data.data);
-				setIsLike(data.data.my_like);
-				setLikeCount(data.data.likes);
+				setIsLike(data.data.my_like); // 좋아요
+				setLikeCount(data.data.likes); // 좋아요 수
 				setNutry({
 					kcal: data.data.kcal,
 					carbohydrate: data.data.carbohydrate,
 					protein: data.data.protein,
 					fat: data.data.fat,
-				});
+				}); // 피드영양정보
 			} else {
 				alert(data.response.data.message);
 				navigate(-1);
@@ -97,7 +98,13 @@ const Detail = () => {
 		event.preventDefault();
 
 		const data = await feedsApi.deleteFeedRequest(`/api/feeds/${id}`);
-		console.log(data);
+		if (data.status === 200) {
+			alert("피드가 삭제되었습니다.");
+			navigate(-1);
+		} else {
+			alert("삭제하지 못했습니다. 다시 시도해주세요.");
+			navigate(-1);
+		}
 	};
 
 	return (
@@ -138,7 +145,7 @@ const Detail = () => {
 										src={v.image_url}
 										size="sm"
 										type="none"
-										name="치킨" // TODO : 데이터 필요
+										name={v.food_name}
 										weight={v.weight}
 									/>
 								);

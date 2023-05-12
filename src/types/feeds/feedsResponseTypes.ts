@@ -3,6 +3,7 @@ import { MealType } from "@/utils/getMealTime";
 
 export interface FoodsTypes {
 	food_id: number;
+	food_name: string;
 	image_url: string | null;
 	weight: number;
 }
@@ -15,6 +16,12 @@ export interface UserDailyNutrientTypes {
 }
 
 export interface GetFeedsResponseTypes {
+	prev_page: boolean;
+	next_page: boolean;
+	feeds: GetFeedsTypes[];
+}
+
+export interface GetFeedsTypes {
 	feed_id: number;
 	user_id: number;
 	image_url: string | null;
