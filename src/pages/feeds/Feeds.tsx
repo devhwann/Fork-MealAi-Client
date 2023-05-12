@@ -41,8 +41,8 @@ const Feeds = () => {
 		let data: any;
 		try {
 			data = await feedsApi.getFeedsRequest("/api/feeds", params);
-			setFeeds((prev) => [...prev, ...data.data]);
-			setHashNextPage(data.data.length === params.per_page);
+			setFeeds((prev) => [...prev, ...data.data.feeds]);
+			setHashNextPage(data.data.feeds.length === params.per_page);
 			if (hashNextPage) {
 				setPage((page) => page + 1);
 			}

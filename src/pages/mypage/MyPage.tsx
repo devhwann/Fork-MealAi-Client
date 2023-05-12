@@ -28,7 +28,7 @@ const MyPage = () => {
 				axios.spread((userInfoData, myLikesFeedsData) => {
 					setNickname(userInfoData.data.nickname);
 					setGoal(userInfoData.data.goal);
-					setMyLikesFeeds(myLikesFeedsData.data);
+					setMyLikesFeeds(myLikesFeedsData.data.feeds);
 				})
 			)
 			.catch((err) => {
