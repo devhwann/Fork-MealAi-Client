@@ -5,7 +5,7 @@ import VerticalProgressBars from "@/components/atoms/progressBars/VerticalProgre
 import ReportInfoCards from "@/components/atoms/cards/ReportInfoCards";
 import { useEffect, useState } from "react";
 import { UserDailyNutrientTypes } from "@/types/feeds/feedsResponseTypes";
-import { ReportWeekHistory } from "@/types/report /reportResponseType";
+import { ReportWeekHistory } from "@/types/report/reportResponseType";
 import { reportApi } from "@/api/report";
 
 const WeeklyReport = () => {

@@ -1,5 +1,5 @@
 import { UserDailyNutrientTypes } from "@/types/feeds/feedsResponseTypes";
-import { ReportWeekHistory } from "@/types/report /reportResponseType";
+import { ReportWeekHistory } from "@/types/report/reportResponseType";
 import getProgressBarColor from "@/utils/getProgressBarColor";
 import getProgressBarPercent from "@/utils/getProgressBarPercent";
 

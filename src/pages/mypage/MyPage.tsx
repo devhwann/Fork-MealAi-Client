@@ -18,17 +18,35 @@ const MyPage = () => {
 
 	const [nickname, setNickname] = useState("");
 	const [goal, setGoal] = useState<GoalType>("balance");
-	const [myLikesFeeds, setMyLikesFeeds] = useState<GetFeedsTypes[]>();
+	const [myLikesFeeds, setMyLikesFeeds] = useState<GetFeedsTypes[]>([]);
+	const [page, setPage] = useState(1);
+	const [hashNextPage, setHashNextPage] = useState<boolean>(false);
+	const observerTarget = useRef<HTMLDivElement>(null);
 
-	// TODO : 내가 좋아한 식단 인피니티 스크롤 구현
+	// 내가 좋아한 식단 피드 인피니티 스크롤
+	useEffect(() => {
+		// 감지 대상이나 다음 페이지가 없으면 return
+		if (!observerTarget.current || !hashNextPage) return;
+
+		const io = new IntersectionObserver((entries, observer) => {
+			if (entries[0].isIntersecting) {
+				setPage((page) => page + 1);
+			}
+		});
+		io.observe(observerTarget.current);
+
+		return () => io.disconnect();
+	}, [hashNextPage]);
+
 	useEffect(() => {
 		axios
-			.all([userApi.userInfoRequest("/api/users"), feedsApi.getMyLikesRequest("/api/feeds/likes")])
+			.all([userApi.userInfoRequest("/api/users"), feedsApi.getMyLikesRequest("/api/feeds/likes", { page })])
 			.then(
 				axios.spread((userInfoData, myLikesFeedsData) => {
 					setNickname(userInfoData.data.nickname);
 					setGoal(userInfoData.data.goal);
-					setMyLikesFeeds(myLikesFeedsData.data.feeds);
+					setMyLikesFeeds((prev) => [...prev, ...myLikesFeedsData.data.feeds]);
+					setHashNextPage(myLikesFeedsData.data.next_page);
 				})
 			)
 			.catch((err) => {
@@ -37,7 +55,7 @@ const MyPage = () => {
 				// alert("다시 로그인 해주세요.");
 				// localStorage.clear();
 			});
-	}, []);
+	}, [page]);
 
 	// TODO : 소셜 기능 추가시 > 소셜 회원 여부도 받아서 비밀번호 변경 버튼 숨김처리 해야 함
 	// 소셜 회원 여부
@@ -211,6 +229,7 @@ const MyPage = () => {
 							);
 						})}
 				</div>
+				{hashNextPage && <div ref={observerTarget}></div>}
 			</div>
 			{/* 회원정보 수정 버튼 클릭하면 뜨는 비밀번호 확인 모달 */}
 			{editInfodModal && (
