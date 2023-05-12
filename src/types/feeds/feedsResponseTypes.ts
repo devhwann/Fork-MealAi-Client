@@ -16,6 +16,12 @@ export interface UserDailyNutrientTypes {
 }
 
 export interface GetFeedsResponseTypes {
+	prev_page: boolean;
+	next_page: boolean;
+	feeds: GetFeedsTypes[];
+}
+
+export interface GetFeedsTypes {
 	feed_id: number;
 	user_id: number;
 	image_url: string | null;
@@ -35,9 +41,4 @@ export interface GetFeedsResponseTypes {
 	goal: GoalType;
 	my_like: boolean;
 	is_mine: boolean;
-}
-
-export interface GetPagesTypes {
-	prev_page: boolean;
-	next_page: boolean;
 }

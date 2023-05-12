@@ -1,6 +1,6 @@
 import { MealType } from "@/utils/getMealTime";
 
-export interface GetFeedsTypes {
+export interface GetFeedsParamsTypes {
 	goal?: string;
 	filter?: string;
 	page?: number;

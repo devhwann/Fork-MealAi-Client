@@ -1,5 +1,5 @@
 import { axiosHandler } from "@/utils/axios.utils";
-import { GetFeedsTypes, PostAiType } from "@/types/feeds/feedsRequestTypes";
+import { GetFeedsParamsTypes, PostAiType } from "@/types/feeds/feedsRequestTypes";
 
 /**
  * feeds apis
@@ -7,7 +7,7 @@ import { GetFeedsTypes, PostAiType } from "@/types/feeds/feedsRequestTypes";
  */
 
 export const feedsApi = Object.freeze({
-	async getFeedsRequest(endPoint: string, params: GetFeedsTypes) {
+	async getFeedsRequest(endPoint: string, params: GetFeedsParamsTypes) {
 		try {
 			const response = await axiosHandler.get(endPoint, { params });
 			return response;
