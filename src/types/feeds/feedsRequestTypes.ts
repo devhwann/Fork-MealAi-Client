@@ -4,3 +4,5 @@ export interface GetFeedsTypes {
 	page?: number;
 	per_page?: number;
 }
+
+export type FilterType = "newest" | "popularity";

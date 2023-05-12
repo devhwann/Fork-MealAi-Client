@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useRecoilValue } from "recoil";
 import { isLoggedInState } from "@/recoil/state";
 import { feedsApi } from "@/api/feeds";
-import { GetFeedsTypes } from "@/types/feeds/feedsRequestTypes";
+import { FilterType, GetFeedsTypes } from "@/types/feeds/feedsRequestTypes";
 import { GetFeedsResponseTypes } from "@/types/feeds/feedsResponseTypes";
 import Thumb from "@/components/atoms/thumbnail/Thumbnail";
 
@@ -14,112 +14,61 @@ const Feeds = () => {
 	const isLoggedIn = useRecoilValue(isLoggedInState);
 
 	const [feeds, setFeeds] = useState<GetFeedsResponseTypes[]>([]);
-	// const page = useRef<number>(1);
 	const [page, setPage] = useState(1);
-	const [hashNextPage, setHashNextPage] = useState<boolean>(true);
+	const [hashNextPage, setHashNextPage] = useState<boolean>(false);
 	const observerTarget = useRef<HTMLDivElement>(null);
-	// const [lastFeed, setLastFeed] = useState<HTMLDivElement | null>(null);
 
 	// 최신순 인기순 필터 & 목표 검색 카테고리
-	const [filter, setFilter] = useState("newest");
+	const [filter, setFilter] = useState<FilterType>("newest");
 	const [filterGoal, setFilterGoal] = useState("all");
 
-	// 최신순, 인기순 클릭시 색상 변경
-	const [clickNewest, setClickNewest] = useState(true);
-	const [clickPopularity, setClickPopularity] = useState(false);
+	function handleFilterChange(targetFilterName: FilterType) {
+		setFilter(targetFilterName);
+		setPage(1);
+	}
 
-	// 목표 카테고리 설정
 	function handleGoal(e: ChangeEvent<HTMLSelectElement>) {
 		setFilterGoal(e.target.value);
+		setPage(1);
 	}
-	console.log(filter, filterGoal);
 
-	// api request params
-	const params: GetFeedsTypes = { page: page, per_page: 10, filter: filter, goal: filterGoal };
-
-	const getFeeds = useCallback(async () => {
+	const getFeeds = async () => {
 		let data: any;
 		try {
+			const params: GetFeedsTypes = { page: page, per_page: 10, filter: filter, goal: filterGoal };
 			data = await feedsApi.getFeedsRequest("/api/feeds", params);
-			setFeeds((prev) => [...prev, ...data.data]);
+			// TODO : 필터 클릭하면 피드를 아예 새로 setFeeds에 넣어줘야하는데 기존꺼 뒤에 붙이고 있음...
+			setFeeds((prev) => [...prev, ...data.data.feeds]);
+			// TODO: 서버에서 다음 페이지가 있는지 boolean 으로 받던가, pagination 을 처리할만한 정보를 받는다.
 			setHashNextPage(data.data.length === params.per_page);
-			if (hashNextPage) {
-				setPage((page) => page + 1);
-			}
+
 			console.log("피드 불러오기 성공!");
 		} catch (err) {
 			alert(data.response.data.message);
 		}
-	}, [params]);
+	};
 
+	// 최초 진입시 getFeeds 실행
+	useEffect(() => {
+		getFeeds();
+	}, [page, filter, filterGoal]);
+
+	// Infinite Scroll - Intersection Observer 구현
 	useEffect(() => {
 		// observerTarget.current와 hashNextPage가 모두 truthy일 때만 실행
 		if (!observerTarget.current || !hashNextPage) return;
 
 		const io = new IntersectionObserver((entries, observer) => {
 			if (entries[0].isIntersecting) {
-				getFeeds();
+				setPage((page) => page + 1);
+
+				// getFeeds();
 			}
 		});
 		io.observe(observerTarget.current);
 
 		return () => io.disconnect();
-	}, [getFeeds, hashNextPage]);
-
-	// useEffect(() => {
-	// 	getFeeds();
-	// }, [params.filter, params.goal]);
-
-	// observer 콜백함수
-	// const onIntersect: IntersectionObserverCallback = (entries, observer) => {
-	// 	const entry = entries[0];
-	// 	if (entry.isIntersecting) {
-	// 		//뷰포트에 마지막 이미지가 들어오고, page값에 1을 더하여 새 fetch 요청을 보내게됨 (useEffect의 dependency배열에 page가 있음)
-	// 		setCurrentPage((prev) => prev + 1);
-	// 		// 현재 타겟을 unobserver함
-	// 		observer.unobserve(entry.target);
-	// 	}
-	// };
-
-	// useEffect(() => {
-	// 	let observer: IntersectionObserver;
-	// 	if (lastFeed) {
-	// 		observer = new IntersectionObserver(onIntersect, { threshold: 0.5 });
-	// 		//observer 생성 시 observe할 target 요소는 불러온 이미지의 마지막아이템(feeds 배열의 마지막 아이템)으로 지정
-	// 		observer.observe(lastFeed);
-	// 	}
-	// 	return () => observer && observer.disconnect();
-	// }, [lastFeed]);
-
-	// // 처음 진입시 전체 피드 불러오기(최신순&모든 목표)
-	// useEffect(() => {
-	// 	const getAllFeeds = async () => {
-	// 		let data;
-	// 		try {
-	// 			data = await feedsApi.getFeedsRequest("/api/feeds", params);
-	// 			setFeeds(data.data);
-	// 			console.log("전체 피드(최신순&모든 목표) 불러오기 성공!");
-	// 		} catch (err) {
-	// 			alert(data.response.data.message);
-	// 		}
-	// 	};
-	// 	getAllFeeds();
-	// }, []);
-
-	// // 피드 불러오기
-	// useEffect(() => {
-	// 	const getFeeds = async () => {
-	// 		let data;
-	// 		try {
-	// 			data = await feedsApi.getFeedsRequest("/api/feeds", params);
-	// 			setFeeds(data.data);
-	// 			console.log("필터별 피드 불러오기 성공!");
-	// 		} catch (err) {
-	// 			alert(data.response.data.message);
-	// 		}
-	// 	};
-	// 	getFeeds();
-	// }, [params.filter, params.goal]);
+	}, [hashNextPage]);
 
 	// 좋아요버튼
 	const toggleLike = async (i: number, feedId: number) => {
@@ -195,23 +144,15 @@ const Feeds = () => {
 				<h4 className="mr-771">식단 피드</h4>
 				<div className="flex gap-6">
 					<button
-						className={`text-gray-5 font-bold ${clickNewest ? "text-primary-1" : ""}`}
-						onClick={() => {
-							setFilter("newest");
-							setClickNewest(true);
-							setClickPopularity(false);
-						}}
+						className={`text-gray-5 font-bold ${filter === "newest" && "text-primary-1"}`}
+						onClick={() => handleFilterChange("newest")}
 					>
 						최신순
 					</button>
 					<p>|</p>
 					<button
-						className={`text-gray-5 font-bold ${clickPopularity ? "text-primary-1" : ""}`}
-						onClick={() => {
-							setFilter("popularity");
-							setClickPopularity(true);
-							setClickNewest(false);
-						}}
+						className={`text-gray-5 font-bold ${filter === "popularity" && "text-primary-1"}`}
+						onClick={() => handleFilterChange("popularity")}
 					>
 						인기순
 					</button>
@@ -241,6 +182,7 @@ const Feeds = () => {
 					);
 				})}
 			</div>
+			{/* {hashNextPage && <div ref={observerTarget}></div>} */}
 			<div ref={observerTarget}></div>
 		</div>
 	);
