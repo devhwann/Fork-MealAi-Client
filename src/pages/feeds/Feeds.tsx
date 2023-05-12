@@ -4,7 +4,7 @@ import { useRecoilValue } from "recoil";
 import { isLoggedInState } from "@/recoil/state";
 import { feedsApi } from "@/api/feeds";
 import { FilterType, GetFeedsTypes } from "@/types/feeds/feedsRequestTypes";
-import { GetFeedsResponseTypes, GetPagesTypes } from "@/types/feeds/feedsResponseTypes";
+import { GetFeedsResponseTypes } from "@/types/feeds/feedsResponseTypes";
 import Thumb from "@/components/atoms/thumbnail/Thumbnail";
 
 const Feeds = () => {
@@ -14,6 +14,7 @@ const Feeds = () => {
 	const isLoggedIn = useRecoilValue(isLoggedInState);
 
 	const [feeds, setFeeds] = useState<GetFeedsResponseTypes[]>([]);
+	const [popularFeeds, setPopularFeeds] = useState<GetFeedsResponseTypes[]>([]);
 	const [page, setPage] = useState(1);
 	const [hashNextPage, setHashNextPage] = useState<boolean>(false);
 	const observerTarget = useRef<HTMLDivElement>(null);
@@ -32,6 +33,20 @@ const Feeds = () => {
 		setPage(1);
 	}
 
+	// 인기랭킹 조회 api
+	const getPopularFeeds = async () => {
+		let data: any;
+		try {
+			const params: GetFeedsTypes = { page: page, per_page: 3, filter: "popularity", goal: "all" };
+			data = await feedsApi.getFeedsRequest("api/feeds", params);
+			console.log(data);
+			setPopularFeeds(data.data.feeds);
+		} catch (err) {
+			alert("인기 랭킹을 불러올 수 없습니다!");
+		}
+	};
+
+	// 식단피드 조회 api
 	const getFeeds = async () => {
 		let data: any;
 		try {
@@ -50,9 +65,14 @@ const Feeds = () => {
 			// console.log(hashNextPage);
 			console.log("피드 불러오기 성공!");
 		} catch (err) {
-			alert(data.response.data.message);
+			alert("피드를 불러올 수 없습니다!");
 		}
 	};
+
+	// 최초 진입시 인기랭킹 피드 실행 (실시간 변동 반영 안함)
+	useEffect(() => {
+		getPopularFeeds();
+	}, []);
 
 	// 최초 진입시 getFeeds 실행
 	useEffect(() => {
@@ -108,39 +128,20 @@ const Feeds = () => {
 					</div>
 					{/* TODO : API 명세 받은 후 map함수 돌려서 상위 3개 적용 */}
 					<div className="flex gap-6">
-						<Thumb
-							src={null}
-							id={1}
-							size="md"
-							type="like"
-							isLike={false}
-							onClick={() => {}}
-							// TODO : map 돌릴 때 밑에 두 개로 대체하세요
-							// isLike={v.my_like}
-							// onClick={() => toggleLike(i, v.feed_id)}
-						/>
-						<Thumb
-							src={null}
-							id={1}
-							size="md"
-							type="like"
-							isLike={false}
-							onClick={() => {}}
-							// TODO : map 돌릴 때 밑에 두 개로 대체하세요
-							// isLike={v.my_like}
-							// onClick={() => toggleLike(i, v.feed_id)}
-						/>
-						<Thumb
-							src={null}
-							id={1}
-							size="md"
-							type="like"
-							isLike={false}
-							onClick={() => {}}
-							// TODO : map 돌릴 때 밑에 두 개로 대체하세요
-							// isLike={v.my_like}
-							// onClick={() => toggleLike(i, v.feed_id)}
-						/>
+						{popularFeeds &&
+							popularFeeds?.map((v, i) => {
+								return (
+									<Thumb
+										src={v.image_url}
+										id={v.feed_id}
+										size="md"
+										type="like"
+										isLike={v.my_like}
+										onClick={() => toggleLike(i, v.feed_id)}
+										key={i}
+									/>
+								);
+							})}
 					</div>
 				</div>
 			</div>
