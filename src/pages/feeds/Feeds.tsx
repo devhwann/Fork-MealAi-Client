@@ -93,7 +93,7 @@ const Feeds = () => {
 		return () => io.disconnect();
 	}, [hashNextPage]);
 
-	// 좋아요버튼
+	// 전체 피드 좋아요버튼
 	const toggleLike = async (i: number, feedId: number) => {
 		if (!isLoggedIn) {
 			navigate("../auth/sign-in");
@@ -112,6 +112,28 @@ const Feeds = () => {
 			localStorage.clear();
 		}
 	};
+
+	// 인기 피드 좋아요버튼
+	const popularToggleLike = async (i: number, feedId: number) => {
+		if (!isLoggedIn) {
+			navigate("../auth/sign-in");
+			return;
+		}
+
+		const copyFeeds = [...popularFeeds!];
+		copyFeeds[i].my_like = !popularFeeds![i].my_like;
+		setPopularFeeds(copyFeeds);
+
+		const patchLikes = await feedsApi.patchLikesRequest(`/api/feeds/likes/${feedId}`);
+
+		if (patchLikes.status !== 200) {
+			navigate("/auth/sign-in");
+			alert("다시 로그인 해주세요.");
+			localStorage.clear();
+		}
+	};
+
+	console.log(filter);
 
 	return (
 		<div className="flex flex-col items-center mt-20">
@@ -135,7 +157,7 @@ const Feeds = () => {
 										size="md"
 										type="like"
 										isLike={v.my_like}
-										onClick={() => toggleLike(i, v.feed_id)}
+										onClick={() => popularToggleLike(i, v.feed_id)}
 										key={v.feed_id}
 									/>
 								);

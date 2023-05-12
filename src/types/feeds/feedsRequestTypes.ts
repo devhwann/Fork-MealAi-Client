@@ -7,14 +7,10 @@ export interface GetFeedsParamsTypes {
 	per_page?: number;
 }
 
-// export interface PostAiType {
-// 	date: string;
-// 	meal_time: MealType;
-// 	file: File | undefined;
-// }
-
-export interface PostAiType {
-	// file: File | undefined;
-	file: FormData;
+export interface PostAiTypes {
+	date: string;
+	meal_time: MealType | string;
+	file: ArrayLike<File>;
 }
+
 export type FilterType = "newest" | "popularity";
