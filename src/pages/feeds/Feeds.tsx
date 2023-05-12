@@ -3,9 +3,10 @@ import { useNavigate } from "react-router-dom";
 import { useRecoilValue } from "recoil";
 import { isLoggedInState } from "@/recoil/state";
 import { feedsApi } from "@/api/feeds";
-import { FilterType, GetFeedsTypes } from "@/types/feeds/feedsRequestTypes";
-import { GetFeedsResponseTypes } from "@/types/feeds/feedsResponseTypes";
+import { FilterType, GetFeedsParamsTypes } from "@/types/feeds/feedsRequestTypes";
+import { GetFeedsResponseTypes, GetFeedsTypes } from "@/types/feeds/feedsResponseTypes";
 import Thumb from "@/components/atoms/thumbnail/Thumbnail";
+import { AxiosResponse } from "axios";
 
 const Feeds = () => {
 	const navigate = useNavigate();
@@ -13,8 +14,8 @@ const Feeds = () => {
 	// 로그인 여부 확인
 	const isLoggedIn = useRecoilValue(isLoggedInState);
 
-	const [feeds, setFeeds] = useState<GetFeedsResponseTypes[]>([]);
-	const [popularFeeds, setPopularFeeds] = useState<GetFeedsResponseTypes[]>([]);
+	const [feeds, setFeeds] = useState<GetFeedsTypes[]>([]);
+	const [popularFeeds, setPopularFeeds] = useState<GetFeedsTypes[]>([]);
 	const [page, setPage] = useState(1);
 	const [hashNextPage, setHashNextPage] = useState<boolean>(false);
 	const observerTarget = useRef<HTMLDivElement>(null);
@@ -35,11 +36,10 @@ const Feeds = () => {
 
 	// 인기랭킹 조회 api
 	const getPopularFeeds = async () => {
-		let data: any;
+		let data: AxiosResponse<GetFeedsResponseTypes>;
 		try {
-			const params: GetFeedsTypes = { page: page, per_page: 3, filter: "popularity", goal: "all" };
+			const params: GetFeedsParamsTypes = { page: page, per_page: 3, filter: "popularity", goal: "all" };
 			data = await feedsApi.getFeedsRequest("api/feeds", params);
-			console.log(data);
 			setPopularFeeds(data.data.feeds);
 		} catch (err) {
 			alert("인기 랭킹을 불러올 수 없습니다!");
@@ -48,21 +48,19 @@ const Feeds = () => {
 
 	// 식단피드 조회 api
 	const getFeeds = async () => {
-		let data: any;
+		let data: AxiosResponse<GetFeedsResponseTypes>;
 		try {
-			const params: GetFeedsTypes = { page: page, per_page: 10, filter: filter, goal: filterGoal };
+			const params: GetFeedsParamsTypes = { page: page, per_page: 10, filter: filter, goal: filterGoal };
 			data = await feedsApi.getFeedsRequest("/api/feeds", params);
-			// TODO : 해결해야 함!
-			/**
-			 * 스크롤을 내려서 옵저버가 다음 데이터를 인식하면 새로 api 요청을 해서 데이터를 받아와서 기존꺼에 붙임. -> OK
-			 * 필터 클릭하면 피드를 아예 새로 setFeeds에 넣어줘야하는데 기존꺼 뒤에 붙이고 있음... -> BAD
-			 */
-			setFeeds((prev) => [...prev, ...data.data.feeds]);
-			// setFeeds(data.data.feeds);
-			// 서버에서 다음 페이지가 있는지 boolean 받음.
+
+			if (page === 1) {
+				setFeeds(data.data.feeds);
+			} else {
+				setFeeds((prev) => [...prev, ...data.data.feeds]);
+			}
+
+			// 서버에서 다음 페이지가 있는지 확인.
 			setHashNextPage(data.data.next_page);
-			// console.log(data.data.next_page);
-			// console.log(hashNextPage);
 			console.log("피드 불러오기 성공!");
 		} catch (err) {
 			alert("피드를 불러올 수 없습니다!");
@@ -126,10 +124,9 @@ const Feeds = () => {
 						</div>
 						<p className="text-gray-1 text-xl">가장 많은 💛를 받은 인기 식단이에요!</p>
 					</div>
-					{/* TODO : API 명세 받은 후 map함수 돌려서 상위 3개 적용 */}
 					<div className="flex gap-6">
 						{popularFeeds &&
-							popularFeeds?.map((v, i) => {
+							popularFeeds.map((v, i) => {
 								return (
 									<Thumb
 										src={v.image_url}
@@ -138,7 +135,7 @@ const Feeds = () => {
 										type="like"
 										isLike={v.my_like}
 										onClick={() => toggleLike(i, v.feed_id)}
-										key={i}
+										key={v.feed_id}
 									/>
 								);
 							})}
@@ -174,7 +171,7 @@ const Feeds = () => {
 			</div>
 			<div className="flex flex-wrap w-1200 mt-8 gap-6 feedBox">
 				{feeds &&
-					feeds?.map((v, i) => {
+					feeds.map((v, i) => {
 						return (
 							<Thumb
 								src={v.image_url}
@@ -183,13 +180,12 @@ const Feeds = () => {
 								type="like"
 								isLike={v.my_like}
 								onClick={() => toggleLike(i, v.feed_id)}
-								key={i}
+								key={v.feed_id}
 							/>
 						);
 					})}
 			</div>
-			{/* {hashNextPage && <div ref={observerTarget}></div>} */}
-			<div ref={observerTarget}></div>
+			{hashNextPage && <div ref={observerTarget}></div>}
 		</div>
 	);
 };

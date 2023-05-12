@@ -13,7 +13,7 @@ import LikeWithCount from "@/components/organisms/LikeWithCount";
 import GoalText from "@/components/organisms/GoalText";
 import ArrowButton from "@/components/atoms/buttons/ArrowButton";
 
-import { GetFeedsResponseTypes, UserDailyNutrientTypes } from "@/types/feeds/feedsResponseTypes";
+import { GetFeedsTypes, UserDailyNutrientTypes } from "@/types/feeds/feedsResponseTypes";
 
 // TODO : 이전글 다음글 구현? 안되면 주석 삭제하기
 
@@ -25,7 +25,7 @@ const Detail = () => {
 	const [isLoggedIn, setIsLoggedIn] = useRecoilState(isLoggedInState);
 
 	// data set
-	const [feedDetail, setFeedDetail] = useState<GetFeedsResponseTypes>();
+	const [feedDetail, setFeedDetail] = useState<GetFeedsTypes>();
 	const [isLike, setIsLike] = useState(false);
 	const [likeCount, setLikeCount] = useState<number>();
 	const [nutry, setNutry] = useState<UserDailyNutrientTypes>({

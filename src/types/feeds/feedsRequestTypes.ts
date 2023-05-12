@@ -1,4 +1,4 @@
-export interface GetFeedsTypes {
+export interface GetFeedsParamsTypes {
 	goal?: string;
 	filter?: string;
 	page?: number;
