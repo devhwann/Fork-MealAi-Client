@@ -31,9 +31,9 @@ export const feedsApi = Object.freeze({
 			return err;
 		}
 	},
-	async getMyLikesRequest(endPoint: string) {
+	async getMyLikesRequest(endPoint: string, params: GetFeedsParamsTypes) {
 		try {
-			const response = await axiosHandler.get(endPoint);
+			const response = await axiosHandler.get(endPoint, { params });
 			return response;
 		} catch (err: any) {
 			console.log("?", err);

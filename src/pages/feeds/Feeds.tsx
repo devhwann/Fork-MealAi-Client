@@ -53,6 +53,7 @@ const Feeds = () => {
 			const params: GetFeedsParamsTypes = { page: page, per_page: 10, filter: filter, goal: filterGoal };
 			data = await feedsApi.getFeedsRequest("/api/feeds", params);
 
+			// handleFilterChange, handleGoal이 실행되어 page가 1이 되면 새롭게 피드를 불러옴
 			if (page === 1) {
 				setFeeds(data.data.feeds);
 			} else {
@@ -79,7 +80,7 @@ const Feeds = () => {
 
 	// Infinite Scroll - Intersection Observer 구현
 	useEffect(() => {
-		// observerTarget.current와 hashNextPage가 모두 truthy일 때만 실행
+		// 감지 대상이나 다음 페이지가 없으면 return
 		if (!observerTarget.current || !hashNextPage) return;
 
 		const io = new IntersectionObserver((entries, observer) => {
