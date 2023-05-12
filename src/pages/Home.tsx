@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { HeadContainer, IntroContainer } from "./Home.style";
-import { GetFeedsTypes } from "@/types/feeds/feedsRequestTypes";
-import { GetFeedsResponseTypes } from "@/types/feeds/feedsResponseTypes";
+import { GetFeedsParamsTypes } from "@/types/feeds/feedsRequestTypes";
+import { GetFeedsTypes } from "@/types/feeds/feedsResponseTypes";
 import { feedsApi } from "@/api/feeds";
 import { useRecoilValue } from "recoil";
 import { isLoggedInState } from "@/recoil/state";
@@ -23,8 +23,8 @@ const Home = () => {
 	const isLoggedIn = useRecoilValue(isLoggedInState);
 
 	// 피드 불러오기
-	const params: GetFeedsTypes = { per_page: 10 };
-	const [feeds, setFeeds] = useState<GetFeedsResponseTypes[]>();
+	const params: GetFeedsParamsTypes = { per_page: 10 };
+	const [feeds, setFeeds] = useState<GetFeedsTypes[]>();
 
 	useEffect(() => {
 		const getAllFeeds = async () => {
@@ -136,7 +136,7 @@ const Home = () => {
 									type="like"
 									isLike={v.my_like}
 									onClick={() => toggleLike(i, v.feed_id)}
-									key={i}
+									key={v.feed_id}
 								/>
 							);
 						})}

@@ -4,7 +4,7 @@ import { validateConfirmPassword, validatePassword } from "@/utils/validation";
 import { axios } from "@/utils/axios.utils";
 import { userApi } from "@/api/user";
 import { feedsApi } from "@/api/feeds";
-import { GetFeedsResponseTypes } from "@/types/feeds/feedsResponseTypes";
+import { GetFeedsTypes } from "@/types/feeds/feedsResponseTypes";
 import BasicButton from "@/components/atoms/buttons/BasicButton";
 import GoalText, { GoalType } from "@/components/organisms/GoalText";
 import Thumb from "@/components/atoms/thumbnail/Thumbnail";
@@ -18,7 +18,7 @@ const MyPage = () => {
 
 	const [nickname, setNickname] = useState("");
 	const [goal, setGoal] = useState<GoalType>("balance");
-	const [myLikesFeeds, setMyLikesFeeds] = useState<GetFeedsResponseTypes[]>();
+	const [myLikesFeeds, setMyLikesFeeds] = useState<GetFeedsTypes[]>();
 
 	// TODO : 내가 좋아한 식단 인피니티 스크롤 구현
 	useEffect(() => {
@@ -28,7 +28,7 @@ const MyPage = () => {
 				axios.spread((userInfoData, myLikesFeedsData) => {
 					setNickname(userInfoData.data.nickname);
 					setGoal(userInfoData.data.goal);
-					setMyLikesFeeds(myLikesFeedsData.data);
+					setMyLikesFeeds(myLikesFeedsData.data.feeds);
 				})
 			)
 			.catch((err) => {
@@ -206,7 +206,7 @@ const MyPage = () => {
 									type="like"
 									isLike={v.my_like}
 									onClick={() => toggleLike(i, v.feed_id)}
-									key={i}
+									key={v.feed_id}
 								/>
 							);
 						})}
