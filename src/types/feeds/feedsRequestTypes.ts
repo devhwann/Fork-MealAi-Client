@@ -17,3 +17,4 @@ export interface PostAiType {
 	// file: File | undefined;
 	file: FormData;
 }
+export type FilterType = "newest" | "popularity";
