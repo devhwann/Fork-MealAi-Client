@@ -1,5 +1,5 @@
-import AddIcon from "@/assets/icon_add_image.svg";
 import { ChangeEvent } from "react";
+import AddIcon from "@/assets/icon_add_image.svg";
 
 interface AddImageFileInputProps {
 	imageUrl: string;
@@ -8,14 +8,14 @@ interface AddImageFileInputProps {
 
 const AddImageFileInput = ({ imageUrl, onChange }: AddImageFileInputProps) => {
 	const handleClick = () => {
-		const inputFileEl = document.querySelector("#upload") as HTMLInputElement;
+		const inputFileEl = document.querySelector("#file") as HTMLInputElement;
 		if (inputFileEl) inputFileEl.click();
 	};
 	return (
 		<div className="w-96 h-96 relative overflow-hidden">
 			<input
 				type="file"
-				id="upload"
+				id="file"
 				onChange={onChange}
 				accept="image/*"
 				className="w-96 h-96 absolute cursor-pointer hidden"

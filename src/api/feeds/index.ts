@@ -1,5 +1,5 @@
 import { axiosHandler } from "@/utils/axios.utils";
-import { GetFeedsParamsTypes, PostAiType } from "@/types/feeds/feedsRequestTypes";
+import {  GetFeedsParamsTypes } from "@/types/feeds/feedsRequestTypes";
 
 /**
  * feeds apis
@@ -15,17 +15,13 @@ export const feedsApi = Object.freeze({
 			return err;
 		}
 	},
-	async postFeedRequest(endPoint: string, params: PostAiType) {
+	async postFeedRequest(endPoint: string, params: any) {
 		try {
-			const response = await axiosHandler.post(
-				endPoint,
-				{ params },
-				{
-					headers: {
-						"Content-Type": "multipart/form-data",
-					},
-				}
-			);
+			const response = await axiosHandler.post(endPoint, params, {
+				headers: {
+					"Content-Type": "multipart/form-data",
+				},
+			});
 			return response;
 		} catch (err: any) {
 			return err;
