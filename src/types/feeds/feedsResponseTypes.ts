@@ -35,3 +35,8 @@ export interface GetFeedsResponseTypes {
 	my_like: boolean;
 	is_mine: boolean;
 }
+
+export interface GetPagesTypes {
+	prev_page: boolean;
+	next_page: boolean;
+}

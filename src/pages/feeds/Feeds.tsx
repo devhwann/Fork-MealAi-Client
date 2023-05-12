@@ -1,10 +1,10 @@
-import { ChangeEvent, useCallback, useEffect, useRef, useState } from "react";
+import { ChangeEvent, useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useRecoilValue } from "recoil";
 import { isLoggedInState } from "@/recoil/state";
 import { feedsApi } from "@/api/feeds";
 import { FilterType, GetFeedsTypes } from "@/types/feeds/feedsRequestTypes";
-import { GetFeedsResponseTypes } from "@/types/feeds/feedsResponseTypes";
+import { GetFeedsResponseTypes, GetPagesTypes } from "@/types/feeds/feedsResponseTypes";
 import Thumb from "@/components/atoms/thumbnail/Thumbnail";
 
 const Feeds = () => {
@@ -37,11 +37,17 @@ const Feeds = () => {
 		try {
 			const params: GetFeedsTypes = { page: page, per_page: 10, filter: filter, goal: filterGoal };
 			data = await feedsApi.getFeedsRequest("/api/feeds", params);
-			// TODO : 필터 클릭하면 피드를 아예 새로 setFeeds에 넣어줘야하는데 기존꺼 뒤에 붙이고 있음...
+			// TODO : 해결해야 함!
+			/**
+			 * 스크롤을 내려서 옵저버가 다음 데이터를 인식하면 새로 api 요청을 해서 데이터를 받아와서 기존꺼에 붙임. -> OK
+			 * 필터 클릭하면 피드를 아예 새로 setFeeds에 넣어줘야하는데 기존꺼 뒤에 붙이고 있음... -> BAD
+			 */
 			setFeeds((prev) => [...prev, ...data.data.feeds]);
-			// TODO: 서버에서 다음 페이지가 있는지 boolean 으로 받던가, pagination 을 처리할만한 정보를 받는다.
-			setHashNextPage(data.data.length === params.per_page);
-
+			// setFeeds(data.data.feeds);
+			// 서버에서 다음 페이지가 있는지 boolean 받음.
+			setHashNextPage(data.data.next_page);
+			// console.log(data.data.next_page);
+			// console.log(hashNextPage);
 			console.log("피드 불러오기 성공!");
 		} catch (err) {
 			alert(data.response.data.message);
@@ -61,8 +67,6 @@ const Feeds = () => {
 		const io = new IntersectionObserver((entries, observer) => {
 			if (entries[0].isIntersecting) {
 				setPage((page) => page + 1);
-
-				// getFeeds();
 			}
 		});
 		io.observe(observerTarget.current);
@@ -168,19 +172,20 @@ const Feeds = () => {
 				</>
 			</div>
 			<div className="flex flex-wrap w-1200 mt-8 gap-6 feedBox">
-				{feeds?.map((v, i) => {
-					return (
-						<Thumb
-							src={v.image_url}
-							id={v.feed_id}
-							size="md"
-							type="like"
-							isLike={v.my_like}
-							onClick={() => toggleLike(i, v.feed_id)}
-							key={i}
-						/>
-					);
-				})}
+				{feeds &&
+					feeds?.map((v, i) => {
+						return (
+							<Thumb
+								src={v.image_url}
+								id={v.feed_id}
+								size="md"
+								type="like"
+								isLike={v.my_like}
+								onClick={() => toggleLike(i, v.feed_id)}
+								key={i}
+							/>
+						);
+					})}
 			</div>
 			{/* {hashNextPage && <div ref={observerTarget}></div>} */}
 			<div ref={observerTarget}></div>
