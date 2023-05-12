@@ -31,7 +31,7 @@ const Home = () => {
 			let data;
 			try {
 				data = await feedsApi.getFeedsRequest("/api/feeds", params);
-				setFeeds(data.data);
+				setFeeds(data.data.feeds);
 			} catch (err) {
 				alert(data.response.data.message);
 			}
