@@ -8,7 +8,7 @@ import TinyButton from "@/components/atoms/buttons/TinyButton";
 import Thumb from "@/components/atoms/thumbnail/Thumbnail";
 
 import TempImage from "@/assets/temp_image.jpg"; // TODO : 실제 데이터 연동 후 지우기
-import { ReportWeekHistory } from "@/types/report /reportResponseType";
+import { ReportWeekHistory } from "@/types/report/reportResponseType";
 import { reportApi } from "@/api/report";
 
 // TODO : 페이지 처음 진입할 때 params ?
