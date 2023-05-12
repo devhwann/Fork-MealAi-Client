@@ -52,7 +52,7 @@ const Feeds = () => {
 		try {
 			const params: GetFeedsParamsTypes = { page: page, per_page: 10, filter: filter, goal: filterGoal };
 			data = await feedsApi.getFeedsRequest("/api/feeds", params);
-			if (page === 1) {
+      if (page === 1) {
 				setFeeds(data.data.feeds);
 			} else {
 				setFeeds((prev) => [...prev, ...data.data.feeds]);
