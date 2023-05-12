@@ -1,5 +1,5 @@
 import { axiosHandler } from "@/utils/axios.utils";
-import {  GetFeedsParamsTypes } from "@/types/feeds/feedsRequestTypes";
+import { GetFeedsParamsTypes } from "@/types/feeds/feedsRequestTypes";
 
 /**
  * feeds apis
