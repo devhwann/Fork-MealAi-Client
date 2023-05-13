@@ -1,4 +1,4 @@
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import MyGoalText from "@/components/organisms/MyGoalText";
 import HorizontalProgressBars from "@/components/atoms/progressBars/HorizontalProgressBars";
 import VerticalProgressBars from "@/components/atoms/progressBars/VerticalProgressBars";
@@ -7,14 +7,16 @@ import { useEffect, useState } from "react";
 import { UserDailyNutrientTypes } from "@/types/feeds/feedsResponseTypes";
 import { ReportWeekHistory } from "@/types/report/reportResponseType";
 import { reportApi } from "@/api/report";
+import { GoalType } from "@/components/organisms/GoalText";
 
 const WeeklyReport = () => {
 	const { week } = useParams();
-	const navigate = useNavigate();
-	// TODO : 주별 날짜 구해야 함 -> h4자리에 넣기
-	const weeklyDates = () => {};
 
 	// data set
+	const [goal, setGoal] = useState<GoalType>("balance");
+	const [period, setPeriod] = useState<number[]>([]);
+	const [dailyData, setDailyData] = useState<UserDailyNutrientTypes[]>([]);
+
 	const [weeklyNutry, setWeeklyNutry] = useState<ReportWeekHistory>({
 		kcal: 0,
 		carbohydrate: 0,
@@ -27,19 +29,14 @@ const WeeklyReport = () => {
 		protein: 0,
 		fat: 0,
 	});
-
-	const [nutry, setNutry] = useState<ReportWeekHistory>({
-		kcal: 0,
-		carbohydrate: 0,
-		protein: 0,
-		fat: 0,
-	});
 	const [goalNutry, setGoalNutry] = useState<ReportWeekHistory>({
 		kcal: 0,
 		carbohydrate: 0,
 		protein: 0,
 		fat: 0,
 	});
+
+	const dayOfTheWeek = ["월", "화", "수", "목", "금", "토", "일"];
 
 	useEffect(() => {
 		async function getWeeklyReportData() {
@@ -48,10 +45,14 @@ const WeeklyReport = () => {
 			if (weeklyReport.status === 200) {
 				console.log("WeeklyReport", weeklyReport);
 
+				setGoal(weeklyReport.data.goal);
+				setPeriod([weeklyReport.data.start_of_week, weeklyReport.data.end_of_week]);
+				setDailyData(weeklyReport.data.daily_nutrient);
+
 				//수정 : 곱하기가 아니라 요일 별로 더하기여야 할 듯
 				setWeeklyNutry({
 					kcal: weeklyReport.data.weekly_nutrient.kcal,
-					carbohydrate: weeklyReport.data.weekly_nutrient.carbohydrate * 7,
+					carbohydrate: weeklyReport.data.weekly_nutrient.carbohydrate,
 					protein: weeklyReport.data.weekly_nutrient.protein,
 					fat: weeklyReport.data.weekly_nutrient.fat,
 				});
@@ -60,12 +61,6 @@ const WeeklyReport = () => {
 					carbohydrate: weeklyReport.data.weekly_goal.carbohydrate,
 					protein: weeklyReport.data.weekly_goal.protein,
 					fat: weeklyReport.data.weekly_goal.fat,
-				});
-				setNutry({
-					kcal: weeklyReport.data.daily_nutrient.kcal,
-					carbohydrate: weeklyReport.data.daily_nutrient.carbohydrate * 7,
-					protein: weeklyReport.data.daily_nutrient.protein,
-					fat: weeklyReport.data.daily_nutrient.fat,
 				});
 				setGoalNutry({
 					kcal: weeklyReport.data.daily_goal.kcal,
@@ -85,11 +80,13 @@ const WeeklyReport = () => {
 					<div className="pt-20 grid content-between">
 						<div>
 							<h1 className="text-primary-1 mb-2">주간 AI 리포트</h1>
-							<h4 className="mb-6">2023.04.21 - 2023.04.27</h4>
+							<h4 className="mb-6">
+								{period[0]} ~ {period[1]}
+							</h4>
 							<p className="mb-2 text-gray-4">한 주동안 목표에 맞게 열심히 식단관리 하셨나요?</p>
 							<p className="text-gray-4">리포트를 확인해보세요.</p>
 						</div>
-						<MyGoalText goal="balance" />
+						<MyGoalText goal={goal} />
 					</div>
 					<div className="w-96 h-64 p-10 mt-20 bg-white border-solid border border-gray-7 rounded-lg">
 						<HorizontalProgressBars nutry={weeklyNutry} usersNutry={weeklyNutryGoal} />
@@ -123,14 +120,12 @@ const WeeklyReport = () => {
 						</div>
 					</div>
 					<div className="flex gap-10 items-center mr-20">
-						{/* TODO : 데이터 받아서 map함수 적용 */}
-						<VerticalProgressBars nutry={nutry} usersNutry={goalNutry} day="월" />
-						<VerticalProgressBars nutry={nutry} usersNutry={goalNutry} day="화" />
-						<VerticalProgressBars nutry={nutry} usersNutry={goalNutry} day="수" />
-						<VerticalProgressBars nutry={nutry} usersNutry={goalNutry} day="목" />
-						<VerticalProgressBars nutry={nutry} usersNutry={goalNutry} day="금" />
-						<VerticalProgressBars nutry={nutry} usersNutry={goalNutry} day="토" />
-						<VerticalProgressBars nutry={nutry} usersNutry={goalNutry} day="일" />
+						{dailyData &&
+							dailyData.map((v, i) => {
+								return (
+									<VerticalProgressBars nutry={dailyData[i]} usersNutry={goalNutry} day={dayOfTheWeek[i]} key={i} />
+								);
+							})}
 					</div>
 				</div>
 			</div>
