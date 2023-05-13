@@ -1,4 +1,5 @@
 import { useNavigate } from "react-router-dom";
+import { S3_URL } from "@/config/constants";
 import LikeButton, { LikeButtonProps } from "../buttons/LikeButton";
 import getMealTime from "@/utils/getMealTime";
 import LockIcon from "@/assets/icon_lock.svg";
@@ -27,7 +28,7 @@ function getSize(size: ThumbnailProps["size"]) {
 
 function getImageSrc(src: ThumbnailProps["src"]) {
 	if (src !== null) {
-		return src;
+		return S3_URL + src;
 	}
 	return NoneImage;
 }

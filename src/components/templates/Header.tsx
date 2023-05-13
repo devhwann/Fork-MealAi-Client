@@ -14,16 +14,31 @@ const Header = () => {
 	const [isLoggedIn, setisLoggedInState] = useRecoilState(isLoggedInState);
 
 	useEffect(() => {
-		const isLoggedInValid = localStorage.getItem("accessToken") ? true : false;
+		const isLoggedInValid =
+			!localStorage.getItem("accessToken") && !localStorage.getItem("refreshToken") ? false : true;
 		setisLoggedInState(isLoggedInValid);
-	}, [isLoggedIn, localStorage.getItem("refreshToken")]);
+	}, [isLoggedIn]);
+
+	console.log("isLoggedIn", isLoggedIn);
+
+	// TODO : 토큰둘다 바꾸거나 없앴을 때 상단이 안바뀐다네 ㅠㅠㅠㅠㅠㅠㅠ
 
 	const handleLogout = async () => {
-		localStorage.removeItem("accessToken");
-		localStorage.removeItem("refreshToken");
-		setisLoggedInState(false);
-		await authApi.authLogoutRequest("/api/auth/logout");
+		if (!localStorage.getItem("accessToken") && !localStorage.getItem("refreshToken")) {
+			setisLoggedInState(false);
+			return;
+		}
+		const result = await authApi.authLogoutRequest("/api/auth/logout");
+		console.log(result);
+		// localStorage.clear();
+		// setisLoggedInState(false);
 	};
+
+	// (() => {
+	// 	if (!localStorage.getItem("accessToken") && !localStorage.getItem("refreshToken")) {
+	// 		setisLoggedInState(false);
+	// 	}
+	// })();
 
 	const menuObj: MenuObjProps[] = [
 		{

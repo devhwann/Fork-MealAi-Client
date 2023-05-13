@@ -2,6 +2,9 @@ import { ChangeEvent, MouseEvent, useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { userApi } from "@/api/user";
 import { GoalType } from "@/components/organisms/GoalText";
+import { useSetRecoilState } from "recoil";
+import { isLoggedInState } from "@/recoil/state";
+
 import Input from "@/components/atoms/inputs/Input";
 import InputLabel from "@/components/atoms/inputs/InputLabel";
 import SelectWithLabel from "@/components/organisms/SelectWithLabel";
@@ -12,6 +15,8 @@ import Modal from "@/components/organisms/Modal";
 
 const EditInfo = () => {
 	const navigate = useNavigate();
+
+	const setisLoggedInState = useSetRecoilState(isLoggedInState);
 
 	const [gender, setGender] = useState("M");
 	const [ageGroup, setAgeGroup] = useState<number>();
@@ -85,6 +90,7 @@ const EditInfo = () => {
 			if (result.status === 200) {
 				alert("탈퇴되셨습니다. 다음에 또 만나요. 👋");
 				localStorage.clear();
+				setisLoggedInState(false);
 				navigate("/");
 			}
 		} else {
