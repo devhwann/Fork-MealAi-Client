@@ -140,16 +140,14 @@ const Detail = () => {
 						{feedDetail &&
 							feedDetail.foods.map((v, i) => {
 								return (
-									<>
-										<FoodCardViewOnly
-											key={i}
-											src={v.image_url}
-											size="sm"
-											type="none"
-											name={v.food_name}
-											weight={v.weight}
-										/>
-									</>
+									<FoodCardViewOnly
+										key={v.food_id}
+										src={v.image_url}
+										size="sm"
+										type="none"
+										name={v.food_name}
+										weight={v.weight}
+									/>
 								);
 							})}
 					</div>
