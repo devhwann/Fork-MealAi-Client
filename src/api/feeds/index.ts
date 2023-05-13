@@ -1,5 +1,5 @@
 import { axiosHandler } from "@/utils/axios.utils";
-import { GetFeedsParamsTypes } from "@/types/feeds/feedsRequestTypes";
+import { EditFeedTypes, GetFeedsParamsTypes } from "@/types/feeds/feedsRequestTypes";
 
 /**
  * feeds apis
@@ -55,6 +55,14 @@ export const feedsApi = Object.freeze({
 	async deleteFeedRequest(endPoint: string) {
 		try {
 			const response = await axiosHandler.delete(endPoint);
+			return response;
+		} catch (err: any) {
+			return err;
+		}
+	},
+	async editFeedRequest(endPoint: string, params: EditFeedTypes) {
+		try {
+			const response = await axiosHandler.patch(endPoint, params);
 			return response;
 		} catch (err: any) {
 			return err;
