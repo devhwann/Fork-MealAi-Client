@@ -136,18 +136,20 @@ const Detail = () => {
 						</div>
 					</div>
 					{feedDetail && feedDetail.foods.length >= 1 && <h4 className="mb-4">상세 식단</h4>}
-					<div className="flex flex-wrap justify-between w-792 gap-5 items-start">
+					<div className="flex flex-wrap w-792 gap-5 items-start">
 						{feedDetail &&
 							feedDetail.foods.map((v, i) => {
 								return (
-									<FoodCardViewOnly
-										key={i}
-										src={v.image_url}
-										size="sm"
-										type="none"
-										name={v.food_name}
-										weight={v.weight}
-									/>
+									<>
+										<FoodCardViewOnly
+											key={i}
+											src={v.image_url}
+											size="sm"
+											type="none"
+											name={v.food_name}
+											weight={v.weight}
+										/>
+									</>
 								);
 							})}
 					</div>
