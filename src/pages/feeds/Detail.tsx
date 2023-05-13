@@ -141,7 +141,7 @@ const Detail = () => {
 							feedDetail.foods.map((v, i) => {
 								return (
 									<FoodCardViewOnly
-										key={i}
+										key={v.food_id}
 										src={v.image_url}
 										size="sm"
 										type="none"

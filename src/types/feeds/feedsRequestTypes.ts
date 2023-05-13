@@ -1,4 +1,5 @@
 import { MealType } from "@/utils/getMealTime";
+import { FoodsTypes } from "./feedsResponseTypes";
 
 export interface GetFeedsParamsTypes {
 	goal?: string;
@@ -14,3 +15,8 @@ export interface PostAiTypes {
 }
 
 export type FilterType = "newest" | "popularity";
+
+export interface EditFeedTypes {
+	foods: FoodsTypes[];
+	open: boolean;
+}
