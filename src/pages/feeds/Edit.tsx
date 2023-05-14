@@ -13,6 +13,7 @@ import SearchInput from "@/components/atoms/inputs/SearchInput";
 import SearchResult from "@/components/organisms/SearchResult";
 import ToggleButton from "@/components/atoms/buttons/ToggleButton";
 import AddFoodButton from "@/components/atoms/buttons/AddFoodButton";
+import { PostSearchFoodTypes } from "@/types/feeds/feedsRequestTypes";
 
 const Edit = () => {
 	const { id } = useParams();
@@ -76,15 +77,6 @@ const Edit = () => {
 			return;
 		}
 		const params: EditFeedTypes = {
-			// TODO : foods 배열 보내는 더 좋은 방법이 있을거야...
-			// foods: [
-			// 	{
-			// 		food_id: feedDetail.foods[0].food_id,
-			// 		food_name: feedDetail.foods[0].food_name,
-			// 		image_url: feedDetail.foods[0].image_url,
-			// 		weight: feedDetail.foods[0].weight,
-			// 	},
-			// ],
 			foods: foodCardArray,
 			open: feedDetail.open,
 		};
@@ -107,8 +99,11 @@ const Edit = () => {
 
 	// 검색
 	const [searchKeyWord, setSearchKeyWord] = useState<string>("");
-	const [keyWordResults, setKeyWordResults] = useState<GetSearchFoodTypes[]>([]);
 	const searchInputRef = useRef<HTMLInputElement>(null);
+
+	// 검색 결과
+	const [keyWordResults, setKeyWordResults] = useState<GetSearchFoodTypes[]>([]);
+	const [selectFood, setSelectFood] = useState<GetSearchFoodTypes[]>([]);
 
 	const handleSearch = async () => {
 		const searchTextValue = searchInputRef?.current?.value as string;
@@ -153,11 +148,17 @@ const Edit = () => {
 		setSearchKeyWord("");
 	}
 
-	function handleSearchForNewFood() {
+	const handleSearchForNewFood = async () => {
 		console.log("선택한 음식 추가");
 		handleSearchModal();
-		setSearchKeyWord("");
-	}
+
+		// const params: PostSearchFoodTypes = {
+		// 	food_id:,
+		// 	weight:,
+		// };
+
+		const data = setSearchKeyWord("");
+	};
 
 	console.log("푸드 카드", foodCardArray);
 
@@ -235,7 +236,7 @@ const Edit = () => {
 					<SearchInput name="search" id="search" value={searchKeyWord} onClick={handleSearch} ref={searchInputRef} />
 					<SearchResult
 						data={keyWordResults}
-						onClick={() => {
+						onClick={(e) => {
 							if (editModal) {
 								handleSearchForFoodToModify();
 								return;
