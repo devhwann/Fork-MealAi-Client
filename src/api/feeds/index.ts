@@ -32,7 +32,6 @@ export const feedsApi = Object.freeze({
 			const response = await axiosHandler.get(endPoint, { params });
 			return response;
 		} catch (err: any) {
-			console.log("?", err);
 			return err;
 		}
 	},
