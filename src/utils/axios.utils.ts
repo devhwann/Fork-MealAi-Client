@@ -30,8 +30,6 @@ axiosHandler.interceptors.request.use(
 	}
 );
 
-// * 새 작업
-
 // refresh token multi request 처리
 let isRefreshing = false;
 let refreshSubscribers: any[] = [];
@@ -90,7 +88,7 @@ axiosHandler.interceptors.response.use(
 		const originalConfig = error.config;
 		const code = error.response.data.error_code;
 
-		if (code === 2002 || code === 2005 || code === 2006) {
+		if (code === 2002 || code === 2003 || code === 2004 || code === 2005 || code === 2006 || code === 2007) {
 			try {
 				await handleResetTokens();
 				return;
@@ -99,7 +97,7 @@ axiosHandler.interceptors.response.use(
 			}
 		}
 
-		if (code === 2001 || code === 2003 || code === 2004 || code === 2007) {
+		if (code === 2001) {
 			try {
 				await getRefreshToken();
 				return await axiosHandler(originalConfig);
@@ -111,50 +109,5 @@ axiosHandler.interceptors.response.use(
 		return Promise.reject(error);
 	}
 );
-
-// * 기존 interceptor
-
-// axiosHandler.interceptors.response.use(
-// 	function (res) {
-// 		return res;
-// 	},
-// 	async function (error) {
-// 		const originalConfig = error.config;
-// 		const code = error.response.data.error_code;
-
-// 		console.log("error code!!", code);
-
-// 		// ! 2003 : 삭제해도 감지가 안되고 데이터가 받아와짐
-
-// 		if (code === 2002 || code === 2003 || code === 2005 || code === 2006) {
-// 			alert("토큰이 만료되어 자동으로 로그아웃 되었습니다. 다시 로그인 해주세요🤗");
-// 			localStorage.clear();
-// 			if (window !== undefined) {
-// 				location.href = "/auth/sign-in";
-// 			}
-// 			return;
-// 		}
-
-// 		// ! 2004 : accessToken 변질됐을 때, 페이지이동시 refresh 잘됨 / 새로고침하면 안됨....
-
-// 		if (code === 2001 || code === 2004 || code === 2007) {
-// 			// console.log("2001, 2004, 2007 error가 몇 번 뜰까욤");
-
-// 			const currentRefreshToken = localStorage.getItem("refreshToken");
-
-// 			const data = await authApi.authRefreshRequest("/api/auth/refresh", {
-// 				refresh_token: currentRefreshToken!,
-// 			});
-
-// 			localStorage.setItem("accessToken", data.data.access_token);
-// 			localStorage.setItem("refreshToken", data.data.refresh_token);
-// 			axiosHandler.defaults.headers.common["authorization-"] = `Bearer ${localStorage.getItem("accessToken")}`;
-
-// 			return axiosHandler(originalConfig);
-// 		}
-
-// 		return Promise.reject(error);
-// 	}
-// );
 
 export { axiosHandler, axios, API_ENDPOINT };

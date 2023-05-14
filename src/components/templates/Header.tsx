@@ -19,26 +19,11 @@ const Header = () => {
 		setisLoggedInState(isLoggedInValid);
 	}, [isLoggedIn]);
 
-	console.log("isLoggedIn", isLoggedIn);
-
-	// TODO : 토큰둘다 바꾸거나 없앴을 때 상단이 안바뀐다네 ㅠㅠㅠㅠㅠㅠㅠ
-
 	const handleLogout = async () => {
-		if (!localStorage.getItem("accessToken") && !localStorage.getItem("refreshToken")) {
-			setisLoggedInState(false);
-			return;
-		}
-		const result = await authApi.authLogoutRequest("/api/auth/logout");
-		console.log(result);
-		// localStorage.clear();
-		// setisLoggedInState(false);
+		await authApi.authLogoutRequest("/api/auth/logout");
+		localStorage.clear();
+		setisLoggedInState(false);
 	};
-
-	// (() => {
-	// 	if (!localStorage.getItem("accessToken") && !localStorage.getItem("refreshToken")) {
-	// 		setisLoggedInState(false);
-	// 	}
-	// })();
 
 	const menuObj: MenuObjProps[] = [
 		{
