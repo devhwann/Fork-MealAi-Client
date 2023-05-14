@@ -236,7 +236,7 @@ const Edit = () => {
 					<SearchInput name="search" id="search" value={searchKeyWord} onClick={handleSearch} ref={searchInputRef} />
 					<SearchResult
 						data={keyWordResults}
-						onClick={(e) => {
+						onClick={() => {
 							if (editModal) {
 								handleSearchForFoodToModify();
 								return;
