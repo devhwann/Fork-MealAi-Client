@@ -51,9 +51,6 @@ const MyPage = () => {
 			)
 			.catch((err) => {
 				console.log(err);
-				// navigate("/auth/sign-in");
-				// alert("다시 로그인 해주세요.");
-				// localStorage.clear();
 			});
 	}, [page]);
 
