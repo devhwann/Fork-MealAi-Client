@@ -1,7 +1,8 @@
 import { MouseEvent, useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { feedsApi } from "@/api/feeds";
-import { GetFeedsTypes, UserDailyNutrientTypes } from "@/types/feeds/feedsResponseTypes";
+import { GetFeedsTypes, GetSearchFoodTypes, UserDailyNutrientTypes } from "@/types/feeds/feedsResponseTypes";
+import { EditFeedTypes } from "@/types/feeds/feedsRequestTypes";
 import getMealTime from "@/utils/getMealTime";
 import Thumb from "@/components/atoms/thumbnail/Thumbnail";
 import HorizontalProgressBars from "@/components/atoms/progressBars/HorizontalProgressBars";
@@ -12,7 +13,6 @@ import SearchInput from "@/components/atoms/inputs/SearchInput";
 import SearchResult from "@/components/organisms/SearchResult";
 import ToggleButton from "@/components/atoms/buttons/ToggleButton";
 import AddFoodButton from "@/components/atoms/buttons/AddFoodButton";
-import { EditFeedTypes } from "@/types/feeds/feedsRequestTypes";
 
 // 검색 결과 임시 데이터
 const temp = [
@@ -55,12 +55,12 @@ const Edit = () => {
 	};
 
 	// 작성자가 아니나 url을 입력하여 접근하는 경우를 방지
-	// useEffect(() => {
-	// 	if (!isMine) {
-	// 		alert("올바르지 않은 접근입니다!");
-	// 		navigate("/");
-	// 	}
-	// }, [isMine]);
+	useEffect(() => {
+		if (!isMine) {
+			alert("올바르지 않은 접근입니다!");
+			navigate("/");
+		}
+	}, [isMine]);
 
 	// 데이터 불러오기
 	useEffect(() => {
@@ -139,17 +139,30 @@ const Edit = () => {
 	const handleSearchModal = () => setSearchModal(!searchModal);
 
 	// 검색
-	const [searchKeyWord, setSearchKeyWord] = useState<string>();
+	const [searchKeyWord, setSearchKeyWord] = useState<string>("");
+	const [keyWordResults, setKeyWordResults] = useState<GetSearchFoodTypes[]>([]);
 	const searchInputRef = useRef<HTMLInputElement>(null);
 
-	function handleSearch() {
+	const handleSearch = async () => {
 		const searchTextValue = searchInputRef?.current?.value as string;
 		if (searchTextValue.length === 0) {
 			alert("검색어를 입력해주세요.");
 			return;
 		}
 		setSearchKeyWord(searchTextValue);
-	}
+
+		const results = await feedsApi.getSearchFoodRequest(`/api/feeds/food/${searchKeyWord}`);
+
+		if (results.status === 200) {
+			setKeyWordResults(results.data);
+		} else {
+			alert("음식을 검색할 수 없습니다.");
+		}
+	};
+
+	useEffect(() => {
+		handleSearch();
+	}, [searchKeyWord]);
 
 	function handleSearchForFoodToModify() {
 		console.log("선택한 음식으로 데이터 수정");
@@ -163,8 +176,8 @@ const Edit = () => {
 		setSearchKeyWord("");
 	}
 
-	console.log("searchKeyWord", searchKeyWord);
-
+	// console.log("searchKeyWord", searchKeyWord);
+	// console.log("검색결과", keyWordResults);
 	return (
 		<>
 			<div className="flex justify-center gap-36">
@@ -192,7 +205,7 @@ const Edit = () => {
 						</div>
 					</div>
 					{feedDetail && feedDetail.foods.length >= 1 && <h4 className="mb-4">상세 식단</h4>}
-					<div className="flex flex-wrap justify-between w-792 gap-5 items-start">
+					<div className="flex flex-wrap w-792 gap-5 items-start">
 						{feedDetail &&
 							feedDetail.foods.map((v, i) => {
 								return (
@@ -238,7 +251,7 @@ const Edit = () => {
 				>
 					<SearchInput name="search" id="search" value={searchKeyWord} onClick={handleSearch} ref={searchInputRef} />
 					<SearchResult
-						data={temp}
+						data={keyWordResults}
 						onClick={() => {
 							if (editModal) {
 								handleSearchForFoodToModify();

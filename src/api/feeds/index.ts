@@ -1,5 +1,5 @@
 import { axiosHandler } from "@/utils/axios.utils";
-import { EditFeedTypes, GetFeedsParamsTypes } from "@/types/feeds/feedsRequestTypes";
+import { EditFeedTypes, GetFeedsParamsTypes, PostSearchFoodTypes } from "@/types/feeds/feedsRequestTypes";
 
 /**
  * feeds apis
@@ -62,6 +62,22 @@ export const feedsApi = Object.freeze({
 	async editFeedRequest(endPoint: string, params: EditFeedTypes) {
 		try {
 			const response = await axiosHandler.patch(endPoint, params);
+			return response;
+		} catch (err: any) {
+			return err;
+		}
+	},
+	async getSearchFoodRequest(endPoint: string) {
+		try {
+			const response = await axiosHandler.get(endPoint);
+			return response;
+		} catch (err: any) {
+			return err;
+		}
+	},
+	async postSearchFoodRequst(endPoint: string, params: PostSearchFoodTypes) {
+		try {
+			const response = await axiosHandler.post(endPoint, params);
 			return response;
 		} catch (err: any) {
 			return err;

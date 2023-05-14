@@ -1,5 +1,7 @@
+import { GetSearchFoodTypes } from "@/types/feeds/feedsResponseTypes";
+
 interface SearchResultProps {
-	data?: string[];
+	data?: GetSearchFoodTypes[];
 	onClick?: () => void;
 }
 
@@ -14,8 +16,12 @@ const SearchResult = ({ data, onClick }: SearchResultProps) => {
 			{data &&
 				data.map((v, i) => {
 					return (
-						<p key={i} className="max-w-fit mb-4 text-sm text-gray-4 hover:underline cursor-pointer" onClick={onClick}>
-							{v}
+						<p
+							key={v.food_id}
+							className="max-w-fit mb-4 text-sm text-gray-4 hover:underline cursor-pointer"
+							onClick={onClick}
+						>
+							{v.name}
 						</p>
 					);
 				})}

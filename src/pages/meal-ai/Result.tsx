@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Thumb from "@/components/atoms/thumbnail/Thumbnail";
 import FoodCard from "@/components/organisms/FoodCard";
@@ -11,7 +11,8 @@ import ToggleButton from "@/components/atoms/buttons/ToggleButton";
 import HorizontalProgressBars from "@/components/atoms/progressBars/HorizontalProgressBars";
 
 import TempImage from "@/assets/temp_image.jpg"; // TODO : 실제 데이터 연동 후 지우기
-import { UserDailyNutrientTypes } from "@/types/feeds/feedsResponseTypes";
+import { GetSearchFoodTypes, UserDailyNutrientTypes } from "@/types/feeds/feedsResponseTypes";
+import { feedsApi } from "@/api/feeds";
 
 // 검색 결과 임시 데이터
 const temp = [
@@ -64,18 +65,30 @@ const Result = () => {
 	const handleSearchModal = () => setSearchModal(!searchModal);
 
 	// 검색
-	const [searchKeyWord, setSearchKeyWord] = useState<string>();
+	const [searchKeyWord, setSearchKeyWord] = useState<string>("");
+	const [keyWordResults, setKeyWordResults] = useState<GetSearchFoodTypes[]>([]);
 	const searchInputRef = useRef<HTMLInputElement>(null);
 
-	function handleSearch() {
+	const handleSearch = async () => {
 		const searchTextValue = searchInputRef?.current?.value as string;
 		if (searchTextValue.length === 0) {
 			alert("검색어를 입력해주세요.");
 			return;
 		}
 		setSearchKeyWord(searchTextValue);
-	}
 
+		const results = await feedsApi.getSearchFoodRequest(`/api/feeds/food/${searchKeyWord}`);
+
+		if (results.status === 200) {
+			setKeyWordResults(results.data);
+		} else {
+			alert("음식을 검색할 수 없습니다.");
+		}
+	};
+
+	useEffect(() => {
+		handleSearch();
+	}, [searchKeyWord]);
 	function handleSearchForFoodToModify() {
 		console.log("선택한 음식으로 데이터 수정");
 		handleSearchModal();
@@ -156,7 +169,7 @@ const Result = () => {
 				>
 					<SearchInput name="search" id="search" value={searchKeyWord} onClick={handleSearch} ref={searchInputRef} />
 					<SearchResult
-						data={temp}
+						data={keyWordResults}
 						onClick={() => {
 							if (editModal) {
 								handleSearchForFoodToModify();

@@ -133,7 +133,6 @@ const Feeds = () => {
 		}
 	};
 
-	console.log(feeds);
 	return (
 		<div className="flex flex-col items-center mt-20">
 			<h1 className="mb-14">식단톡</h1>
