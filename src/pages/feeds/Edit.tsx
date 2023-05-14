@@ -195,11 +195,12 @@ const Edit = () => {
 					</div>
 					{feedDetail && feedDetail.foods.length >= 1 && <h4 className="mb-4">상세 식단</h4>}
 					<div className="flex flex-wrap w-792 gap-5 items-start">
-						{feedDetail &&
+						{/* {feedDetail &&
 							feedDetail.foods.map((v, i) => {
 								return (
 									<FoodCard
 										key={v.food_id}
+										feedId={v.food_id}
 										src={v.image_url}
 										size="sm"
 										type="none"
@@ -212,7 +213,7 @@ const Edit = () => {
 										deleteModalState={deleteModal}
 									/>
 								);
-							})}
+							})} */}
 						<AddFoodButton onClick={handleSearchModal} />
 					</div>
 					<div className="flex justify-center mt-14 ">

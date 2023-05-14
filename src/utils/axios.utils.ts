@@ -5,7 +5,6 @@ import { API_ENDPOINT } from "@/config/constants";
 const axiosOptions = {
 	baseURL: API_ENDPOINT,
 	withCredentials: true,
-
 	headers: {
 		"Content-Type": "application/json",
 	},
