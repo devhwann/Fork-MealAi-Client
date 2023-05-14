@@ -42,3 +42,13 @@ export interface GetFeedsTypes {
 	my_like: boolean;
 	is_mine: boolean;
 }
+
+export interface GetSearchFoodTypes {
+	food_id: number;
+	name: string;
+	weight: number;
+	kcal: number;
+	carbohydrate: number;
+	protein: number;
+	fat: number;
+}

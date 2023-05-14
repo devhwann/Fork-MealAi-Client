@@ -1,7 +1,8 @@
 import { MouseEvent, useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { feedsApi } from "@/api/feeds";
-import { GetFeedsTypes, UserDailyNutrientTypes } from "@/types/feeds/feedsResponseTypes";
+import { GetFeedsTypes, GetSearchFoodTypes, UserDailyNutrientTypes } from "@/types/feeds/feedsResponseTypes";
+import { EditFeedTypes } from "@/types/feeds/feedsRequestTypes";
 import getMealTime from "@/utils/getMealTime";
 import Thumb from "@/components/atoms/thumbnail/Thumbnail";
 import HorizontalProgressBars from "@/components/atoms/progressBars/HorizontalProgressBars";
@@ -12,26 +13,7 @@ import SearchInput from "@/components/atoms/inputs/SearchInput";
 import SearchResult from "@/components/organisms/SearchResult";
 import ToggleButton from "@/components/atoms/buttons/ToggleButton";
 import AddFoodButton from "@/components/atoms/buttons/AddFoodButton";
-import { EditFeedTypes } from "@/types/feeds/feedsRequestTypes";
-
-// 검색 결과 임시 데이터
-const temp = [
-	"리조또",
-	"크림 리조또",
-	"해물 리조또",
-	"투움바 리조또",
-	"어쩌구 리조또",
-	"리조또",
-	"크림 리조또",
-	"해물 리조또",
-	"투움바 리조또",
-	"어쩌구 리조또",
-	"리조또",
-	"크림 리조또",
-	"해물 리조또",
-	"투움바 리조또",
-	"어쩌구 리조또",
-];
+import { PostSearchFoodTypes } from "@/types/feeds/feedsRequestTypes";
 
 const Edit = () => {
 	const { id } = useParams();
@@ -55,12 +37,12 @@ const Edit = () => {
 	};
 
 	// 작성자가 아니나 url을 입력하여 접근하는 경우를 방지
-	// useEffect(() => {
-	// 	if (!isMine) {
-	// 		alert("올바르지 않은 접근입니다!");
-	// 		navigate("/");
-	// 	}
-	// }, [isMine]);
+	useEffect(() => {
+		if (!isMine) {
+			alert("올바르지 않은 접근입니다!");
+			navigate("/");
+		}
+	}, [isMine]);
 
 	// 데이터 불러오기
 	useEffect(() => {
@@ -86,12 +68,6 @@ const Edit = () => {
 		getFeed();
 	}, []);
 
-	// 카드 어레이 수정
-	// get api 없음...
-	// const newFoodArray = [...foodCardArray]
-	// 수정 | 추가 | 삭제 작업 -> newFoodArray
-	// setFoodCardArray(newFoodArray);
-
 	// 피드 수정
 	const handleEditFeed = async (e: MouseEvent<HTMLButtonElement>) => {
 		e.preventDefault();
@@ -101,15 +77,6 @@ const Edit = () => {
 			return;
 		}
 		const params: EditFeedTypes = {
-			// TODO : foods 배열 보내는 더 좋은 방법이 있을거야...
-			// foods: [
-			// 	{
-			// 		food_id: feedDetail.foods[0].food_id,
-			// 		food_name: feedDetail.foods[0].food_name,
-			// 		image_url: feedDetail.foods[0].image_url,
-			// 		weight: feedDetail.foods[0].weight,
-			// 	},
-			// ],
 			foods: foodCardArray,
 			open: feedDetail.open,
 		};
@@ -125,6 +92,40 @@ const Edit = () => {
 		console.log("상세 식단", foodCardArray);
 	};
 
+	// 카드 어레이 수정
+	// const newFoodArray = [...foodCardArray];
+	// 수정 | 추가 | 삭제 작업 -> newFoodArray
+	// setFoodCardArray(newFoodArray);
+
+	// 검색
+	const [searchKeyWord, setSearchKeyWord] = useState<string>("");
+	const searchInputRef = useRef<HTMLInputElement>(null);
+
+	// 검색 결과
+	const [keyWordResults, setKeyWordResults] = useState<GetSearchFoodTypes[]>([]);
+	const [selectFood, setSelectFood] = useState<GetSearchFoodTypes[]>([]);
+
+	const handleSearch = async () => {
+		const searchTextValue = searchInputRef?.current?.value as string;
+		if (searchTextValue.length === 0) {
+			alert("검색어를 입력해주세요.");
+			return;
+		}
+		setSearchKeyWord(searchTextValue);
+
+		const results = await feedsApi.getSearchFoodRequest(`/api/feeds/food/${searchKeyWord}`);
+
+		if (results.status === 200) {
+			setKeyWordResults(results.data);
+		} else {
+			alert("음식을 검색할 수 없습니다.");
+		}
+	};
+
+	useEffect(() => {
+		handleSearch();
+	}, [searchKeyWord]);
+
 	// 토글버튼
 	const [isChecked, setIsChecked] = useState(true);
 
@@ -136,20 +137,10 @@ const Edit = () => {
 	const handleDeleteModal = () => setDeleteModal(!deleteModal);
 
 	const [searchModal, setSearchModal] = useState(false);
-	const handleSearchModal = () => setSearchModal(!searchModal);
-
-	// 검색
-	const [searchKeyWord, setSearchKeyWord] = useState<string>();
-	const searchInputRef = useRef<HTMLInputElement>(null);
-
-	function handleSearch() {
-		const searchTextValue = searchInputRef?.current?.value as string;
-		if (searchTextValue.length === 0) {
-			alert("검색어를 입력해주세요.");
-			return;
-		}
-		setSearchKeyWord(searchTextValue);
-	}
+	const handleSearchModal = () => {
+		setSearchModal(!searchModal);
+		setKeyWordResults([]);
+	};
 
 	function handleSearchForFoodToModify() {
 		console.log("선택한 음식으로 데이터 수정");
@@ -157,13 +148,19 @@ const Edit = () => {
 		setSearchKeyWord("");
 	}
 
-	function handleSearchForNewFood() {
+	const handleSearchForNewFood = async () => {
 		console.log("선택한 음식 추가");
 		handleSearchModal();
-		setSearchKeyWord("");
-	}
 
-	console.log("searchKeyWord", searchKeyWord);
+		// const params: PostSearchFoodTypes = {
+		// 	food_id:,
+		// 	weight:,
+		// };
+
+		const data = setSearchKeyWord("");
+	};
+
+	console.log("푸드 카드", foodCardArray);
 
 	return (
 		<>
@@ -192,7 +189,7 @@ const Edit = () => {
 						</div>
 					</div>
 					{feedDetail && feedDetail.foods.length >= 1 && <h4 className="mb-4">상세 식단</h4>}
-					<div className="flex flex-wrap justify-between w-792 gap-5 items-start">
+					<div className="flex flex-wrap w-792 gap-5 items-start">
 						{feedDetail &&
 							feedDetail.foods.map((v, i) => {
 								return (
@@ -238,7 +235,7 @@ const Edit = () => {
 				>
 					<SearchInput name="search" id="search" value={searchKeyWord} onClick={handleSearch} ref={searchInputRef} />
 					<SearchResult
-						data={temp}
+						data={keyWordResults}
 						onClick={() => {
 							if (editModal) {
 								handleSearchForFoodToModify();

@@ -20,3 +20,5 @@ export interface EditFeedTypes {
 	foods: FoodsTypes[];
 	open: boolean;
 }
+
+export type PostSearchFoodTypes = Pick<FoodsTypes, "food_id" | "weight">;

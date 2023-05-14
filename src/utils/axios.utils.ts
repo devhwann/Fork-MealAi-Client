@@ -9,7 +9,6 @@ const axiosOptions = {
 	headers: {
 		"Content-Type": "application/json",
 	},
-	timeout: 3000,
 };
 
 const axiosHandler = axios.create(axiosOptions);
