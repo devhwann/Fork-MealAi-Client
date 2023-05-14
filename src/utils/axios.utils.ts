@@ -62,16 +62,24 @@ const getRefreshToken = async () => {
 	if (!isRefreshing) {
 		isRefreshing = true;
 		try {
-			const currentRefreshToken = await localStorage.getItem("refreshToken");
+			const currentRefreshToken = localStorage.getItem("refreshToken");
 
-			const data = await authApi.authRefreshRequest("/api/auth/refresh", {
-				refresh_token: currentRefreshToken!,
-			});
-
-			localStorage.setItem("accessToken", data.data.access_token);
-			localStorage.setItem("refreshToken", data.data.refresh_token);
-			axiosHandler.defaults.headers.common["authorization-"] = `Bearer ${localStorage.getItem("accessToken")}`;
-			processQueue(null, data.data.access_token);
+			if (currentRefreshToken) {
+				const data = await authApi.authRefreshRequest("/api/auth/refresh", {
+					refresh_token: currentRefreshToken,
+				});
+				localStorage.setItem("accessToken", data.data.access_token);
+				localStorage.setItem("refreshToken", data.data.refresh_token);
+				axiosHandler.defaults.headers.common["authorization-"] = `Bearer ${localStorage.getItem("accessToken")}`;
+				processQueue(null, data.data.access_token);
+			} else {
+				alert("다시 로그인 해주세요🤗");
+				localStorage.clear();
+				if (window !== undefined) {
+					location.href = "/auth/sign-in";
+				}
+				processQueue(null, null);
+			}
 		} catch (err) {
 			processQueue(err, null);
 		} finally {
