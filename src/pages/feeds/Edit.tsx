@@ -14,25 +14,6 @@ import SearchResult from "@/components/organisms/SearchResult";
 import ToggleButton from "@/components/atoms/buttons/ToggleButton";
 import AddFoodButton from "@/components/atoms/buttons/AddFoodButton";
 
-// 검색 결과 임시 데이터
-const temp = [
-	"리조또",
-	"크림 리조또",
-	"해물 리조또",
-	"투움바 리조또",
-	"어쩌구 리조또",
-	"리조또",
-	"크림 리조또",
-	"해물 리조또",
-	"투움바 리조또",
-	"어쩌구 리조또",
-	"리조또",
-	"크림 리조또",
-	"해물 리조또",
-	"투움바 리조또",
-	"어쩌구 리조또",
-];
-
 const Edit = () => {
 	const { id } = useParams();
 	const navigate = useNavigate();
@@ -86,12 +67,6 @@ const Edit = () => {
 		getFeed();
 	}, []);
 
-	// 카드 어레이 수정
-	// get api 없음...
-	// const newFoodArray = [...foodCardArray]
-	// 수정 | 추가 | 삭제 작업 -> newFoodArray
-	// setFoodCardArray(newFoodArray);
-
 	// 피드 수정
 	const handleEditFeed = async (e: MouseEvent<HTMLButtonElement>) => {
 		e.preventDefault();
@@ -125,18 +100,10 @@ const Edit = () => {
 		console.log("상세 식단", foodCardArray);
 	};
 
-	// 토글버튼
-	const [isChecked, setIsChecked] = useState(true);
-
-	// 모달
-	const [editModal, setEditModal] = useState(false);
-	const handleEditModal = () => setEditModal(!editModal);
-
-	const [deleteModal, setDeleteModal] = useState(false);
-	const handleDeleteModal = () => setDeleteModal(!deleteModal);
-
-	const [searchModal, setSearchModal] = useState(false);
-	const handleSearchModal = () => setSearchModal(!searchModal);
+	// 카드 어레이 수정
+	// const newFoodArray = [...foodCardArray];
+	// 수정 | 추가 | 삭제 작업 -> newFoodArray
+	// setFoodCardArray(newFoodArray);
 
 	// 검색
 	const [searchKeyWord, setSearchKeyWord] = useState<string>("");
@@ -164,6 +131,22 @@ const Edit = () => {
 		handleSearch();
 	}, [searchKeyWord]);
 
+	// 토글버튼
+	const [isChecked, setIsChecked] = useState(true);
+
+	// 모달
+	const [editModal, setEditModal] = useState(false);
+	const handleEditModal = () => setEditModal(!editModal);
+
+	const [deleteModal, setDeleteModal] = useState(false);
+	const handleDeleteModal = () => setDeleteModal(!deleteModal);
+
+	const [searchModal, setSearchModal] = useState(false);
+	const handleSearchModal = () => {
+		setSearchModal(!searchModal);
+		setKeyWordResults([]);
+	};
+
 	function handleSearchForFoodToModify() {
 		console.log("선택한 음식으로 데이터 수정");
 		handleSearchModal();
@@ -176,8 +159,8 @@ const Edit = () => {
 		setSearchKeyWord("");
 	}
 
-	// console.log("searchKeyWord", searchKeyWord);
-	// console.log("검색결과", keyWordResults);
+	console.log("푸드 카드", foodCardArray);
+
 	return (
 		<>
 			<div className="flex justify-center gap-36">
