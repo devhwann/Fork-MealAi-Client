@@ -9,9 +9,10 @@ import { useState } from "react";
 import { FoodsTypes } from "@/types/feeds/feedsResponseTypes";
 
 interface FoodCardProps extends ThumbnailProps {
+	index: number;
 	foodId: number;
 	name: string;
-	// weight: number;
+	weight: number;
 	handleEditModal: (id: number) => void;
 	handleDeleteModal: () => void;
 	handleSearchModal: () => void;
@@ -22,26 +23,26 @@ interface FoodCardProps extends ThumbnailProps {
 }
 
 interface FoodCardButtonProps {
-	id: number;
 	role?: "edit" | "delete";
 	onClick?: () => void;
 }
 
-const FoodCardButton = ({ id, role, onClick }: FoodCardButtonProps) => {
+export const FoodCardButton = ({ role, onClick }: FoodCardButtonProps) => {
 	return (
-		<button key={id} className="p-2 border border-solid border-gray-7 rounded-lg hover:bg-gray-9" onClick={onClick}>
+		<button className="p-2 border border-solid border-gray-7 rounded-lg hover:bg-gray-9" onClick={onClick}>
 			<img src={role === "edit" ? EditIcon : DeleteIcon} />
 		</button>
 	);
 };
 
 const FoodCard = ({
+	index,
 	foodId,
 	src,
 	size,
 	type,
 	name,
-	// weight,
+	weight,
 	handleEditModal,
 	handleDeleteModal,
 	handleSearchModal,
@@ -51,17 +52,25 @@ const FoodCard = ({
 	handleFoodCards,
 }: FoodCardProps) => {
 	// const [modalName, setModalName] = useState(foodCards.filter((f) => f.food_id == editModalState)[0]?.food_name);
-	const modalName = foodCards.filter((f) => f.food_id == editModalState)[0]?.food_name;
-	const weight = foodCards.filter((f) => f.food_id == editModalState)[0]?.weight;
+	// const modalName = foodCards.filter((f) => f.food_id == editModalState)[0]?.food_name;
+	// const weight = foodCards.filter((f) => f.food_id == editModalState)[0]?.weight;
 
 	// useEffect(() => {
 	// 	setModalName(foodCards.filter((f) => f.food_id == editModalState)[0]?.food_name);
 	// }, [foodCards]);
 
-	const [newWeight, setNewWeight] = useState<number>(foodCards.filter((f) => f.food_id == editModalState)[0]?.weight);
+	const [newName, setNewName] = useState(name);
+	const [newWeight, setNewWeight] = useState(weight);
 
 	const handleChangeWeight = (e: number) => {
 		setNewWeight(e);
+	};
+
+	const confirmEdit = (newName: string, newWeight: number) => {
+		const currentCards = [...foodCards];
+		currentCards[index - 1].food_name = newName;
+		currentCards[index - 1].weight = newWeight;
+		handleFoodCards(currentCards);
 	};
 
 	return (
@@ -70,25 +79,24 @@ const FoodCard = ({
 				<Thumb src={src} size={size} type={type} />
 				<p className="mt-4 mb-2 font-semibold text-gray-2">{name}</p>
 				<div className="flex justify-end gap-1">
-					<FoodCardButton id={foodId} role="edit" onClick={() => handleEditModal(foodId)} />
-					<FoodCardButton id={foodId} role="delete" onClick={() => handleEditModal(foodId)} />
+					<FoodCardButton role="edit" onClick={() => handleEditModal(foodId)} />
+					<FoodCardButton role="delete" onClick={() => handleEditModal(foodId)} />
 				</div>
 			</div>
 
-			{editModalState && (
+			{editModalState === index && (
 				<Modal
 					onClose={() => {
 						handleChangeWeight(weight);
-						handleEditModal(foodId);
+						handleEditModal(index);
 					}}
 					title="수정"
-					key={foodId}
 				>
 					<div className="mb-6 flex gap-4">
 						<Thumb src={src} size="sm" type="none" />
 						<div className="w-60 flex flex-col gap-3">
 							<div onClick={handleSearchModal}>
-								<Input type="text" name="name" id="name" value={modalName} placeholder="음식명" />
+								<Input type="text" name="name" id="name" value={newName} placeholder="음식명" onChange={() => {}} />
 							</div>
 							<div>
 								<Input
@@ -98,14 +106,6 @@ const FoodCard = ({
 									value={newWeight}
 									placeholder="중량"
 									onChange={(e) => {
-										// const currentCard = [...foodCards];
-										// for (const row of currentCard) {
-										// 	if (row.food_name == modalName) {
-										// 		row.weight = Number(e.target.value);
-										// 	}
-										// }
-										// console.log(currentCard);
-										// handleFoodCards(currentCard);
 										handleChangeWeight(Number(e.target.value));
 									}}
 								/>
@@ -123,14 +123,21 @@ const FoodCard = ({
 							type="button"
 							onClick={() => {
 								handleChangeWeight(weight);
-								handleEditModal(foodId);
+								handleEditModal(index);
 							}}
 							width={false}
 							style="bg"
 						>
 							취소
 						</BasicButton>
-						<BasicButton type="button" onClick={() => {}} width={false} style="primary">
+						<BasicButton
+							type="button"
+							onClick={() => {
+								confirmEdit(newName, newWeight);
+							}}
+							width={false}
+							style="primary"
+						>
 							수정 완료
 						</BasicButton>
 					</div>

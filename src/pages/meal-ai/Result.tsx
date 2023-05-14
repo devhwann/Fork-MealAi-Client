@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Thumb from "@/components/atoms/thumbnail/Thumbnail";
-import FoodCard from "@/components/organisms/FoodCard";
+import FoodCard, { FoodCardButton } from "@/components/organisms/FoodCard";
 import AddFoodButton from "@/components/atoms/buttons/AddFoodButton";
 import Modal from "@/components/organisms/Modal";
 import SearchInput from "@/components/atoms/inputs/SearchInput";
@@ -14,6 +14,7 @@ import { GetFeedsTypes, GetSearchFoodTypes, UserDailyNutrientTypes } from "@/typ
 import { feedsApi } from "@/api/feeds";
 import getMealTime from "@/utils/getMealTime";
 import { FoodsTypes } from "@/types/feeds/feedsResponseTypes";
+import Input from "@/components/atoms/inputs/Input";
 
 const Result = () => {
 	const navigate = useNavigate();
@@ -71,14 +72,13 @@ const Result = () => {
 
 	// 모달
 	const [editModal, setEditModal] = useState<number | null>(null);
-	const handleEditModal = (foodId: number) => {
-		// setEditModal(!editModal);
+	const handleEditModal = (id: number) => {
 		if (!editModal) {
-			setEditModal(foodId);
+			setEditModal(id);
 		} else {
 			setEditModal(null);
 		}
-		console.log("모달에서 인식하는 id", foodId);
+		console.log("모달에서 인식하는 id", id);
 	};
 
 	const [deleteModal, setDeleteModal] = useState(false);
@@ -168,14 +168,15 @@ const Result = () => {
 							foodCards.map((v, i) => {
 								return (
 									<FoodCard
-										key={v.food_id}
+										key={i + 1}
+										index={i + 1}
 										foodId={v.food_id}
 										src={v.image_url}
 										size="sm"
 										type="none"
 										name={v.food_name}
-										// weight={v.weight}
-										handleEditModal={() => handleEditModal(v.food_id)}
+										weight={v.weight}
+										handleEditModal={() => handleEditModal(i + 1)}
 										handleDeleteModal={handleDeleteModal}
 										handleSearchModal={handleSearchModal}
 										editModalState={editModal}
