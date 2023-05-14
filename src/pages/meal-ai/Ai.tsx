@@ -19,7 +19,7 @@ const Ai = () => {
 	// 로그인 여부 확인
 	const isLoggedIn = useRecoilValue(isLoggedInState);
 
-	// 클릭시 file input 활성화
+	// 썸네일 버튼 클릭시 file input 활성화
 	const handleButtonClick = () => {
 		const inputFileEl = document.querySelector("#file") as HTMLInputElement;
 		if (inputFileEl) inputFileEl.click();
@@ -47,8 +47,13 @@ const Ai = () => {
 		});
 
 		const result = await feedsApi.postFeedRequest("/api/feeds", formData);
-		console.log("result", result);
-		return;
+		console.log("무슨일이..", result);
+		if (result.status === 200) {
+			sessionStorage.setItem("aiPredictResultId", result.data);
+			navigate("/meal-ai/result");
+		} else {
+			alert("앗! 일시적인 오류로 분석에 실패했습니다. 다시 시도해주세요 🤔");
+		}
 	};
 
 	// thumbnail 미리보기
@@ -124,13 +129,7 @@ const Ai = () => {
 				</div>
 				<div className="flex flex-col items-center mt-10">
 					<div className="w-96">
-						<BasicButton
-							type="submit"
-							onClick={() => {}}
-							width={true}
-							style="primary"
-							deactivated={hadleButtonActivated()}
-						>
+						<BasicButton type="submit" width={true} style="primary" deactivated={hadleButtonActivated()}>
 							분석 시작
 						</BasicButton>
 						{!isLoggedIn && (

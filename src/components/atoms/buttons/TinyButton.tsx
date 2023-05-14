@@ -6,7 +6,7 @@ export interface TinyButtonProps {
 	name?: string;
 	type?: "button" | "reset" | "submit";
 	children: ReactNode;
-	onClick: (e: MouseEvent<HTMLButtonElement>) => void;
+	onClick?: (e: MouseEvent<HTMLButtonElement>) => void;
 	style: "primary" | "bg" | "deactivated" | "gray";
 	deactivated?: boolean;
 }
