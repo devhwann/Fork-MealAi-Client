@@ -113,10 +113,10 @@ const Edit = () => {
 		}
 		setSearchKeyWord(searchTextValue);
 
-		const results = await feedsApi.getSearchFoodRequest(`/api/feeds/food/${searchKeyWord}`);
+		const data = await feedsApi.getSearchFoodRequest(`/api/feeds/food/${searchKeyWord}`);
 
-		if (results.status === 200) {
-			setKeyWordResults(results.data);
+		if (data.status === 200) {
+			setKeyWordResults(data.data);
 		} else {
 			alert("음식을 검색할 수 없습니다.");
 		}
@@ -157,7 +157,12 @@ const Edit = () => {
 		// 	weight:,
 		// };
 
-		const data = setSearchKeyWord("");
+		// const data = await feedsApi.postSearchFoodRequst("/api/feeds/food", params);
+
+		// if (data.status === 200) {
+		// }
+
+		setSearchKeyWord("");
 	};
 
 	console.log("푸드 카드", foodCardArray);
