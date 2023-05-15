@@ -65,20 +65,15 @@ const FoodCard = ({
 	handleInputKeyword,
 	handleSearch,
 }: FoodCardProps) => {
+	const [newFoodId, setNewFoodId] = useState(foodId);
 	const [newName, setNewName] = useState(name);
 	const [newWeight, setNewWeight] = useState(weight);
-	const [selectFood, setSelectFood] = useState({
-		food_id: 0,
-		name: "",
-		weight: 0,
-	});
 
-	function handleSearchForFoodToModify() {
-		console.log("선택한 음식으로 데이터 수정!!!");
-		// handleSearchModal();
-		//
-		// setSearchKeyWord("");
-	}
+	const handleSearchForFoodToModify = (v: GetSearchFoodTypes) => {
+		setNewFoodId(v.food_id);
+		setNewName(v.name);
+		handleEditSearchModal(index);
+	};
 
 	const handleChangeWeight = (e: number) => {
 		setNewWeight(e);
@@ -86,6 +81,7 @@ const FoodCard = ({
 
 	const confirmEdit = (newName: string, newWeight: number) => {
 		const currentCards = [...foodCards];
+		currentCards[index - 1].food_id = newFoodId;
 		currentCards[index - 1].food_name = newName;
 		currentCards[index - 1].weight = newWeight;
 		handleFoodCards(currentCards);
@@ -201,8 +197,6 @@ const FoodCard = ({
 				<Modal
 					onClose={() => {
 						handleEditSearchModal(index);
-						// handleSearchModal();
-						// setSearchKeyWord("");
 					}}
 					title="음식 검색"
 				>
@@ -216,11 +210,10 @@ const FoodCard = ({
 							handleInputKeyword(e);
 						}}
 					/>
-					{/* <SearchInput name="search" id="search" value={searchKeyWord} onClick={handleSearch} /> */}
 					<SearchResult
 						data={keyWordResults}
-						onClick={() => {
-							handleSearchForFoodToModify();
+						onClick={(v) => {
+							handleSearchForFoodToModify(v);
 						}}
 					/>
 				</Modal>

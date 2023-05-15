@@ -1,4 +1,4 @@
-import { ChangeEvent, useEffect, useRef, useState } from "react";
+import { ChangeEvent, MouseEvent, useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Thumb from "@/components/atoms/thumbnail/Thumbnail";
 import FoodCard from "@/components/organisms/FoodCard";
@@ -14,6 +14,7 @@ import { GetFeedsTypes, GetSearchFoodTypes, UserDailyNutrientTypes } from "@/typ
 import { feedsApi } from "@/api/feeds";
 import getMealTime from "@/utils/getMealTime";
 import { FoodsTypes } from "@/types/feeds/feedsResponseTypes";
+import { EditFeedTypes } from "@/types/feeds/feedsRequestTypes";
 
 const Result = () => {
 	const navigate = useNavigate();
@@ -42,7 +43,6 @@ const Result = () => {
 				if (data.status === 200) {
 					// 작성자가 아닐경우
 					if (!data.data.is_mine) {
-						console.log(data.is_mine);
 						alert("올바르지 않은 접근입니다!");
 						navigate(-1);
 					}
@@ -88,7 +88,6 @@ const Result = () => {
 
 		const results = await feedsApi.getSearchFoodRequest(`/api/feeds/food/${searchKeyWord}`);
 
-		console.log(results);
 		if (results.status === 200) {
 			setKeyWordResults(results.data);
 		} else {
@@ -96,25 +95,15 @@ const Result = () => {
 		}
 	};
 
-	function handleSearchForFoodToModify() {
-		console.log("선택한 음식으로 데이터 수정");
-		// handleSearchModal();
-		//
-		setSearchKeyWord("");
-	}
-
 	function handleSearchForNewFood() {
-		console.log("선택한 음식 추가");
 		// handleSearchModal();
 		setSearchKeyWord("");
+		setKeyWordResults([]);
 	}
 
 	const handleFoodCards = (newFoodCards: FoodsTypes[]) => {
-		console.log(newFoodCards);
 		setFoodCards(newFoodCards);
 	};
-
-	console.log("searchKeyWord", searchKeyWord);
 
 	// foodCards 배열의 변경이 감지될 때마다 바 그래프 업데이트
 	useEffect(() => {
@@ -134,6 +123,29 @@ const Result = () => {
 		}
 		getNutryData();
 	}, [foodCards]);
+
+	// 피드 수정
+	const handleEditFeed = async (e: MouseEvent<HTMLButtonElement>) => {
+		e.preventDefault();
+
+		if (!feedDetail) {
+			alert("식단을 입력해주세요.");
+			return;
+		}
+		const params: EditFeedTypes = {
+			foods: foodCards,
+			open: isOpen,
+		};
+
+		const data = await feedsApi.editFeedRequest(`/api/feeds/${aiPredictResultId}`, params);
+
+		if (data.status === 200) {
+			navigate("/mylog/:week");
+			sessionStorage.clear();
+		} else {
+			alert("일시적인 오류가 있었어요. 다시 시도해 주세요.");
+		}
+	};
 
 	// 모달
 	const [editModal, setEditModal] = useState<number | null>(null);
@@ -161,6 +173,7 @@ const Result = () => {
 		} else {
 			setEditSearchModal(null);
 			setSearchKeyWord("");
+			setKeyWordResults([]);
 		}
 	};
 
@@ -234,14 +247,7 @@ const Result = () => {
 									setIsOpen(!isOpen);
 								}}
 							/>
-							<BasicButton
-								type="button"
-								onClick={() => {
-									navigate("/mylog");
-								}}
-								width={true}
-								style="primary"
-							>
+							<BasicButton type="button" onClick={handleEditFeed} width={true} style="primary">
 								분석 완료
 							</BasicButton>
 						</div>
@@ -261,10 +267,6 @@ const Result = () => {
 					<SearchResult
 						data={keyWordResults}
 						onClick={() => {
-							if (editModal) {
-								handleSearchForFoodToModify();
-								return;
-							}
 							handleSearchForNewFood();
 						}}
 					/>
