@@ -103,7 +103,7 @@ const Detail = () => {
 			navigate("/feeds");
 		} else {
 			alert("삭제하지 못했습니다. 다시 시도해주세요.");
-			navigate(-1);
+			navigate("/feeds");
 		}
 	};
 
@@ -155,7 +155,7 @@ const Detail = () => {
 						<BasicButton
 							type="button"
 							onClick={() => {
-								navigate(-1);
+								navigate("/feeds");
 							}}
 							width={false}
 							style="primary"

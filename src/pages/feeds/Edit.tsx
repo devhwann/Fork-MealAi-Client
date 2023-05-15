@@ -8,7 +8,6 @@ import {
 	UserDailyNutrientTypes,
 } from "@/types/feeds/feedsResponseTypes";
 import { EditFeedTypes } from "@/types/feeds/feedsRequestTypes";
-import { PostSearchFoodTypes } from "@/types/feeds/feedsRequestTypes";
 import getMealTime from "@/utils/getMealTime";
 import Thumb from "@/components/atoms/thumbnail/Thumbnail";
 import HorizontalProgressBars from "@/components/atoms/progressBars/HorizontalProgressBars";
@@ -27,6 +26,7 @@ const Edit = () => {
 	// data set
 	const [feedDetail, setFeedDetail] = useState<GetFeedsTypes>();
 	const [foodCards, setFoodCards] = useState<FoodsTypes[]>([]);
+	const [isOpen, setIsOpen] = useState(true);
 	const [isMine, setIsMine] = useState(true);
 	const [nutry, setNutry] = useState<UserDailyNutrientTypes>({
 		kcal: 0,
@@ -55,7 +55,6 @@ const Edit = () => {
 			const data = await feedsApi.getFeedRequest(`/api/feeds/${id}`);
 
 			if (data.status === 200) {
-				console.log(data.data);
 				setFeedDetail(data.data);
 				setFoodCards(data.data.foods);
 				setIsMine(data.data.is_mine);
@@ -73,36 +72,15 @@ const Edit = () => {
 		getFeed();
 	}, []);
 
-	// 피드 수정
-	const handleEditFeed = async (e: MouseEvent<HTMLButtonElement>) => {
-		e.preventDefault();
-
-		if (!feedDetail) {
-			alert("식단을 입력해주세요.");
-			return;
-		}
-		const params: EditFeedTypes = {
-			foods: foodCards,
-			open: feedDetail.open,
-		};
-
-		const data = await feedsApi.editFeedRequest(`/api/feeds/${id}`, params);
-
-		if (data.status === 200) {
-			alert("식단 피드가 수정되었습니다.");
-			navigate(`/feeds/${id}`);
-		} else {
-			alert("식단 수정을 할 수 없습니다.");
-		}
-		console.log("수정 완료", foodCards);
-	};
-
 	// 검색
 	const [searchKeyWord, setSearchKeyWord] = useState<string>("");
+	const [keyWordResults, setKeyWordResults] = useState<GetSearchFoodTypes[]>([]);
 	const searchInputRef = useRef<HTMLInputElement>(null);
 
-	// 검색 결과
-	const [keyWordResults, setKeyWordResults] = useState<GetSearchFoodTypes[]>([]);
+	const handleInputKeyword = (e: ChangeEvent<HTMLInputElement>) => {
+		const keyWord = e.target.value;
+		setSearchKeyWord(keyWord);
+	};
 
 	const handleSearch = async () => {
 		if (searchKeyWord.length === 0) {
@@ -119,24 +97,24 @@ const Edit = () => {
 		}
 	};
 
-	// 토글버튼
-	const [isChecked, setIsChecked] = useState(true);
-
 	// 모달
 	const [editModal, setEditModal] = useState<number | null>(null);
-	// const handleEditModal = () => setEditModal(!editModal);
-	const handleEditModal = (foodId: number) => {
-		// setEditModal(!editModal);
+	const handleEditModal = (id: number) => {
 		if (!editModal) {
-			setEditModal(foodId);
+			setEditModal(id);
 		} else {
 			setEditModal(null);
 		}
-		console.log("모달에서 인식하는 id", foodId);
 	};
 
-	const [deleteModal, setDeleteModal] = useState(false);
-	const handleDeleteModal = () => setDeleteModal(!deleteModal);
+	const [deleteModal, setDeleteModal] = useState<number | null>(null);
+	const handleDeleteModal = (id: number) => {
+		if (!deleteModal) {
+			setDeleteModal(id);
+		} else {
+			setDeleteModal(null);
+		}
+	};
 
 	const [searchModal, setSearchModal] = useState(false);
 	const handleSearchModal = () => {
@@ -144,19 +122,42 @@ const Edit = () => {
 		setKeyWordResults([]);
 	};
 
-	function handleSearchForFoodToModify() {
-		console.log("선택한 음식으로 데이터 수정");
-		handleSearchModal();
-		setSearchKeyWord("");
-	}
+	const [editSearchModal, setEditSearchModal] = useState<number | null>(null);
+	const handleEditSearchModal = (id: number) => {
+		if (!editSearchModal) {
+			setEditSearchModal(id);
+		} else {
+			setEditSearchModal(null);
+			setSearchKeyWord("");
+			setKeyWordResults([]);
+		}
+	};
 
 	const handleFoodCards = (newFoodCards: FoodsTypes[]) => {
-		console.log(newFoodCards);
 		setFoodCards(newFoodCards);
 	};
 
+	// foodCards 배열의 변경이 감지될 때마다 바 그래프 업데이트
+	useEffect(() => {
+		async function getNutryData() {
+			let data;
+			try {
+				data = await feedsApi.postSearchFoodRequst("/api/feeds/food", foodCards);
+
+				if (data.status === 200) {
+					setNutry(data.data);
+				} else {
+					alert(data.response.data.message);
+				}
+			} catch (err) {
+				console.log(err);
+			}
+		}
+		getNutryData();
+	}, [foodCards]);
+
+	// 새로운 식단 추가
 	const handleSearchForNewFood = async (v: GetSearchFoodTypes) => {
-		console.log("선택한 음식 추가");
 		handleSearchModal();
 
 		const newFoodCards = [...foodCards];
@@ -168,19 +169,30 @@ const Edit = () => {
 		});
 		handleFoodCards(newFoodCards);
 
-		const params: PostSearchFoodTypes = newFoodCards;
-
-		const data = await feedsApi.postSearchFoodRequst("/api/feeds/food", params);
-		console.log("보내는 params", params);
-		console.log("영양소 정보", data);
-
-		// if (data.status === 200) {
-		// 	const newFoodCards = [...foodCards];
-		// 	newFoodCards.push(data.data);
-		// 	handleFoodCards(newFoodCards);
-		// }
-
 		setSearchKeyWord("");
+	};
+
+	// 피드 수정
+	const handleEditFeed = async (e: MouseEvent<HTMLButtonElement>) => {
+		e.preventDefault();
+
+		if (!feedDetail) {
+			alert("식단을 입력해주세요.");
+			return;
+		}
+		const params: EditFeedTypes = {
+			foods: foodCards,
+			open: isOpen,
+		};
+
+		const data = await feedsApi.editFeedRequest(`/api/feeds/${id}`, params);
+
+		if (data.status === 200) {
+			alert("식단 피드가 수정되었습니다.");
+			navigate(`/feeds/${id}`);
+		} else {
+			alert("식단 수정을 할 수 없습니다.");
+		}
 	};
 
 	return (
@@ -215,20 +227,27 @@ const Edit = () => {
 							foodCards.map((v, i) => {
 								return (
 									<FoodCard
-										key={v.food_id}
+										key={i + 1}
+										index={i + 1}
 										foodId={v.food_id}
 										src={v.image_url}
 										size="sm"
 										type="none"
 										name={v.food_name}
-										// weight={v.weight}
-										handleEditModal={() => handleEditModal(v.food_id)}
-										handleDeleteModal={handleDeleteModal}
-										handleSearchModal={handleSearchModal}
+										weight={v.weight}
+										handleEditModal={() => handleEditModal(i + 1)}
+										handleDeleteModal={() => handleDeleteModal(i + 1)}
+										handleEditSearchModal={() => handleEditSearchModal(i + 1)}
 										editModalState={editModal}
 										deleteModalState={deleteModal}
+										editSearchModalState={editSearchModal}
 										foodCards={foodCards}
+										searchKeyWord={searchKeyWord}
+										searchInputRef={searchInputRef}
+										keyWordResults={keyWordResults}
 										handleFoodCards={handleFoodCards}
+										handleInputKeyword={handleInputKeyword}
+										handleSearch={handleSearch}
 									/>
 								);
 							})}
@@ -237,9 +256,9 @@ const Edit = () => {
 					<div className="flex justify-center mt-14 ">
 						<div className="w-96 flex flex-col items-center gap-4">
 							<ToggleButton
-								isChecked={isChecked}
+								isChecked={isOpen}
 								onChange={() => {
-									setIsChecked(!isChecked);
+									setIsOpen(!isOpen);
 								}}
 							/>
 							<BasicButton type="button" onClick={handleEditFeed} width={true} style="primary">

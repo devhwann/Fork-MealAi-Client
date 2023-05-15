@@ -17,7 +17,7 @@ const Feeds = () => {
 	const [feeds, setFeeds] = useState<GetFeedsTypes[]>([]);
 	const [popularFeeds, setPopularFeeds] = useState<GetFeedsTypes[]>([]);
 	const [page, setPage] = useState(1);
-	const [hashNextPage, setHashNextPage] = useState<boolean>(false);
+	const [hasNextPage, setHasNextPage] = useState<boolean>(false);
 	const observerTarget = useRef<HTMLDivElement>(null);
 
 	// 최신순 인기순 필터 & 목표 검색 카테고리
@@ -61,7 +61,7 @@ const Feeds = () => {
 			}
 
 			// 서버에서 다음 페이지가 있는지 확인.
-			setHashNextPage(data.data.next_page);
+			setHasNextPage(data.data.next_page);
 			console.log("피드 불러오기 성공!");
 		} catch (err) {
 			alert("피드를 불러올 수 없습니다!");
@@ -81,7 +81,7 @@ const Feeds = () => {
 	// Infinite Scroll - Intersection Observer 구현
 	useEffect(() => {
 		// 감지 대상이나 다음 페이지가 없으면 return
-		if (!observerTarget.current || !hashNextPage) return;
+		if (!observerTarget.current || !hasNextPage) return;
 
 		const io = new IntersectionObserver((entries, observer) => {
 			if (entries[0].isIntersecting) {
@@ -91,7 +91,7 @@ const Feeds = () => {
 		io.observe(observerTarget.current);
 
 		return () => io.disconnect();
-	}, [hashNextPage]);
+	}, [hasNextPage]);
 
 	// 전체 피드 좋아요버튼
 	const toggleLike = async (i: number, feedId: number) => {
@@ -206,7 +206,7 @@ const Feeds = () => {
 						);
 					})}
 			</div>
-			{hashNextPage && <div ref={observerTarget}></div>}
+			{hasNextPage && <div ref={observerTarget}></div>}
 		</div>
 	);
 };
