@@ -20,13 +20,13 @@ const MyPage = () => {
 	const [goal, setGoal] = useState<GoalType>("balance");
 	const [myLikesFeeds, setMyLikesFeeds] = useState<GetFeedsTypes[]>([]);
 	const [page, setPage] = useState(1);
-	const [hashNextPage, setHashNextPage] = useState<boolean>(false);
+	const [hasNextPage, setHasNextPage] = useState<boolean>(false);
 	const observerTarget = useRef<HTMLDivElement>(null);
 
 	// 내가 좋아한 식단 피드 인피니티 스크롤
 	useEffect(() => {
 		// 감지 대상이나 다음 페이지가 없으면 return
-		if (!observerTarget.current || !hashNextPage) return;
+		if (!observerTarget.current || !hasNextPage) return;
 
 		const io = new IntersectionObserver((entries, observer) => {
 			if (entries[0].isIntersecting) {
@@ -36,7 +36,7 @@ const MyPage = () => {
 		io.observe(observerTarget.current);
 
 		return () => io.disconnect();
-	}, [hashNextPage]);
+	}, [hasNextPage]);
 
 	useEffect(() => {
 		axios
@@ -46,7 +46,7 @@ const MyPage = () => {
 					setNickname(userInfoData.data.nickname);
 					setGoal(userInfoData.data.goal);
 					setMyLikesFeeds((prev) => [...prev, ...myLikesFeedsData.data.feeds]);
-					setHashNextPage(myLikesFeedsData.data.next_page);
+					setHasNextPage(myLikesFeedsData.data.next_page);
 				})
 			)
 			.catch((err) => {
@@ -226,7 +226,7 @@ const MyPage = () => {
 							);
 						})}
 				</div>
-				{hashNextPage && <div ref={observerTarget}></div>}
+				{hasNextPage && <div ref={observerTarget}></div>}
 			</div>
 			{/* 회원정보 수정 버튼 클릭하면 뜨는 비밀번호 확인 모달 */}
 			{editInfodModal && (

@@ -1,13 +1,13 @@
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import { reportApi } from "@/api/report";
 import MyGoalText from "@/components/organisms/MyGoalText";
 import HorizontalProgressBars from "@/components/atoms/progressBars/HorizontalProgressBars";
 import VerticalProgressBars from "@/components/atoms/progressBars/VerticalProgressBars";
 import ReportInfoCards from "@/components/atoms/cards/ReportInfoCards";
-import { useEffect, useState } from "react";
+import { GoalType } from "@/components/organisms/GoalText";
 import { UserDailyNutrientTypes } from "@/types/feeds/feedsResponseTypes";
 import { ReportWeekHistory } from "@/types/report/reportResponseType";
-import { reportApi } from "@/api/report";
-import { GoalType } from "@/components/organisms/GoalText";
 
 const WeeklyReport = () => {
 	const { week } = useParams();

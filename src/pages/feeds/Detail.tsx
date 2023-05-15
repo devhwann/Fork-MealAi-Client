@@ -155,7 +155,7 @@ const Detail = () => {
 						<BasicButton
 							type="button"
 							onClick={() => {
-								navigate(-1);
+								navigate("/feeds");
 							}}
 							width={false}
 							style="primary"

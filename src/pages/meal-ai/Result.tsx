@@ -22,8 +22,8 @@ const Result = () => {
 	// data set
 	const [aiPredictResultId, setAiPredictResultId] = useState<number>();
 	const [feedDetail, setFeedDetail] = useState<GetFeedsTypes>();
-	const [isOpen, setIsOpen] = useState(true);
 	const [foodCards, setFoodCards] = useState<FoodsTypes[]>([]);
+	const [isOpen, setIsOpen] = useState(true);
 	const [nutry, setNutry] = useState<UserDailyNutrientTypes>({
 		kcal: 0,
 		carbohydrate: 0,
@@ -86,23 +86,33 @@ const Result = () => {
 			return;
 		}
 
-		const results = await feedsApi.getSearchFoodRequest(`/api/feeds/food/${searchKeyWord}`);
+		const data = await feedsApi.getSearchFoodRequest(`/api/feeds/food/${searchKeyWord}`);
 
-		if (results.status === 200) {
-			setKeyWordResults(results.data);
+		if (data.status === 200) {
+			setKeyWordResults(data.data);
 		} else {
 			alert("음식을 검색할 수 없습니다.");
 		}
 	};
 
-	function handleSearchForNewFood() {
-		// handleSearchModal();
-		setSearchKeyWord("");
-		setKeyWordResults([]);
-	}
-
 	const handleFoodCards = (newFoodCards: FoodsTypes[]) => {
 		setFoodCards(newFoodCards);
+	};
+
+	// 새로운 식단 추가
+	const handleSearchForNewFood = async (v: GetSearchFoodTypes) => {
+		handleSearchModal();
+
+		const newFoodCards = [...foodCards];
+		newFoodCards.push({
+			food_id: v.food_id,
+			food_name: v.name,
+			weight: v.weight,
+			image_url: null,
+		});
+		handleFoodCards(newFoodCards);
+
+		setSearchKeyWord("");
 	};
 
 	// foodCards 배열의 변경이 감지될 때마다 바 그래프 업데이트
@@ -263,13 +273,17 @@ const Result = () => {
 					}}
 					title="음식 검색"
 				>
-					<SearchInput name="search" id="search" value={searchKeyWord} onClick={handleSearch} ref={searchInputRef} />
-					<SearchResult
-						data={keyWordResults}
-						onClick={() => {
-							handleSearchForNewFood();
+					<SearchInput
+						name="search"
+						id="search"
+						value={searchKeyWord}
+						onClick={handleSearch}
+						ref={searchInputRef}
+						onChange={(e: ChangeEvent<HTMLInputElement>) => {
+							setSearchKeyWord(e.target.value);
 						}}
 					/>
+					<SearchResult data={keyWordResults} onClick={(v) => handleSearchForNewFood(v)} />
 				</Modal>
 			)}
 		</>
