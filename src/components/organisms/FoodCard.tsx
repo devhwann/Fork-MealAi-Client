@@ -5,7 +5,7 @@ import Modal from "./Modal";
 import Input from "../atoms/inputs/Input";
 import TinyButton from "../atoms/buttons/TinyButton";
 import BasicButton from "../atoms/buttons/BasicButton";
-import { ChangeEvent, Ref, useState } from "react";
+import { ChangeEvent, Ref, useEffect, useState } from "react";
 import { FoodsTypes, GetSearchFoodTypes } from "@/types/feeds/feedsResponseTypes";
 import SearchInput from "../atoms/inputs/SearchInput";
 import SearchResult from "./SearchResult";
@@ -68,6 +68,12 @@ const FoodCard = ({
 	const [newFoodId, setNewFoodId] = useState(foodId);
 	const [newName, setNewName] = useState(name);
 	const [newWeight, setNewWeight] = useState(weight);
+
+	useEffect(() => {
+		setNewFoodId(foodId);
+		setNewName(name);
+		setNewWeight(weight);
+	}, [foodCards]);
 
 	const handleSearchForFoodToModify = (v: GetSearchFoodTypes) => {
 		setNewFoodId(v.food_id);
