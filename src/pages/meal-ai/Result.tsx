@@ -1,5 +1,7 @@
 import { ChangeEvent, MouseEvent, useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useRecoilValue } from "recoil";
+import { isLoggedInState } from "@/recoil/state";
 import Thumb from "@/components/atoms/thumbnail/Thumbnail";
 import FoodCard from "@/components/organisms/FoodCard";
 import AddFoodButton from "@/components/atoms/buttons/AddFoodButton";
@@ -9,7 +11,6 @@ import SearchResult from "@/components/organisms/SearchResult";
 import BasicButton from "@/components/atoms/buttons/BasicButton";
 import ToggleButton from "@/components/atoms/buttons/ToggleButton";
 import HorizontalProgressBars from "@/components/atoms/progressBars/HorizontalProgressBars";
-
 import { GetFeedsTypes, GetSearchFoodTypes, UserDailyNutrientTypes } from "@/types/feeds/feedsResponseTypes";
 import { feedsApi } from "@/api/feeds";
 import getMealTime from "@/utils/getMealTime";
@@ -18,6 +19,9 @@ import { EditFeedTypes } from "@/types/feeds/feedsRequestTypes";
 
 const Result = () => {
 	const navigate = useNavigate();
+
+	// 로그인 여부 확인
+	const isLoggedIn = useRecoilValue(isLoggedInState);
 
 	// data set
 	const [aiPredictResultId, setAiPredictResultId] = useState<number>();
@@ -154,6 +158,11 @@ const Result = () => {
 	const handleEditFeed = async (e: MouseEvent<HTMLButtonElement>) => {
 		e.preventDefault();
 
+		if (!isLoggedIn) {
+			navigate("/");
+			return;
+		}
+
 		if (!feedDetail) {
 			alert("식단을 입력해주세요.");
 			return;
@@ -253,12 +262,14 @@ const Result = () => {
 					</div>
 					<div className="flex justify-center">
 						<div className="mt-14 w-96 flex flex-col items-center gap-4">
-							<ToggleButton
-								isChecked={isOpen}
-								onChange={() => {
-									setIsOpen(!isOpen);
-								}}
-							/>
+							{isLoggedIn && (
+								<ToggleButton
+									isChecked={isOpen}
+									onChange={() => {
+										setIsOpen(!isOpen);
+									}}
+								/>
+							)}
 							<BasicButton type="button" onClick={handleEditFeed} width={true} style="primary">
 								분석 완료
 							</BasicButton>
