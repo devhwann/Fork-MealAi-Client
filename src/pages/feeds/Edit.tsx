@@ -1,8 +1,14 @@
-import { MouseEvent, useEffect, useRef, useState } from "react";
+import { ChangeEvent, MouseEvent, useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { feedsApi } from "@/api/feeds";
-import { GetFeedsTypes, GetSearchFoodTypes, UserDailyNutrientTypes } from "@/types/feeds/feedsResponseTypes";
+import {
+	FoodsTypes,
+	GetFeedsTypes,
+	GetSearchFoodTypes,
+	UserDailyNutrientTypes,
+} from "@/types/feeds/feedsResponseTypes";
 import { EditFeedTypes } from "@/types/feeds/feedsRequestTypes";
+import { PostSearchFoodTypes } from "@/types/feeds/feedsRequestTypes";
 import getMealTime from "@/utils/getMealTime";
 import Thumb from "@/components/atoms/thumbnail/Thumbnail";
 import HorizontalProgressBars from "@/components/atoms/progressBars/HorizontalProgressBars";
@@ -13,7 +19,6 @@ import SearchInput from "@/components/atoms/inputs/SearchInput";
 import SearchResult from "@/components/organisms/SearchResult";
 import ToggleButton from "@/components/atoms/buttons/ToggleButton";
 import AddFoodButton from "@/components/atoms/buttons/AddFoodButton";
-import { PostSearchFoodTypes } from "@/types/feeds/feedsRequestTypes";
 
 const Edit = () => {
 	const { id } = useParams();
@@ -21,7 +26,7 @@ const Edit = () => {
 
 	// data set
 	const [feedDetail, setFeedDetail] = useState<GetFeedsTypes>();
-	const [foodCardArray, setFoodCardArray] = useState([]);
+	const [foodCards, setFoodCards] = useState<FoodsTypes[]>([]);
 	const [isMine, setIsMine] = useState(true);
 	const [nutry, setNutry] = useState<UserDailyNutrientTypes>({
 		kcal: 0,
@@ -52,7 +57,7 @@ const Edit = () => {
 			if (data.status === 200) {
 				console.log(data.data);
 				setFeedDetail(data.data);
-				setFoodCardArray(data.data.foods);
+				setFoodCards(data.data.foods);
 				setIsMine(data.data.is_mine);
 				setNutry({
 					kcal: data.data.kcal,
@@ -77,7 +82,7 @@ const Edit = () => {
 			return;
 		}
 		const params: EditFeedTypes = {
-			foods: foodCardArray,
+			foods: foodCards,
 			open: feedDetail.open,
 		};
 
@@ -89,13 +94,8 @@ const Edit = () => {
 		} else {
 			alert("식단 수정을 할 수 없습니다.");
 		}
-		console.log("상세 식단", foodCardArray);
+		console.log("수정 완료", foodCards);
 	};
-
-	// 카드 어레이 수정
-	// const newFoodArray = [...foodCardArray];
-	// 수정 | 추가 | 삭제 작업 -> newFoodArray
-	// setFoodCardArray(newFoodArray);
 
 	// 검색
 	const [searchKeyWord, setSearchKeyWord] = useState<string>("");
@@ -103,15 +103,12 @@ const Edit = () => {
 
 	// 검색 결과
 	const [keyWordResults, setKeyWordResults] = useState<GetSearchFoodTypes[]>([]);
-	const [selectFood, setSelectFood] = useState<GetSearchFoodTypes[]>([]);
 
 	const handleSearch = async () => {
-		const searchTextValue = searchInputRef?.current?.value as string;
-		if (searchTextValue.length === 0) {
+		if (searchKeyWord.length === 0) {
 			alert("검색어를 입력해주세요.");
 			return;
 		}
-		setSearchKeyWord(searchTextValue);
 
 		const data = await feedsApi.getSearchFoodRequest(`/api/feeds/food/${searchKeyWord}`);
 
@@ -122,16 +119,21 @@ const Edit = () => {
 		}
 	};
 
-	useEffect(() => {
-		handleSearch();
-	}, [searchKeyWord]);
-
 	// 토글버튼
 	const [isChecked, setIsChecked] = useState(true);
 
 	// 모달
-	const [editModal, setEditModal] = useState(false);
-	const handleEditModal = () => setEditModal(!editModal);
+	const [editModal, setEditModal] = useState<number | null>(null);
+	// const handleEditModal = () => setEditModal(!editModal);
+	const handleEditModal = (foodId: number) => {
+		// setEditModal(!editModal);
+		if (!editModal) {
+			setEditModal(foodId);
+		} else {
+			setEditModal(null);
+		}
+		console.log("모달에서 인식하는 id", foodId);
+	};
 
 	const [deleteModal, setDeleteModal] = useState(false);
 	const handleDeleteModal = () => setDeleteModal(!deleteModal);
@@ -148,24 +150,43 @@ const Edit = () => {
 		setSearchKeyWord("");
 	}
 
-	const handleSearchForNewFood = async () => {
+	const handleFoodCards = (newFoodCards: FoodsTypes[]) => {
+		console.log(newFoodCards);
+		setFoodCards(newFoodCards);
+	};
+
+	const handleSearchForNewFood = async (v: GetSearchFoodTypes) => {
 		console.log("선택한 음식 추가");
 		handleSearchModal();
 
-		// const params: PostSearchFoodTypes = {
-		// 	food_id:,
-		// 	weight:,
-		// };
+		/** TODO : 해야할 것!
+		 * 검색한 음식을 선택하면 get해서 받아온 정보로 새롭게 배열에 추가한다! (food_id, name, weight만 저장해서 푸드카드로 보냄)
+		 * 배열에 담긴 값을 통째로 post 쏴서 새로운 영양소 값을 받아온다.
+		 */
 
-		// const data = await feedsApi.postSearchFoodRequst("/api/feeds/food", params);
+		const newFoodCards = [...foodCards];
+		newFoodCards.push({
+			food_id: v.food_id,
+			food_name: v.name,
+			weight: v.weight,
+			image_url: null,
+		});
+		handleFoodCards(newFoodCards);
+
+		const params: PostSearchFoodTypes = newFoodCards;
+
+		const data = await feedsApi.postSearchFoodRequst("/api/feeds/food", params);
+		console.log("보내는 params", params);
+		console.log("영양소 정보", data);
 
 		// if (data.status === 200) {
+		// 	const newFoodCards = [...foodCards];
+		// 	newFoodCards.push(data.data);
+		// 	handleFoodCards(newFoodCards);
 		// }
 
 		setSearchKeyWord("");
 	};
-
-	console.log("푸드 카드", foodCardArray);
 
 	return (
 		<>
@@ -195,25 +216,27 @@ const Edit = () => {
 					</div>
 					{feedDetail && feedDetail.foods.length >= 1 && <h4 className="mb-4">상세 식단</h4>}
 					<div className="flex flex-wrap w-792 gap-5 items-start">
-						{/* {feedDetail &&
-							feedDetail.foods.map((v, i) => {
+						{foodCards &&
+							foodCards.map((v, i) => {
 								return (
 									<FoodCard
 										key={v.food_id}
-										feedId={v.food_id}
+										foodId={v.food_id}
 										src={v.image_url}
 										size="sm"
 										type="none"
 										name={v.food_name}
-										weight={v.weight}
-										handleEditModal={handleEditModal}
+										// weight={v.weight}
+										handleEditModal={() => handleEditModal(v.food_id)}
 										handleDeleteModal={handleDeleteModal}
 										handleSearchModal={handleSearchModal}
 										editModalState={editModal}
 										deleteModalState={deleteModal}
+										foodCards={foodCards}
+										handleFoodCards={handleFoodCards}
 									/>
 								);
-							})} */}
+							})}
 						<AddFoodButton onClick={handleSearchModal} />
 					</div>
 					<div className="flex justify-center mt-14 ">
@@ -239,15 +262,24 @@ const Edit = () => {
 					}}
 					title="음식 검색"
 				>
-					<SearchInput name="search" id="search" value={searchKeyWord} onClick={handleSearch} ref={searchInputRef} />
+					<SearchInput
+						name="search"
+						id="search"
+						value={searchKeyWord}
+						onClick={handleSearch}
+						ref={searchInputRef}
+						onChange={(e: ChangeEvent<HTMLInputElement>) => {
+							setSearchKeyWord(e.target.value);
+						}}
+					/>
 					<SearchResult
 						data={keyWordResults}
-						onClick={() => {
-							if (editModal) {
-								handleSearchForFoodToModify();
-								return;
-							}
-							handleSearchForNewFood();
+						onClick={(v) => {
+							// if (editModal) {
+							// 	handleSearchForFoodToModify();
+							// 	return;
+							// }
+							handleSearchForNewFood(v);
 						}}
 					/>
 				</Modal>

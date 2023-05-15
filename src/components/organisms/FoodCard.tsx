@@ -88,7 +88,7 @@ const FoodCard = ({
 						<Thumb src={src} size="sm" type="none" />
 						<div className="w-60 flex flex-col gap-3">
 							<div onClick={handleSearchModal}>
-								<Input type="text" name="name" id="name" value={modalName} placeholder="음식명" />
+								<Input type="text" name="name" id="name" value={modalName} placeholder="음식명" onChange={() => {}} />
 							</div>
 							<div>
 								<Input

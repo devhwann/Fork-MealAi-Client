@@ -1,8 +1,8 @@
 import { GetSearchFoodTypes } from "@/types/feeds/feedsResponseTypes";
 
 interface SearchResultProps {
-	data?: GetSearchFoodTypes[];
-	onClick?: () => void;
+	data: GetSearchFoodTypes[];
+	onClick: (v: GetSearchFoodTypes) => void;
 }
 
 // TODO : 검색 기능 구현
@@ -19,7 +19,7 @@ const SearchResult = ({ data, onClick }: SearchResultProps) => {
 						<p
 							key={v.food_id}
 							className="max-w-fit mb-4 text-sm text-gray-4 hover:underline cursor-pointer"
-							onClick={onClick}
+							onClick={() => onClick(v)}
 						>
 							{v.name}
 						</p>
