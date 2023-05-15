@@ -21,6 +21,6 @@ jobs:
         script: |
           cd /home/elice/MealAi-Client
           git pull origin dev/client
-          npm install
-          npm run build
+          yarn install
+          yarn build
           sudo systemctl reload nginx
