@@ -159,11 +159,6 @@ const Edit = () => {
 		console.log("선택한 음식 추가");
 		handleSearchModal();
 
-		/** TODO : 해야할 것!
-		 * 검색한 음식을 선택하면 get해서 받아온 정보로 새롭게 배열에 추가한다! (food_id, name, weight만 저장해서 푸드카드로 보냄)
-		 * 배열에 담긴 값을 통째로 post 쏴서 새로운 영양소 값을 받아온다.
-		 */
-
 		const newFoodCards = [...foodCards];
 		newFoodCards.push({
 			food_id: v.food_id,
@@ -272,16 +267,7 @@ const Edit = () => {
 							setSearchKeyWord(e.target.value);
 						}}
 					/>
-					<SearchResult
-						data={keyWordResults}
-						onClick={(v) => {
-							// if (editModal) {
-							// 	handleSearchForFoodToModify();
-							// 	return;
-							// }
-							handleSearchForNewFood(v);
-						}}
-					/>
+					<SearchResult data={keyWordResults} onClick={(v) => handleSearchForNewFood(v)} />
 				</Modal>
 			)}
 		</>
