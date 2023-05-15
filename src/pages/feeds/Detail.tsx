@@ -154,8 +154,12 @@ const Detail = () => {
 					<div className="flex justify-center gap-2 mt-14">
 						<BasicButton
 							type="button"
+							// TODO : 목록 버튼 클릭시 어떻게 이동해야할지 논의
+							// 1. 수정 완료 후 목록 -> /feeds
+							// 2. 식단톡, 마이페이지에서 접근 후 목록 -> 이전페이지(-1)
 							onClick={() => {
-								navigate("/feeds");
+								// navigate("/feeds");
+								navigate(-1);
 							}}
 							width={false}
 							style="primary"
