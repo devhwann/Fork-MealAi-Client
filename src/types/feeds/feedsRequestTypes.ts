@@ -21,4 +21,4 @@ export interface EditFeedTypes {
 	open: boolean;
 }
 
-export type PostSearchFoodTypes = Pick<FoodsTypes, "food_id" | "weight">;
+export type PostSearchFoodTypes = Omit<FoodsTypes, "image_url">[];

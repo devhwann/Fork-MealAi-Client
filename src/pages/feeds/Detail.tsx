@@ -103,7 +103,7 @@ const Detail = () => {
 			navigate("/feeds");
 		} else {
 			alert("삭제하지 못했습니다. 다시 시도해주세요.");
-			navigate(-1);
+			navigate("/feeds");
 		}
 	};
 

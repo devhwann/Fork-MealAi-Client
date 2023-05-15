@@ -15,6 +15,7 @@ const SearchResult = ({ data, onClick }: SearchResultProps) => {
 			{!data && <p className="text-center text-gray-6 mt-24">검색 결과가 없습니다.</p>}
 			{data &&
 				data.map((v, i) => {
+					console.log(v.food_id);
 					return (
 						<p
 							key={v.food_id}

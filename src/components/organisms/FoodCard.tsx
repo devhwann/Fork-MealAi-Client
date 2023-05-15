@@ -5,8 +5,10 @@ import Modal from "./Modal";
 import Input from "../atoms/inputs/Input";
 import TinyButton from "../atoms/buttons/TinyButton";
 import BasicButton from "../atoms/buttons/BasicButton";
-import { useState } from "react";
-import { FoodsTypes } from "@/types/feeds/feedsResponseTypes";
+import { ChangeEvent, Ref, useState } from "react";
+import { FoodsTypes, GetSearchFoodTypes } from "@/types/feeds/feedsResponseTypes";
+import SearchInput from "../atoms/inputs/SearchInput";
+import SearchResult from "./SearchResult";
 
 interface FoodCardProps extends ThumbnailProps {
 	index: number;
@@ -14,12 +16,18 @@ interface FoodCardProps extends ThumbnailProps {
 	name: string;
 	weight: number;
 	handleEditModal: (id: number) => void;
-	handleDeleteModal: () => void;
-	handleSearchModal: () => void;
+	handleDeleteModal: (id: number) => void;
+	handleEditSearchModal: (id: number) => void;
 	editModalState?: number | null;
-	deleteModalState?: boolean;
+	deleteModalState?: number | null;
+	editSearchModalState?: number | null;
 	foodCards: FoodsTypes[];
+	searchKeyWord: string;
+	searchInputRef: Ref<HTMLInputElement>;
+	keyWordResults: GetSearchFoodTypes[];
 	handleFoodCards: (foodCards: FoodsTypes[]) => void;
+	handleInputKeyword: (e: ChangeEvent<HTMLInputElement>) => void;
+	handleSearch: () => void;
 }
 
 interface FoodCardButtonProps {
@@ -45,22 +53,32 @@ const FoodCard = ({
 	weight,
 	handleEditModal,
 	handleDeleteModal,
-	handleSearchModal,
+	handleEditSearchModal,
 	editModalState,
 	deleteModalState,
+	editSearchModalState,
 	foodCards,
+	searchKeyWord,
+	searchInputRef,
+	keyWordResults,
 	handleFoodCards,
+	handleInputKeyword,
+	handleSearch,
 }: FoodCardProps) => {
-	// const [modalName, setModalName] = useState(foodCards.filter((f) => f.food_id == editModalState)[0]?.food_name);
-	// const modalName = foodCards.filter((f) => f.food_id == editModalState)[0]?.food_name;
-	// const weight = foodCards.filter((f) => f.food_id == editModalState)[0]?.weight;
-
-	// useEffect(() => {
-	// 	setModalName(foodCards.filter((f) => f.food_id == editModalState)[0]?.food_name);
-	// }, [foodCards]);
-
 	const [newName, setNewName] = useState(name);
 	const [newWeight, setNewWeight] = useState(weight);
+	const [selectFood, setSelectFood] = useState({
+		food_id: 0,
+		name: "",
+		weight: 0,
+	});
+
+	function handleSearchForFoodToModify() {
+		console.log("선택한 음식으로 데이터 수정!!!");
+		// handleSearchModal();
+		//
+		// setSearchKeyWord("");
+	}
 
 	const handleChangeWeight = (e: number) => {
 		setNewWeight(e);
@@ -71,6 +89,14 @@ const FoodCard = ({
 		currentCards[index - 1].food_name = newName;
 		currentCards[index - 1].weight = newWeight;
 		handleFoodCards(currentCards);
+		handleEditModal(index);
+	};
+
+	const confirmDelete = () => {
+		const currentCards = [...foodCards];
+		currentCards.splice(index - 1, 1);
+		handleFoodCards(currentCards);
+		handleDeleteModal(index);
 	};
 
 	return (
@@ -80,7 +106,7 @@ const FoodCard = ({
 				<p className="mt-4 mb-2 font-semibold text-gray-2">{name}</p>
 				<div className="flex justify-end gap-1">
 					<FoodCardButton role="edit" onClick={() => handleEditModal(foodId)} />
-					<FoodCardButton role="delete" onClick={() => handleEditModal(foodId)} />
+					<FoodCardButton role="delete" onClick={() => handleDeleteModal(foodId)} />
 				</div>
 			</div>
 
@@ -95,7 +121,7 @@ const FoodCard = ({
 					<div className="mb-6 flex gap-4">
 						<Thumb src={src} size="sm" type="none" />
 						<div className="w-60 flex flex-col gap-3">
-							<div onClick={handleSearchModal}>
+							<div onClick={() => handleEditSearchModal(index)}>
 								<Input type="text" name="name" id="name" value={newName} placeholder="음식명" onChange={() => {}} />
 							</div>
 							<div>
@@ -112,7 +138,7 @@ const FoodCard = ({
 							</div>
 							<div className="flex justify-between">
 								<p className="text-sm text-gray-4">다른 음식인가요?</p>
-								<TinyButton type="button" onClick={handleSearchModal} style="gray" deactivated={false}>
+								<TinyButton type="button" onClick={() => handleEditSearchModal(index)} style="gray" deactivated={false}>
 									음식 검색
 								</TinyButton>
 							</div>
@@ -143,17 +169,60 @@ const FoodCard = ({
 					</div>
 				</Modal>
 			)}
-			{deleteModalState && (
-				<Modal onClose={handleDeleteModal} title="삭제">
+			{deleteModalState === index && (
+				<Modal onClose={() => handleDeleteModal(index)} title="삭제">
 					<div className="mb-6">정말 삭제하시겠어요?</div>
 					<div className="flex justify-center gap-2">
-						<BasicButton type="button" onClick={handleDeleteModal} width={false} style="bg">
+						<BasicButton
+							type="button"
+							onClick={() => {
+								handleDeleteModal(index);
+							}}
+							width={false}
+							style="bg"
+						>
 							취소
 						</BasicButton>
-						<BasicButton type="button" onClick={() => {}} width={false} style="gray">
+						<BasicButton
+							type="button"
+							onClick={() => {
+								confirmDelete();
+								handleDeleteModal(index);
+							}}
+							width={false}
+							style="gray"
+						>
 							삭제
 						</BasicButton>
 					</div>
+				</Modal>
+			)}
+			{editSearchModalState === index && (
+				<Modal
+					onClose={() => {
+						handleEditSearchModal(index);
+						// handleSearchModal();
+						// setSearchKeyWord("");
+					}}
+					title="음식 검색"
+				>
+					<SearchInput
+						name="search"
+						id="search"
+						value={searchKeyWord}
+						onClick={handleSearch}
+						ref={searchInputRef}
+						onChange={(e: ChangeEvent<HTMLInputElement>) => {
+							handleInputKeyword(e);
+						}}
+					/>
+					{/* <SearchInput name="search" id="search" value={searchKeyWord} onClick={handleSearch} /> */}
+					<SearchResult
+						data={keyWordResults}
+						onClick={() => {
+							handleSearchForFoodToModify();
+						}}
+					/>
 				</Modal>
 			)}
 		</>

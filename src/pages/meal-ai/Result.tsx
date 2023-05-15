@@ -1,7 +1,7 @@
-import { useEffect, useRef, useState } from "react";
+import { ChangeEvent, useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Thumb from "@/components/atoms/thumbnail/Thumbnail";
-import FoodCard, { FoodCardButton } from "@/components/organisms/FoodCard";
+import FoodCard from "@/components/organisms/FoodCard";
 import AddFoodButton from "@/components/atoms/buttons/AddFoodButton";
 import Modal from "@/components/organisms/Modal";
 import SearchInput from "@/components/atoms/inputs/SearchInput";
@@ -14,7 +14,6 @@ import { GetFeedsTypes, GetSearchFoodTypes, UserDailyNutrientTypes } from "@/typ
 import { feedsApi } from "@/api/feeds";
 import getMealTime from "@/utils/getMealTime";
 import { FoodsTypes } from "@/types/feeds/feedsResponseTypes";
-import Input from "@/components/atoms/inputs/Input";
 
 const Result = () => {
 	const navigate = useNavigate();
@@ -48,7 +47,6 @@ const Result = () => {
 						navigate(-1);
 					}
 
-					console.log(data.data);
 					setFeedDetail(data.data);
 					setFoodCards(data.data.foods);
 					setNutry({
@@ -64,25 +62,10 @@ const Result = () => {
 			};
 			getFeed();
 		} else {
-			console.log("뭐지,,,");
 			alert("올바르지 않은 접근입니다!");
 			navigate(-1);
 		}
 	}, []);
-
-	// 모달
-	const [editModal, setEditModal] = useState<number | null>(null);
-	const handleEditModal = (id: number) => {
-		if (!editModal) {
-			setEditModal(id);
-		} else {
-			setEditModal(null);
-		}
-		console.log("모달에서 인식하는 id", id);
-	};
-
-	const [deleteModal, setDeleteModal] = useState(false);
-	const handleDeleteModal = () => setDeleteModal(!deleteModal);
 
 	const [searchModal, setSearchModal] = useState(false);
 	const handleSearchModal = () => setSearchModal(!searchModal);
@@ -92,16 +75,20 @@ const Result = () => {
 	const [keyWordResults, setKeyWordResults] = useState<GetSearchFoodTypes[]>([]);
 	const searchInputRef = useRef<HTMLInputElement>(null);
 
+	const handleInputKeyword = (e: ChangeEvent<HTMLInputElement>) => {
+		const keyWord = e.target.value;
+		setSearchKeyWord(keyWord);
+	};
+
 	const handleSearch = async () => {
-		const searchTextValue = searchInputRef?.current?.value as string;
-		if (searchTextValue.length === 0) {
+		if (searchKeyWord.length === 0) {
 			alert("검색어를 입력해주세요.");
 			return;
 		}
-		setSearchKeyWord(searchTextValue);
 
 		const results = await feedsApi.getSearchFoodRequest(`/api/feeds/food/${searchKeyWord}`);
 
+		console.log(results);
 		if (results.status === 200) {
 			setKeyWordResults(results.data);
 		} else {
@@ -109,19 +96,16 @@ const Result = () => {
 		}
 	};
 
-	useEffect(() => {
-		handleSearch();
-	}, [searchKeyWord]);
 	function handleSearchForFoodToModify() {
 		console.log("선택한 음식으로 데이터 수정");
-		handleSearchModal();
+		// handleSearchModal();
 		//
 		setSearchKeyWord("");
 	}
 
 	function handleSearchForNewFood() {
 		console.log("선택한 음식 추가");
-		handleSearchModal();
+		// handleSearchModal();
 		setSearchKeyWord("");
 	}
 
@@ -131,6 +115,54 @@ const Result = () => {
 	};
 
 	console.log("searchKeyWord", searchKeyWord);
+
+	// foodCards 배열의 변경이 감지될 때마다 바 그래프 업데이트
+	useEffect(() => {
+		async function getNutryData() {
+			let data;
+			try {
+				data = await feedsApi.postSearchFoodRequst("/api/feeds/food", foodCards);
+
+				if (data.status === 200) {
+					setNutry(data.data);
+				} else {
+					alert(data.response.data.message);
+				}
+			} catch (err) {
+				console.log(err);
+			}
+		}
+		getNutryData();
+	}, [foodCards]);
+
+	// 모달
+	const [editModal, setEditModal] = useState<number | null>(null);
+	const handleEditModal = (id: number) => {
+		if (!editModal) {
+			setEditModal(id);
+		} else {
+			setEditModal(null);
+		}
+	};
+
+	const [deleteModal, setDeleteModal] = useState<number | null>(null);
+	const handleDeleteModal = (id: number) => {
+		if (!deleteModal) {
+			setDeleteModal(id);
+		} else {
+			setDeleteModal(null);
+		}
+	};
+
+	const [editSearchModal, setEditSearchModal] = useState<number | null>(null);
+	const handleEditSearchModal = (id: number) => {
+		if (!editSearchModal) {
+			setEditSearchModal(id);
+		} else {
+			setEditSearchModal(null);
+			setSearchKeyWord("");
+		}
+	};
 
 	return (
 		<>
@@ -163,7 +195,7 @@ const Result = () => {
 						</div>
 					</div>
 					<h4 className="mb-4">상세 식단</h4>
-					<div className="flex gap-6 items-start">
+					<div className="flex flex-wrap w-792 gap-5 items-start">
 						{foodCards &&
 							foodCards.map((v, i) => {
 								return (
@@ -177,16 +209,22 @@ const Result = () => {
 										name={v.food_name}
 										weight={v.weight}
 										handleEditModal={() => handleEditModal(i + 1)}
-										handleDeleteModal={handleDeleteModal}
-										handleSearchModal={handleSearchModal}
+										handleDeleteModal={() => handleDeleteModal(i + 1)}
+										handleEditSearchModal={() => handleEditSearchModal(i + 1)}
 										editModalState={editModal}
 										deleteModalState={deleteModal}
+										editSearchModalState={editSearchModal}
 										foodCards={foodCards}
+										searchKeyWord={searchKeyWord}
+										searchInputRef={searchInputRef}
+										keyWordResults={keyWordResults}
 										handleFoodCards={handleFoodCards}
+										handleInputKeyword={handleInputKeyword}
+										handleSearch={handleSearch}
 									/>
 								);
 							})}
-						<AddFoodButton onClick={handleSearchModal} />
+						<AddFoodButton onClick={() => handleSearchModal()} />
 					</div>
 					<div className="flex justify-center">
 						<div className="mt-14 w-96 flex flex-col items-center gap-4">
