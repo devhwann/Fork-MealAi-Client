@@ -20,6 +20,6 @@ jobs:
         port: 22
         script: |
           cd /home/elice/MealAi-Client
-          git pull
-          yarn install
-          yarn build
+          git pull origin dev/client
+          npm install
+          npm build
