@@ -175,7 +175,7 @@ const Result = () => {
 		const data = await feedsApi.editFeedRequest(`/api/feeds/${aiPredictResultId}`, params);
 
 		if (data.status === 200) {
-			navigate("/mylog/:week");
+			navigate("/mylog/1");
 			sessionStorage.clear();
 		} else {
 			alert("일시적인 오류가 있었어요. 다시 시도해 주세요.");
