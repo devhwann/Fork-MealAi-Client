@@ -47,7 +47,7 @@ const Ai = () => {
 		});
 
 		const result = await feedsApi.postFeedRequest("/api/feeds", formData);
-		console.log("무슨일이..", result);
+
 		if (result.status === 200) {
 			sessionStorage.setItem("aiPredictResultId", result.data);
 			navigate("/meal-ai/result");

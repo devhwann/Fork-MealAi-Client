@@ -96,28 +96,6 @@ const Result = () => {
 		setFoodCards(newFoodCards);
 	};
 
-	const [searchModal, setSearchModal] = useState(false);
-	const handleSearchModal = () => {
-		setSearchModal(!searchModal);
-		setKeyWordResults([]);
-	};
-
-	// 새로운 식단 추가
-	const handleSearchForNewFood = async (v: GetSearchFoodTypes) => {
-		handleSearchModal();
-
-		const newFoodCards = [...foodCards];
-		newFoodCards.push({
-			food_id: v.food_id,
-			food_name: v.name,
-			weight: v.weight,
-			image_url: null,
-		});
-		handleFoodCards(newFoodCards);
-
-		setSearchKeyWord("");
-	};
-
 	// foodCards 배열의 변경이 감지될 때마다 바 그래프 업데이트
 	useEffect(() => {
 		async function getNutryData() {
@@ -160,6 +138,28 @@ const Result = () => {
 		}
 	};
 
+	const [searchModal, setSearchModal] = useState(false);
+	const handleSearchModal = () => {
+		setSearchModal(!searchModal);
+		setKeyWordResults([]);
+	};
+
+	// 새로운 식단 추가
+	const handleSearchForNewFood = async (v: GetSearchFoodTypes) => {
+		handleSearchModal();
+
+		const newFoodCards = [...foodCards];
+		newFoodCards.push({
+			food_id: v.food_id,
+			food_name: v.name,
+			weight: v.weight,
+			image_url: null,
+		});
+		handleFoodCards(newFoodCards);
+
+		setSearchKeyWord("");
+	};
+
 	// 모달
 	const [editModal, setEditModal] = useState<number | null>(null);
 	const handleEditModal = (id: number) => {
@@ -178,7 +178,6 @@ const Result = () => {
 			setDeleteModal(null);
 		}
 	};
-
 	const [editSearchModal, setEditSearchModal] = useState<number | null>(null);
 	const handleEditSearchModal = (id: number) => {
 		if (!editSearchModal) {

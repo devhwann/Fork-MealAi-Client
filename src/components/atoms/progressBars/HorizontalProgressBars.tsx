@@ -6,14 +6,6 @@ import getProgressBarPercent from "@/utils/getProgressBarPercent";
 export interface ProgressBarsProps {
 	nutry: ReportWeekHistory;
 	usersNutry: UserDailyNutrientTypes;
-	// kcalValue: number;
-	// kcalMax: number;
-	// carboValue: number;
-	// carboMax: number;
-	// proteinValue: number;
-	// proteinMax: number;
-	// fatValue: number;
-	// fatMax: number;
 }
 
 export interface ProgressBarProps extends DataProps {
