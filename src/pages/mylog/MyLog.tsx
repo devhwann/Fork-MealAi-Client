@@ -139,47 +139,48 @@ const MyLog = () => {
 							);
 						})} */}
 					{feedData &&
-						feedData.map((arr) =>
-							arr.map((v, i) => {
-								return (
-									<div key={i}>
-										<div className="flex justify-between items-center mt-16">
-											<h4 className="">{v.date}</h4>
-											<TinyButton
-												type="button"
-												onClick={() => {
-													navigate("/meal-ai");
-												}}
-												style="bg"
-											>
-												+ 사진 AI 분석
-											</TinyButton>
-										</div>
-										<div className="flex flex-wrap w-1200 mt-6 gap-6">
-											<div className="w-220 h-220 px-6 py-5 border-solid border border-gray-7 rounded-lg">
-												<div className="scale-90">
-													<HorizontalProgressBars nutry={nutry[i]} usersNutry={goalNutry} />
-												</div>
-											</div>
-
-											{v.feed_id ? (
-												<Thumb
-													src={v.image_url}
-													id={v.feed_id}
-													size="md"
-													type="log"
-													mealTime="breakfast"
-													open={true}
-													key={v.feed_id}
-												/>
-											) : (
-												<></>
-											)}
-										</div>
+						feedData.map((targetDataArr, index) => {
+							return (
+								<div key={index}>
+									<div className="flex justify-between items-center mt-16">
+										<h4 className="">{targetDataArr[0].date}</h4>
+										<TinyButton
+											type="button"
+											onClick={() => {
+												navigate("/meal-ai");
+											}}
+											style="bg"
+										>
+											+ 사진 AI 분석
+										</TinyButton>
 									</div>
-								);
-							})
-						)}
+									<div className="flex flex-wrap w-1200 mt-6 gap-6">
+										<div className="w-220 h-220 px-6 py-5 border-solid border border-gray-7 rounded-lg">
+											<div className="scale-90">
+												<HorizontalProgressBars nutry={nutry[index]} usersNutry={goalNutry} />
+											</div>
+										</div>
+										{targetDataArr.map((value) => {
+											return (
+												<>
+													{value.feed_id ? (
+														<Thumb
+															src={value.image_url}
+															id={value.feed_id}
+															size="md"
+															type="log"
+															mealTime="breakfast"
+															open={true}
+															key={value.feed_id}
+														/>
+													) : null}
+												</>
+											);
+										})}
+									</div>
+								</div>
+							);
+						})}
 				</div>
 			</div>
 		</>
