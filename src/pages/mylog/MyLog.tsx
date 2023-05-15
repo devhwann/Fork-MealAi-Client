@@ -169,8 +169,8 @@ const MyLog = () => {
 															id={value.feed_id}
 															size="md"
 															type="log"
-															mealTime="breakfast"
-															open={true}
+															mealTime={value.meal_time}
+															open={value.open}
 															key={value.feed_id}
 														/>
 													) : null}

@@ -96,6 +96,41 @@ const Result = () => {
 		setFoodCards(newFoodCards);
 	};
 
+	// 모달
+	const [editModal, setEditModal] = useState<number | null>(null);
+	const handleEditModal = (id: number) => {
+		if (!editModal) {
+			setEditModal(id);
+		} else {
+			setEditModal(null);
+		}
+	};
+
+	const [deleteModal, setDeleteModal] = useState<number | null>(null);
+	const handleDeleteModal = (id: number) => {
+		if (!deleteModal) {
+			setDeleteModal(id);
+		} else {
+			setDeleteModal(null);
+		}
+	};
+	const [editSearchModal, setEditSearchModal] = useState<number | null>(null);
+	const handleEditSearchModal = (id: number) => {
+		if (!editSearchModal) {
+			setEditSearchModal(id);
+		} else {
+			setEditSearchModal(null);
+			setSearchKeyWord("");
+			setKeyWordResults([]);
+		}
+	};
+
+	const [searchModal, setSearchModal] = useState(false);
+	const handleSearchModal = () => {
+		setSearchModal(!searchModal);
+		setKeyWordResults([]);
+	};
+
 	// foodCards 배열의 변경이 감지될 때마다 바 그래프 업데이트
 	useEffect(() => {
 		async function getNutryData() {
@@ -138,12 +173,6 @@ const Result = () => {
 		}
 	};
 
-	const [searchModal, setSearchModal] = useState(false);
-	const handleSearchModal = () => {
-		setSearchModal(!searchModal);
-		setKeyWordResults([]);
-	};
-
 	// 새로운 식단 추가
 	const handleSearchForNewFood = async (v: GetSearchFoodTypes) => {
 		handleSearchModal();
@@ -158,35 +187,6 @@ const Result = () => {
 		handleFoodCards(newFoodCards);
 
 		setSearchKeyWord("");
-	};
-
-	// 모달
-	const [editModal, setEditModal] = useState<number | null>(null);
-	const handleEditModal = (id: number) => {
-		if (!editModal) {
-			setEditModal(id);
-		} else {
-			setEditModal(null);
-		}
-	};
-
-	const [deleteModal, setDeleteModal] = useState<number | null>(null);
-	const handleDeleteModal = (id: number) => {
-		if (!deleteModal) {
-			setDeleteModal(id);
-		} else {
-			setDeleteModal(null);
-		}
-	};
-	const [editSearchModal, setEditSearchModal] = useState<number | null>(null);
-	const handleEditSearchModal = (id: number) => {
-		if (!editSearchModal) {
-			setEditSearchModal(id);
-		} else {
-			setEditSearchModal(null);
-			setSearchKeyWord("");
-			setKeyWordResults([]);
-		}
 	};
 
 	return (

@@ -1,4 +1,4 @@
-export type MealType = "breakfast" | "lunch" | "dinner" | "snack";
+export type MealType = "breakfast" | "lunch" | "dinner" | "snack" | string;
 
 export default function getMealTime(time: MealType) {
 	switch (time) {

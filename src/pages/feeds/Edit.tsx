@@ -98,6 +98,10 @@ const Edit = () => {
 		}
 	};
 
+	const handleFoodCards = (newFoodCards: FoodsTypes[]) => {
+		setFoodCards(newFoodCards);
+	};
+
 	// 모달
 	const [editModal, setEditModal] = useState<number | null>(null);
 	const handleEditModal = (id: number) => {
@@ -117,12 +121,6 @@ const Edit = () => {
 		}
 	};
 
-	const [searchModal, setSearchModal] = useState(false);
-	const handleSearchModal = () => {
-		setSearchModal(!searchModal);
-		setKeyWordResults([]);
-	};
-
 	const [editSearchModal, setEditSearchModal] = useState<number | null>(null);
 	const handleEditSearchModal = (id: number) => {
 		if (!editSearchModal) {
@@ -134,8 +132,10 @@ const Edit = () => {
 		}
 	};
 
-	const handleFoodCards = (newFoodCards: FoodsTypes[]) => {
-		setFoodCards(newFoodCards);
+	const [searchModal, setSearchModal] = useState(false);
+	const handleSearchModal = () => {
+		setSearchModal(!searchModal);
+		setKeyWordResults([]);
 	};
 
 	// foodCards 배열의 변경이 감지될 때마다 바 그래프 업데이트
@@ -156,22 +156,6 @@ const Edit = () => {
 		}
 		getNutryData();
 	}, [foodCards]);
-
-	// 새로운 식단 추가
-	const handleSearchForNewFood = async (v: GetSearchFoodTypes) => {
-		handleSearchModal();
-
-		const newFoodCards = [...foodCards];
-		newFoodCards.push({
-			food_id: v.food_id,
-			food_name: v.name,
-			weight: v.weight,
-			image_url: null,
-		});
-		handleFoodCards(newFoodCards);
-
-		setSearchKeyWord("");
-	};
 
 	// 피드 수정
 	const handleEditFeed = async (e: MouseEvent<HTMLButtonElement>) => {
@@ -194,6 +178,22 @@ const Edit = () => {
 		} else {
 			alert("식단 수정을 할 수 없습니다.");
 		}
+	};
+
+	// 새로운 식단 추가
+	const handleSearchForNewFood = async (v: GetSearchFoodTypes) => {
+		handleSearchModal();
+
+		const newFoodCards = [...foodCards];
+		newFoodCards.push({
+			food_id: v.food_id,
+			food_name: v.name,
+			weight: v.weight,
+			image_url: null,
+		});
+		handleFoodCards(newFoodCards);
+
+		setSearchKeyWord("");
 	};
 
 	return (
