@@ -10,6 +10,7 @@ import Thumb from "@/components/atoms/thumbnail/Thumbnail";
 import TempImage from "@/assets/temp_image.jpg";
 import { ReportWeekHistory, ReportWeekHistoryData } from "@/types/report/reportResponseType";
 import { reportApi } from "@/api/report";
+import getMealTime from "@/utils/getMealTime";
 
 const MyLog = () => {
 	const navigate = useNavigate();
@@ -161,6 +162,7 @@ const MyLog = () => {
 											</div>
 										</div>
 										{targetDataArr.map((value) => {
+											console.log(value);
 											return (
 												<>
 													{value.feed_id ? (
@@ -169,8 +171,8 @@ const MyLog = () => {
 															id={value.feed_id}
 															size="md"
 															type="log"
-															mealTime="breakfast"
-															open={true}
+															mealTime={value.meal_time}
+															open={value.open}
 															key={value.feed_id}
 														/>
 													) : null}

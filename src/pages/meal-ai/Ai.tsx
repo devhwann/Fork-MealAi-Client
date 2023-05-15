@@ -1,7 +1,7 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
-import { useRecoilValue } from "recoil";
-import { isLoggedInState } from "@/recoil/state";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { imagePreviewState, isLoggedInState } from "@/recoil/state";
 import { useNavigate } from "react-router-dom";
 import { PostAiTypes } from "@/types/feeds/feedsRequestTypes";
 import { feedsApi } from "@/api/feeds";
@@ -12,7 +12,6 @@ import BasicButton from "@/components/atoms/buttons/BasicButton";
 import TinyButton from "@/components/atoms/buttons/TinyButton";
 import AddIcon from "@/assets/icon_add_image.svg";
 
-// TODO : 분석 결과 토대로 1. 분석성공  2. 분석실패  3. 시스템에러(catch err) 처리
 const Ai = () => {
 	const navigate = useNavigate();
 
@@ -52,12 +51,13 @@ const Ai = () => {
 			sessionStorage.setItem("aiPredictResultId", result.data);
 			navigate("/meal-ai/result");
 		} else {
-			alert("앗! 일시적인 오류로 분석에 실패했습니다. 다시 시도해주세요 🤔");
+			console.log(result);
+			navigate("/meal-ai/fail");
 		}
 	};
 
 	// thumbnail 미리보기
-	const [imagePreview, setImagePreview] = useState("");
+	const [imagePreview, setImagePreview] = useRecoilState(imagePreviewState);
 	useEffect(() => {
 		if (preview && preview.length > 0) {
 			const file = preview[0];

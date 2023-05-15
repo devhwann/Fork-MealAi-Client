@@ -1,10 +1,11 @@
 import { useNavigate } from "react-router-dom";
 import BasicButton from "@/components/atoms/buttons/BasicButton";
-import Thumb from "@/components/atoms/thumbnail/Thumbnail";
-import TempImage from "@/assets/temp_image.jpg"; // TODO : 실제 데이터 연동 후 지우기
+import { useRecoilValue } from "recoil";
+import { imagePreviewState } from "@/recoil/state";
 
 const Fail = () => {
 	const navigate = useNavigate();
+	const imagePreview = useRecoilValue(imagePreviewState);
 
 	return (
 		<div className="flex flex-col items-center text-center gap-1">
@@ -14,7 +15,9 @@ const Fail = () => {
 				<br />
 				다시 분석해 보시겠습니까?
 			</p>
-			<Thumb src={TempImage} size="lg" type="none" />
+			<div className={"w-96 h-96 overflow-hidden border border-solid border-gray-7 rounded-lg relative"}>
+				<img src={imagePreview} className="object-cover" />
+			</div>
 			<div className="mt-6 w-96">
 				<BasicButton
 					type="button"
