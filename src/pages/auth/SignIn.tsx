@@ -8,7 +8,6 @@ import { authApi } from "@/api/auth";
 import InputLabel from "@/components/atoms/inputs/InputLabel";
 import Input from "@/components/atoms/inputs/Input";
 import BasicButton from "@/components/atoms/buttons/BasicButton";
-import SocialButtons from "@/components/atoms/buttons/SocialButton";
 import Toast from "@/components/atoms/toast/Toast";
 
 const SignIn = () => {
@@ -105,7 +104,7 @@ const SignIn = () => {
 						ref={passwordInputRef}
 					/>
 				</div>
-				<div className="mb-9">
+				<div className="mb-16">
 					<BasicButton
 						type="submit"
 						onClick={(e) => {
@@ -117,20 +116,6 @@ const SignIn = () => {
 						로그인
 					</BasicButton>
 				</div>
-			</div>
-			<div className="mb-14">
-				<SocialButtons
-					role="로그인"
-					googleApi={() => {
-						console.log("구글");
-					}}
-					naverApi={() => {
-						console.log("네이버");
-					}}
-					kakaoApi={() => {
-						console.log("카카오");
-					}}
-				/>
 			</div>
 			<div className="flex text-gray-5 gap-6">
 				<Link to="/auth/find-password">

@@ -54,10 +54,6 @@ const MyPage = () => {
 			});
 	}, [page]);
 
-	// TODO : 소셜 기능 추가시 > 소셜 회원 여부도 받아서 비밀번호 변경 버튼 숨김처리 해야 함
-	// 소셜 회원 여부
-	const isSocialUser = false;
-
 	// state
 	const [currentPassword, setCurrentPassword] = useState("");
 	const currentPasswordInputRef = useRef<HTMLInputElement>(null);
@@ -192,12 +188,10 @@ const MyPage = () => {
 					<BasicButton type="button" onClick={handleEditInfoModal} width={false} style="bg">
 						회원정보 수정
 					</BasicButton>
-					{/* 소셜 서비스로 가입한 회원이 아닌 경우에만 비밀번호 변경 가능 */}
-					{!isSocialUser && (
-						<BasicButton type="button" onClick={handleNewPasswordModal} width={false} style="bg">
-							비밀번호 변경
-						</BasicButton>
-					)}
+
+					<BasicButton type="button" onClick={handleNewPasswordModal} width={false} style="bg">
+						비밀번호 변경
+					</BasicButton>
 				</div>
 			</div>
 			<div className="flex flex-col w-1200 mt-16">
