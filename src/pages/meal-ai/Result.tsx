@@ -67,9 +67,6 @@ const Result = () => {
 		}
 	}, []);
 
-	const [searchModal, setSearchModal] = useState(false);
-	const handleSearchModal = () => setSearchModal(!searchModal);
-
 	// 검색
 	const [searchKeyWord, setSearchKeyWord] = useState<string>("");
 	const [keyWordResults, setKeyWordResults] = useState<GetSearchFoodTypes[]>([]);
@@ -97,6 +94,12 @@ const Result = () => {
 
 	const handleFoodCards = (newFoodCards: FoodsTypes[]) => {
 		setFoodCards(newFoodCards);
+	};
+
+	const [searchModal, setSearchModal] = useState(false);
+	const handleSearchModal = () => {
+		setSearchModal(!searchModal);
+		setKeyWordResults([]);
 	};
 
 	// 새로운 식단 추가
