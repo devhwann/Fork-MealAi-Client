@@ -58,6 +58,7 @@ const Edit = () => {
 				setFeedDetail(data.data);
 				setFoodCards(data.data.foods);
 				setIsMine(data.data.is_mine);
+				setIsOpen(data.data.open);
 				setNutry({
 					kcal: data.data.kcal,
 					carbohydrate: data.data.carbohydrate,
