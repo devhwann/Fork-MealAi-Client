@@ -62,7 +62,6 @@ const Feeds = () => {
 
 			// 서버에서 다음 페이지가 있는지 확인.
 			setHasNextPage(data.data.next_page);
-			console.log("피드 불러오기 성공!");
 		} catch (err) {
 			alert("피드를 불러올 수 없습니다!");
 		}
