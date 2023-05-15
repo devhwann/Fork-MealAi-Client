@@ -49,7 +49,6 @@ const WeeklyReport = () => {
 				setPeriod([weeklyReport.data.start_of_week, weeklyReport.data.end_of_week]);
 				setDailyData(weeklyReport.data.daily_nutrient);
 
-				//수정 : 곱하기가 아니라 요일 별로 더하기여야 할 듯
 				setWeeklyNutry({
 					kcal: weeklyReport.data.weekly_nutrient.kcal,
 					carbohydrate: weeklyReport.data.weekly_nutrient.carbohydrate,
