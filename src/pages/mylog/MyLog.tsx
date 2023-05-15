@@ -7,16 +7,15 @@ import ArrowButton from "@/components/atoms/buttons/ArrowButton";
 import TinyButton from "@/components/atoms/buttons/TinyButton";
 import Thumb from "@/components/atoms/thumbnail/Thumbnail";
 
-import TempImage from "@/assets/temp_image.jpg"; // TODO : 실제 데이터 연동 후 지우기
-import { ReportWeekHistory } from "@/types/report/reportResponseType";
+import TempImage from "@/assets/temp_image.jpg";
+import { ReportWeekHistory, ReportWeekHistoryData } from "@/types/report/reportResponseType";
 import { reportApi } from "@/api/report";
 
-// TODO : 페이지 처음 진입할 때 params ?
 const MyLog = () => {
 	const navigate = useNavigate();
 	const { week } = useParams();
+	const [period, setPeriod] = useState<number[]>([]);
 
-	// 바그래프 임시데이터임
 	const [weeklyNutry, setWeeklyNutry] = useState<ReportWeekHistory>({
 		kcal: 0,
 		carbohydrate: 0,
@@ -30,12 +29,14 @@ const MyLog = () => {
 		fat: 0,
 	});
 
-	const [nutry, setNutry] = useState<ReportWeekHistory>({
-		kcal: 0,
-		carbohydrate: 0,
-		protein: 0,
-		fat: 0,
-	});
+	const [nutry, setNutry] = useState<ReportWeekHistory[]>([
+		{
+			kcal: 0,
+			carbohydrate: 0,
+			protein: 0,
+			fat: 0,
+		},
+	]);
 	const [goalNutry, setGoalNutry] = useState<ReportWeekHistory>({
 		kcal: 0,
 		carbohydrate: 0,
@@ -43,42 +44,45 @@ const MyLog = () => {
 		fat: 0,
 	});
 
+	const [feedData, setFeedData] = useState<ReportWeekHistoryData[][]>();
+
 	useEffect(() => {
 		async function fetchReport() {
 			const reportWeek = await reportApi.getMylogsRequest(`/api/reports/history/${week}`);
 
 			if (reportWeek.status === 200) {
-				console.log("reportWeek", reportWeek);
+				console.log(reportWeek.data);
+				setNutry(reportWeek.data.nutrient);
+				setGoalNutry(reportWeek.data.goal);
 
-				//수정 : 곱하기가 아니라 요일 별로 더하기여야 할 듯
-				setWeeklyNutry({
-					kcal: reportWeek.data.nutrient.kcal * 7,
-					carbohydrate: reportWeek.data.nutrient.carbohydrate * 7,
-					protein: reportWeek.data.nutrient.protein * 7,
-					fat: reportWeek.data.nutrient.fat * 7,
-				});
-				setWeeklyNutryGoal({
-					kcal: reportWeek.data.goal.kcal * 7,
-					carbohydrate: reportWeek.data.goal.carbohydrate * 7,
-					protein: reportWeek.data.goal.protein * 7,
-					fat: reportWeek.data.goal.fat * 7,
-				});
-
-				setNutry({
-					kcal: reportWeek.data.data.kcal,
-					carbohydrate: reportWeek.data.data.carbohydrate,
-					protein: reportWeek.data.data.protein,
-					fat: reportWeek.data.data.fat,
-				});
-				setGoalNutry({
-					kcal: reportWeek.data.goal.kcal,
-					carbohydrate: reportWeek.data.goal.carbohydrate,
-					protein: reportWeek.data.goal.protein,
-					fat: reportWeek.data.goal.fat,
-				});
+				setFeedData(reportWeek.data.data);
 			}
 		}
 		fetchReport();
+	}, [week]);
+
+	useEffect(() => {
+		async function getWeeklyReportData() {
+			const weeklyReport = await reportApi.getReportWeekRequest(`/api/reports/report/${week}`);
+
+			if (weeklyReport.status === 200) {
+				console.log("WeeklyReport", weeklyReport);
+				setPeriod([weeklyReport.data.start_of_week, weeklyReport.data.end_of_week]);
+				setWeeklyNutry({
+					kcal: weeklyReport.data.weekly_nutrient.kcal,
+					carbohydrate: weeklyReport.data.weekly_nutrient.carbohydrate,
+					protein: weeklyReport.data.weekly_nutrient.protein,
+					fat: weeklyReport.data.weekly_nutrient.fat,
+				});
+				setWeeklyNutryGoal({
+					kcal: weeklyReport.data.weekly_goal.kcal,
+					carbohydrate: weeklyReport.data.weekly_goal.carbohydrate,
+					protein: weeklyReport.data.weekly_goal.protein,
+					fat: weeklyReport.data.weekly_goal.fat,
+				});
+			}
+		}
+		getWeeklyReportData();
 	}, [week]);
 
 	const prevClick = () => {
@@ -91,6 +95,7 @@ const MyLog = () => {
 		}
 		navigate(`/mylog/${parseInt(week!) - 1}`);
 	};
+
 	return (
 		<>
 			<div className="flex flex-col items-center mt-20">
@@ -100,7 +105,9 @@ const MyLog = () => {
 					<div className="flex justify-between items-center w-full">
 						<div>
 							<h3 className="text-gray-1 mb-2">주간 영양 섭취량</h3>
-							<p className="text-lg font-bold text-gray-4 mb-6">2023.04.21 - 2023.04.27</p>
+							<p className="text-lg font-bold text-gray-4 mb-6">
+								{period[0]} ~ {period[1]}
+							</p>
 							<BasicButton
 								type="button"
 								onClick={() => {
@@ -121,43 +128,59 @@ const MyLog = () => {
 
 				{/* // TODO : API 명세 받은 후 map함수 적용 */}
 				<div>
-					<div className="flex justify-between items-center mt-16">
-						<h4 className="">2023.04.24(월)</h4>
-						<TinyButton type="button" onClick={() => {}} style="bg">
-							+ 사진 AI 분석
-						</TinyButton>
-					</div>
-					<div className="flex flex-wrap w-1200 mt-6 gap-6">
-						<div className="w-220 h-220 px-6 py-5 border-solid border border-gray-7 rounded-lg">
-							<div className="scale-90">
-								<HorizontalProgressBars nutry={nutry} usersNutry={goalNutry} />
-							</div>
-						</div>
-						<Thumb src={TempImage} id={1} size="md" type="log" mealTime="breakfast" open={true} />
-						<Thumb src={TempImage} id={1} size="md" type="log" mealTime="lunch" open={true} />
-						<Thumb src={TempImage} id={1} size="md" type="log" mealTime="snack" open={false} />
-						<Thumb src={TempImage} id={1} size="md" type="log" mealTime="dinner" open={true} />
-						<Thumb src={TempImage} id={1} size="md" type="log" mealTime="snack" open={false} />
-					</div>
-				</div>
-
-				<div>
-					<div className="flex justify-between items-center mt-16">
-						<h4 className="">2023.04.25(화)</h4>
-						<TinyButton type="button" onClick={() => {}} style="bg">
-							+ 사진 AI 분석
-						</TinyButton>
-					</div>
-					<div className="flex flex-wrap w-1200 mt-6 gap-6">
-						<div className="w-220 h-220 px-6 py-5 border-solid border border-gray-7 rounded-lg">
-							<div className="scale-90">
-								<HorizontalProgressBars nutry={nutry} usersNutry={goalNutry} />
-							</div>
-						</div>
-						<Thumb src={TempImage} id={1} size="md" type="log" mealTime="lunch" open={true} />
-						<Thumb src={TempImage} id={1} size="md" type="log" mealTime="dinner" open={true} />
-						<Thumb src={TempImage} id={1} size="md" type="log" mealTime="snack" open={false} />
-					</div>
+					{/* {nutry &&
+						nutry.map((v, i) => {
+							return (
+								<div key={i} className="w-220 h-220 px-6 py-5 border-solid border border-gray-7 rounded-lg">
+									<div className="scale-90">
+										<HorizontalProgressBars nutry={v} usersNutry={goalNutry} />
+									</div>
+								</div>
+							);
+						})} */}
+					{feedData &&
+						feedData.map((targetDataArr, index) => {
+							return (
+								<div key={index}>
+									<div className="flex justify-between items-center mt-16">
+										<h4 className="">{targetDataArr[0].date}</h4>
+										<TinyButton
+											type="button"
+											onClick={() => {
+												navigate("/meal-ai");
+											}}
+											style="bg"
+										>
+											+ 사진 AI 분석
+										</TinyButton>
+									</div>
+									<div className="flex flex-wrap w-1200 mt-6 gap-6">
+										<div className="w-220 h-220 px-6 py-5 border-solid border border-gray-7 rounded-lg">
+											<div className="scale-90">
+												<HorizontalProgressBars nutry={nutry[index]} usersNutry={goalNutry} />
+											</div>
+										</div>
+										{targetDataArr.map((value) => {
+											return (
+												<>
+													{value.feed_id ? (
+														<Thumb
+															src={value.image_url}
+															id={value.feed_id}
+															size="md"
+															type="log"
+															mealTime="breakfast"
+															open={true}
+															key={value.feed_id}
+														/>
+													) : null}
+												</>
+											);
+										})}
+									</div>
+								</div>
+							);
+						})}
 				</div>
 			</div>
 		</>
