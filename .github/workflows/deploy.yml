@@ -21,5 +21,9 @@ jobs:
         script: |
           cd /home/elice/MealAi-Client
           git pull origin dev/client
-          npm install
-          npm build
+          export NVM_DIR=~/.nvm
+          source ~/.nvm/nvm.sh
+          npm -v
+          yarn install
+          yarn build
+          sudo systemctl reload nginx
