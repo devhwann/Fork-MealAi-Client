@@ -1,15 +1,12 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-
+import { reportApi } from "@/api/report";
+import { ReportWeekHistory, ReportWeekHistoryData } from "@/types/report/reportResponseType";
+import Thumb from "@/components/atoms/thumbnail/Thumbnail";
 import BasicButton from "@/components/atoms/buttons/BasicButton";
-import HorizontalProgressBars from "@/components/atoms/progressBars/HorizontalProgressBars";
 import ArrowButton from "@/components/atoms/buttons/ArrowButton";
 import TinyButton from "@/components/atoms/buttons/TinyButton";
-import Thumb from "@/components/atoms/thumbnail/Thumbnail";
-
-import TempImage from "@/assets/temp_image.jpg";
-import { ReportWeekHistory, ReportWeekHistoryData } from "@/types/report/reportResponseType";
-import { reportApi } from "@/api/report";
+import HorizontalProgressBars from "@/components/atoms/progressBars/HorizontalProgressBars";
 
 const MyLog = () => {
 	const navigate = useNavigate();
@@ -148,6 +145,7 @@ const MyLog = () => {
 											</div>
 										</div>
 										{targetDataArr.map((value) => {
+											console.log(value);
 											return (
 												<>
 													{value.feed_id ? (

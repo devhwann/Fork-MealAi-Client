@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
-import { isLoggedInState } from "@/recoil/state";
 import { useRecoilState } from "recoil";
+import { isLoggedInState } from "@/recoil/state";
 import { authApi } from "@/api/auth";
 import Logo from "@/assets/logo.svg";
 
@@ -20,7 +20,7 @@ const Header = () => {
 	}, [isLoggedIn]);
 
 	const handleLogout = async () => {
-		await authApi.authLogoutRequest("/api/auth/logout");
+		await authApi.createLogoutRequest("/api/auth/logout");
 		localStorage.clear();
 		setisLoggedInState(false);
 	};

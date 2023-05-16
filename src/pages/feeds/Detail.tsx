@@ -1,16 +1,16 @@
 import { MouseEvent, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { feedsApi } from "@/api/feeds";
 import { useRecoilState } from "recoil";
 import { isLoggedInState } from "@/recoil/state";
+import { feedsApi } from "@/api/feeds";
+import getMealTime from "@/utils/getMealTime";
 import Thumb from "@/components/atoms/thumbnail/Thumbnail";
 import Modal from "@/components/organisms/Modal";
-import BasicButton from "@/components/atoms/buttons/BasicButton";
 import HorizontalProgressBars from "@/components/atoms/progressBars/HorizontalProgressBars";
 import FoodCardViewOnly from "@/components/organisms/FoodCardViewOnly";
-import getMealTime from "@/utils/getMealTime";
 import LikeWithCount from "@/components/organisms/LikeWithCount";
 import GoalText from "@/components/organisms/GoalText";
+import BasicButton from "@/components/atoms/buttons/BasicButton";
 import ArrowButton from "@/components/atoms/buttons/ArrowButton";
 
 import { GetFeedsTypes, UserDailyNutrientTypes } from "@/types/feeds/feedsResponseTypes";
@@ -80,7 +80,7 @@ const Detail = () => {
 			setLikeCount(likeCount! + 1);
 			setIsLike(true);
 		}
-		const patchLikes = await feedsApi.patchLikesRequest(`/api/feeds/likes/${feedId}`);
+		const patchLikes = await feedsApi.updateLikesRequest(`/api/feeds/likes/${feedId}`);
 
 		if (patchLikes.status !== 200) {
 			setIsLoggedIn(false);
@@ -154,8 +154,12 @@ const Detail = () => {
 					<div className="flex justify-center gap-2 mt-14">
 						<BasicButton
 							type="button"
+							// TODO : 목록 버튼 클릭시 어떻게 이동해야할지 논의
+							// 1. 수정 완료 후 목록 -> /feeds
+							// 2. 식단톡, 마이페이지에서 접근 후 목록 -> 이전페이지(-1)
 							onClick={() => {
-								navigate("/feeds");
+								// navigate("/feeds");
+								navigate(-1);
 							}}
 							width={false}
 							style="primary"

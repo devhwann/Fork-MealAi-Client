@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { HeadContainer, IntroContainer } from "./Home.style";
-import { GetFeedsParamsTypes } from "@/types/feeds/feedsRequestTypes";
-import { GetFeedsTypes } from "@/types/feeds/feedsResponseTypes";
-import { feedsApi } from "@/api/feeds";
 import { useRecoilValue } from "recoil";
 import { isLoggedInState } from "@/recoil/state";
+import { feedsApi } from "@/api/feeds";
+import { GetFeedsTypes } from "@/types/feeds/feedsResponseTypes";
+import { GetFeedsParamsTypes } from "@/types/feeds/feedsRequestTypes";
+import { HeadContainer, IntroContainer } from "./Home.style";
 
 import WhiteLogo from "@/assets/logo_white.svg";
 import Logo from "@/assets/logo.svg";
@@ -69,7 +69,7 @@ const Home = () => {
 		copyFeeds[i].my_like = !feeds![i].my_like;
 		setFeeds(copyFeeds);
 
-		const patchLikes = await feedsApi.patchLikesRequest(`/api/feeds/likes/${feedId}`);
+		const patchLikes = await feedsApi.updateLikesRequest(`/api/feeds/likes/${feedId}`);
 
 		if (patchLikes.status !== 200) {
 			navigate("/auth/sign-in");
@@ -81,7 +81,7 @@ const Home = () => {
 	return (
 		<div>
 			<HeadContainer currentScroll={currentScroll}>
-				<div className="ml-96 select-none">
+				<div className="select-none head-title">
 					<h1 className="text-white mb-3">나만의 맞춤 AI 영양사,</h1>
 					<img src={WhiteLogo} width="214" height="50" />
 					<button

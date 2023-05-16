@@ -1,18 +1,17 @@
 import { useEffect, useState } from "react";
-import { useForm, SubmitHandler } from "react-hook-form";
-import { useRecoilValue } from "recoil";
-import { isLoggedInState } from "@/recoil/state";
 import { useNavigate } from "react-router-dom";
-import { PostAiTypes } from "@/types/feeds/feedsRequestTypes";
+import { useForm, SubmitHandler } from "react-hook-form";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { imagePreviewState, isLoggedInState } from "@/recoil/state";
 import { feedsApi } from "@/api/feeds";
+import { PostAiTypes } from "@/types/feeds/feedsRequestTypes";
 import { GradientWrapper } from "@/pages/meal-ai/Ai.styles";
-import InfoIcon from "@/assets/icon_info.svg";
 import AiRule from "@/components/atoms/aiRule/AiRule";
 import BasicButton from "@/components/atoms/buttons/BasicButton";
 import TinyButton from "@/components/atoms/buttons/TinyButton";
 import AddIcon from "@/assets/icon_add_image.svg";
+import InfoIcon from "@/assets/icon_info.svg";
 
-// TODO : 분석 결과 토대로 1. 분석성공  2. 분석실패  3. 시스템에러(catch err) 처리
 const Ai = () => {
 	const navigate = useNavigate();
 
@@ -36,8 +35,25 @@ const Ai = () => {
 	const preview = watch("file");
 	const mealTime = watch("meal_time");
 
+	// button 상태 제어
+	const [buttonActivated, setButtonActivated] = useState(true);
+
+	useEffect(() => {
+		if (!mealTime || mealTime === "식사 시간 선택" || !preview || preview.length === 0) {
+			setButtonActivated(true);
+		} else {
+			setButtonActivated(false);
+		}
+	}, [mealTime, preview]);
+
 	// api 통신
 	const onSubmit: SubmitHandler<PostAiTypes> = async (data) => {
+		// 버튼 상태 조작
+		setButtonActivated(true);
+		const button = document.querySelector(".button-text");
+		button!.innerHTML = "분석 중 ...";
+
+		// file set & api 통신
 		const file = Array.from(data.file as ArrayLike<File>);
 		const postData = { ...data, file: file[0] };
 
@@ -46,30 +62,24 @@ const Ai = () => {
 			formData.append(key, value);
 		});
 
-		const result = await feedsApi.postFeedRequest("/api/feeds", formData);
-		console.log("무슨일이..", result);
+		const result = await feedsApi.createFeedRequest("/api/feeds", formData);
+
 		if (result.status === 200) {
 			sessionStorage.setItem("aiPredictResultId", result.data);
 			navigate("/meal-ai/result");
 		} else {
-			alert("앗! 일시적인 오류로 분석에 실패했습니다. 다시 시도해주세요 🤔");
+			navigate("/meal-ai/fail");
 		}
 	};
 
 	// thumbnail 미리보기
-	const [imagePreview, setImagePreview] = useState("");
+	const [imagePreview, setImagePreview] = useRecoilState(imagePreviewState);
 	useEffect(() => {
 		if (preview && preview.length > 0) {
 			const file = preview[0];
 			setImagePreview(URL.createObjectURL(file));
 		}
 	}, [preview]);
-
-	// button validation
-	function hadleButtonActivated() {
-		if (!mealTime || mealTime === "식사 시간 선택" || !preview || preview.length === 0) return true;
-		return false;
-	}
 
 	return (
 		<GradientWrapper>
@@ -129,8 +139,8 @@ const Ai = () => {
 				</div>
 				<div className="flex flex-col items-center mt-10">
 					<div className="w-96">
-						<BasicButton type="submit" width={true} style="primary" deactivated={hadleButtonActivated()}>
-							분석 시작
+						<BasicButton type="submit" width={true} style="primary" deactivated={buttonActivated}>
+							<p className="button-text">분석 시작</p>
 						</BasicButton>
 						{!isLoggedIn && (
 							<div className="flex items-center gap-1 mt-6">

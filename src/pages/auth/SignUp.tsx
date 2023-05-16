@@ -1,14 +1,13 @@
 import { ChangeEvent, MouseEvent, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { authApi } from "@/api/auth";
-import BasicButton from "@/components/atoms/buttons/BasicButton";
-import SocialButtons from "@/components/atoms/buttons/SocialButton";
+import { validateConfirmPassword, validateEmail, validatePassword } from "@/utils/validation";
 import Input from "@/components/atoms/inputs/Input";
 import InputLabel from "@/components/atoms/inputs/InputLabel";
 import InputWithLabel from "@/components/organisms/InputWithLabel";
 import SelectWithLabel from "@/components/organisms/SelectWithLabel";
+import BasicButton from "@/components/atoms/buttons/BasicButton";
 import RadioButton from "@/components/atoms/buttons/RadioButton";
-import { validateConfirmPassword, validateEmail, validatePassword } from "@/utils/validation";
 
 const SignUp = () => {
 	const navigate = useNavigate();
@@ -84,7 +83,7 @@ const SignUp = () => {
 			return;
 		}
 
-		const data = await authApi.authCheckEmailRequest("/api/auth/check_email", form.email);
+		const data = await authApi.createCheckEmailRequest("/api/auth/check_email", form.email);
 
 		if (data.status === 200) {
 			setAuthCode(data.data.authentication_number);
@@ -172,22 +171,7 @@ const SignUp = () => {
 	return (
 		<div className="grid justify-items-center mt-20">
 			<h1 className="mb-14">회원가입</h1>
-			<p className="text-gray-5 mb-4">SNS 계정으로 간편 회원가입</p>
-			<div className="mb-14">
-				<SocialButtons
-					role="회원가입"
-					googleApi={() => {
-						console.log("구글");
-					}}
-					naverApi={() => {
-						console.log("네이버");
-					}}
-					kakaoApi={() => {
-						console.log("카카오");
-					}}
-				/>
-			</div>
-			<div className="w-96 border border-solid border-gray-7 mb-74" />
+
 			<div className="w-96">
 				<div className="mb-4 flex items-center justify-between gap-2">
 					<div className="grow">

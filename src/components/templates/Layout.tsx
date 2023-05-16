@@ -1,11 +1,11 @@
+import { Suspense } from "react";
 import { Outlet } from "react-router-dom";
-import styled from "styled-components";
-import TopButton from "../atoms/buttons/TopButton";
+import useScrollRestoration from "@/hooks/useScrollRestoration";
 import Footer from "./Footer";
 import Header from "./Header";
-import { Suspense } from "react";
 import Loader from "../atoms/loader/Loader";
-import useScrollRestoration from "@/hooks/useScrollRestoration";
+import TopButton from "../atoms/buttons/TopButton";
+import styled from "styled-components";
 
 // styled
 const Wrapper = styled.div`
@@ -18,6 +18,7 @@ const Wrapper = styled.div`
 const Page = styled.div`
 	margin: 90px auto 120px auto;
 	width: 100%;
+	min-width: 1200px;
 	flex: 1;
 `;
 

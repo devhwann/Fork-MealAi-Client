@@ -1,6 +1,6 @@
 import getProgressBarColor from "@/utils/getProgressBarColor";
-import { ProgressBarsProps, ProgressBarProps } from "./HorizontalProgressBars";
 import getProgressBarPercent from "@/utils/getProgressBarPercent";
+import { ProgressBarsProps, ProgressBarProps } from "./HorizontalProgressBars";
 
 interface VerticalProgressBarsProps extends ProgressBarsProps {
 	day: string;

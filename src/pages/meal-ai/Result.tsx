@@ -1,23 +1,27 @@
 import { ChangeEvent, MouseEvent, useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import Thumb from "@/components/atoms/thumbnail/Thumbnail";
-import FoodCard from "@/components/organisms/FoodCard";
-import AddFoodButton from "@/components/atoms/buttons/AddFoodButton";
-import Modal from "@/components/organisms/Modal";
-import SearchInput from "@/components/atoms/inputs/SearchInput";
-import SearchResult from "@/components/organisms/SearchResult";
-import BasicButton from "@/components/atoms/buttons/BasicButton";
-import ToggleButton from "@/components/atoms/buttons/ToggleButton";
-import HorizontalProgressBars from "@/components/atoms/progressBars/HorizontalProgressBars";
-
-import { GetFeedsTypes, GetSearchFoodTypes, UserDailyNutrientTypes } from "@/types/feeds/feedsResponseTypes";
+import { useRecoilValue } from "recoil";
+import { isLoggedInState } from "@/recoil/state";
 import { feedsApi } from "@/api/feeds";
 import getMealTime from "@/utils/getMealTime";
 import { FoodsTypes } from "@/types/feeds/feedsResponseTypes";
 import { EditFeedTypes } from "@/types/feeds/feedsRequestTypes";
+import { GetFeedsTypes, GetSearchFoodTypes, UserDailyNutrientTypes } from "@/types/feeds/feedsResponseTypes";
+import Thumb from "@/components/atoms/thumbnail/Thumbnail";
+import FoodCard from "@/components/organisms/FoodCard";
+import Modal from "@/components/organisms/Modal";
+import SearchInput from "@/components/atoms/inputs/SearchInput";
+import SearchResult from "@/components/organisms/SearchResult";
+import AddFoodButton from "@/components/atoms/buttons/AddFoodButton";
+import BasicButton from "@/components/atoms/buttons/BasicButton";
+import ToggleButton from "@/components/atoms/buttons/ToggleButton";
+import HorizontalProgressBars from "@/components/atoms/progressBars/HorizontalProgressBars";
 
 const Result = () => {
 	const navigate = useNavigate();
+
+	// 로그인 여부 확인
+	const isLoggedIn = useRecoilValue(isLoggedInState);
 
 	// data set
 	const [aiPredictResultId, setAiPredictResultId] = useState<number>();
@@ -67,9 +71,6 @@ const Result = () => {
 		}
 	}, []);
 
-	const [searchModal, setSearchModal] = useState(false);
-	const handleSearchModal = () => setSearchModal(!searchModal);
-
 	// 검색
 	const [searchKeyWord, setSearchKeyWord] = useState<string>("");
 	const [keyWordResults, setKeyWordResults] = useState<GetSearchFoodTypes[]>([]);
@@ -99,64 +100,6 @@ const Result = () => {
 		setFoodCards(newFoodCards);
 	};
 
-	// 새로운 식단 추가
-	const handleSearchForNewFood = async (v: GetSearchFoodTypes) => {
-		handleSearchModal();
-
-		const newFoodCards = [...foodCards];
-		newFoodCards.push({
-			food_id: v.food_id,
-			food_name: v.name,
-			weight: v.weight,
-			image_url: null,
-		});
-		handleFoodCards(newFoodCards);
-
-		setSearchKeyWord("");
-	};
-
-	// foodCards 배열의 변경이 감지될 때마다 바 그래프 업데이트
-	useEffect(() => {
-		async function getNutryData() {
-			let data;
-			try {
-				data = await feedsApi.postSearchFoodRequst("/api/feeds/food", foodCards);
-
-				if (data.status === 200) {
-					setNutry(data.data);
-				} else {
-					alert(data.response.data.message);
-				}
-			} catch (err) {
-				console.log(err);
-			}
-		}
-		getNutryData();
-	}, [foodCards]);
-
-	// 피드 수정
-	const handleEditFeed = async (e: MouseEvent<HTMLButtonElement>) => {
-		e.preventDefault();
-
-		if (!feedDetail) {
-			alert("식단을 입력해주세요.");
-			return;
-		}
-		const params: EditFeedTypes = {
-			foods: foodCards,
-			open: isOpen,
-		};
-
-		const data = await feedsApi.editFeedRequest(`/api/feeds/${aiPredictResultId}`, params);
-
-		if (data.status === 200) {
-			navigate("/mylog/:week");
-			sessionStorage.clear();
-		} else {
-			alert("일시적인 오류가 있었어요. 다시 시도해 주세요.");
-		}
-	};
-
 	// 모달
 	const [editModal, setEditModal] = useState<number | null>(null);
 	const handleEditModal = (id: number) => {
@@ -175,7 +118,6 @@ const Result = () => {
 			setDeleteModal(null);
 		}
 	};
-
 	const [editSearchModal, setEditSearchModal] = useState<number | null>(null);
 	const handleEditSearchModal = (id: number) => {
 		if (!editSearchModal) {
@@ -185,6 +127,75 @@ const Result = () => {
 			setSearchKeyWord("");
 			setKeyWordResults([]);
 		}
+	};
+
+	const [searchModal, setSearchModal] = useState(false);
+	const handleSearchModal = () => {
+		setSearchModal(!searchModal);
+		setKeyWordResults([]);
+	};
+
+	// foodCards 배열의 변경이 감지될 때마다 바 그래프 업데이트
+	useEffect(() => {
+		async function getNutryData() {
+			let data;
+			try {
+				data = await feedsApi.createSearchFoodRequst("/api/feeds/food", foodCards);
+
+				if (data.status === 200) {
+					setNutry(data.data);
+				} else {
+					alert(data.response.data.message);
+				}
+			} catch (err) {
+				console.log(err);
+			}
+		}
+		getNutryData();
+	}, [foodCards]);
+
+	// 피드 수정
+	const handleEditFeed = async (e: MouseEvent<HTMLButtonElement>) => {
+		e.preventDefault();
+
+		if (!isLoggedIn) {
+			navigate("/");
+			return;
+		}
+
+		if (!feedDetail) {
+			alert("식단을 입력해주세요.");
+			return;
+		}
+		const params: EditFeedTypes = {
+			foods: foodCards,
+			open: isOpen,
+		};
+
+		const data = await feedsApi.updateFeedRequest(`/api/feeds/${aiPredictResultId}`, params);
+
+		if (data.status === 200) {
+			navigate("/mylog/1");
+			sessionStorage.clear();
+		} else {
+			alert("일시적인 오류가 있었어요. 다시 시도해 주세요.");
+		}
+	};
+
+	// 새로운 식단 추가
+	const handleSearchForNewFood = async (v: GetSearchFoodTypes) => {
+		handleSearchModal();
+
+		const newFoodCards = [...foodCards];
+		newFoodCards.push({
+			food_id: v.food_id,
+			food_name: v.name,
+			weight: v.weight,
+			image_url: null,
+		});
+		handleFoodCards(newFoodCards);
+
+		setSearchKeyWord("");
 	};
 
 	return (
@@ -251,12 +262,14 @@ const Result = () => {
 					</div>
 					<div className="flex justify-center">
 						<div className="mt-14 w-96 flex flex-col items-center gap-4">
-							<ToggleButton
-								isChecked={isOpen}
-								onChange={() => {
-									setIsOpen(!isOpen);
-								}}
-							/>
+							{isLoggedIn && (
+								<ToggleButton
+									isChecked={isOpen}
+									onChange={() => {
+										setIsOpen(!isOpen);
+									}}
+								/>
+							)}
 							<BasicButton type="button" onClick={handleEditFeed} width={true} style="primary">
 								분석 완료
 							</BasicButton>

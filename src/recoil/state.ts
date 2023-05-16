@@ -11,3 +11,8 @@ export const isPasswordToastState = atom({
 	key: "isPasswordToastState",
 	default: false,
 });
+
+export const imagePreviewState = atom({
+	key: "imagePreviewState",
+	default: "url",
+});

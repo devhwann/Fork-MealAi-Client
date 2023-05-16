@@ -63,7 +63,7 @@ const getRefreshToken = async () => {
 			const currentRefreshToken = localStorage.getItem("refreshToken");
 
 			if (currentRefreshToken) {
-				const data = await authApi.authRefreshRequest("/api/auth/refresh", {
+				const data = await authApi.createRefreshRequest("/api/auth/refresh", {
 					refresh_token: currentRefreshToken,
 				});
 				localStorage.setItem("accessToken", data.data.access_token);

@@ -1,7 +1,6 @@
-import styled from "styled-components";
-
 import Bg1 from "@/assets/image_main_bg1.png";
 import Bg2 from "@/assets/image_main_bg2.png";
+import styled from "styled-components";
 
 export const HeadContainer = styled.div<{ currentScroll: number }>`
 	height: 90vh;
@@ -27,6 +26,10 @@ export const HeadContainer = styled.div<{ currentScroll: number }>`
 	div {
 		position: relative;
 		animation: titleFadeInUp 1s;
+	}
+
+	.head-title {
+		margin-left: 15%;
 	}
 `;
 

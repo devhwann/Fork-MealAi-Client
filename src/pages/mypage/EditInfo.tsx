@@ -1,17 +1,16 @@
 import { ChangeEvent, MouseEvent, useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { userApi } from "@/api/user";
-import { GoalType } from "@/components/organisms/GoalText";
 import { useSetRecoilState } from "recoil";
 import { isLoggedInState } from "@/recoil/state";
-
+import { userApi } from "@/api/user";
+import { GoalType } from "@/components/organisms/GoalText";
+import Modal from "@/components/organisms/Modal";
 import Input from "@/components/atoms/inputs/Input";
 import InputLabel from "@/components/atoms/inputs/InputLabel";
 import SelectWithLabel from "@/components/organisms/SelectWithLabel";
 import RadioButton from "@/components/atoms/buttons/RadioButton";
 import GoalButtons from "@/components/organisms/GoalButtons";
 import BasicButton from "@/components/atoms/buttons/BasicButton";
-import Modal from "@/components/organisms/Modal";
 
 const EditInfo = () => {
 	const navigate = useNavigate();
@@ -27,7 +26,7 @@ const EditInfo = () => {
 		async function fetchData() {
 			let data;
 			try {
-				data = await userApi.userInfoRequest("/api/users");
+				data = await userApi.getUserInfoRequest("/api/users");
 				setGender(data.data.gender);
 				setAgeGroup(data.data.age_group);
 				setNickname(data.data.nickname);
@@ -56,7 +55,7 @@ const EditInfo = () => {
 			return;
 		}
 
-		await userApi.editUserInfoRequest("/api/users", { gender, age_group: ageGroup, nickname, goal });
+		await userApi.updateUserInfoRequest("/api/users", { gender, age_group: ageGroup, nickname, goal });
 		alert("회원정보가 수정되었습니다.");
 		window.scrollTo({ top: 0, behavior: "smooth" });
 	};
@@ -82,7 +81,7 @@ const EditInfo = () => {
 			return;
 		}
 
-		const data = await userApi.checkPasswordRequest("/api/users/check_password", { password: currentPassword });
+		const data = await userApi.createCheckPasswordRequest("/api/users/check_password", { password: currentPassword });
 
 		if (data.status === 200) {
 			const result = await userApi.deleteUserRequest("/api/users");

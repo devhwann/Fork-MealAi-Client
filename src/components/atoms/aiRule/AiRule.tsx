@@ -8,7 +8,7 @@ const Container = styled.div`
 	height: 384px;
 	background-color: rgba(107, 182, 74, 0.15);
 	border-radius: 8px;
-	padding: 24px 32px;
+	padding: 28px 32px;
 `;
 
 const Rule = styled.div`
@@ -63,8 +63,9 @@ const AiRule = () => {
 					<img src={Rule3} />
 				</RuleExample>
 				<RuleText>
-					사진 속 음식의 개수는
-					<br /> n개 이하가 좋아요.
+					사진 속 음식의 개수는 4개 이하,
+					<br />
+					한식 사진이 분석 정확도가 높아요.
 				</RuleText>
 			</Rule>
 		</Container>
