@@ -16,3 +16,9 @@ export const imagePreviewState = atom({
 	key: "imagePreviewState",
 	default: "url",
 });
+
+// 피드 수정 완료 후 목록 버튼 분기를 위한 상태 관리
+export const isEditFeedState = atom({
+	key: "isEditFeedState",
+	default: false,
+});

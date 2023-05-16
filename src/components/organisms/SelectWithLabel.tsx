@@ -8,6 +8,7 @@ interface SelectProps extends InputLabelProps {
 	onChange: (e: ChangeEvent<HTMLSelectElement>) => void;
 	children: ReactNode;
 	value?: number;
+	key?: number;
 }
 
 const SelectWithLabel = ({ name, id, defaultValue, onChange, children, label, htmlFor, value }: SelectProps) => {

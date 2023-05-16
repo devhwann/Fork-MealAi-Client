@@ -64,10 +64,11 @@ const SignUp = () => {
 		}
 	}
 
-	// 이메일 인증코드
+	// 이메일 인증
 	const [authCode, setAuthCode] = useState<number>(); // 백엔드 서버에서 전송받는 인증코드
 	const [inputAuthCode, setInputAuthCode] = useState(""); // 사용자가 입력하는 인증코드
-	const [validateAuthCode, SetValidateAuthCode] = useState(true); // 인증번호 검증
+	const [validateAuthCode, setValidateAuthCode] = useState(true); // 인증번호 검증
+	const [inputDeactivated, setInputDeactivated] = useState<boolean>(true); // 인증번호 발급 전 입력 제어
 
 	// 사용자가 입력한 인증코드 state값으로 저장(string to integer)
 	function handleInputAuthCode(e: ChangeEvent<HTMLInputElement>) {
@@ -88,20 +89,29 @@ const SignUp = () => {
 		if (data.status === 200) {
 			setAuthCode(data.data.authentication_number);
 			alert("인증번호가 전송되었습니다.");
+			setInputDeactivated(false);
 		} else {
 			alert(data.response.data.message);
 		}
 	};
+
+	useEffect(() => {
+		if (!authCode) {
+			setInputDeactivated(true);
+		} else {
+			setInputDeactivated(false);
+		}
+	}, [inputDeactivated]);
 
 	function handleCheckCode(e: MouseEvent<HTMLButtonElement>) {
 		e.preventDefault();
 
 		if (authCode === parseInt(inputAuthCode)) {
 			alert("이메일이 확인 되었습니다.");
-			SetValidateAuthCode(false);
+			setValidateAuthCode(false);
 		} else {
 			alert("올바르지 않은 인증코드입니다. 다시 입력해주세요.");
-			SetValidateAuthCode(true);
+			setValidateAuthCode(true);
 		}
 	}
 
@@ -167,7 +177,7 @@ const SignUp = () => {
 		}
 		return false;
 	}
-
+	console.log(inputDeactivated);
 	return (
 		<div className="grid justify-items-center mt-20">
 			<h1 className="mb-14">회원가입</h1>
@@ -206,6 +216,7 @@ const SignUp = () => {
 							placeholder="인증번호"
 							value={inputAuthCode}
 							onChange={handleInputAuthCode}
+							deactivated={inputDeactivated}
 						/>
 					</div>
 					<div className="pt-8">
