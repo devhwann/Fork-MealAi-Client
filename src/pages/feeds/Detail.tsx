@@ -1,7 +1,7 @@
 import { MouseEvent, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useRecoilState } from "recoil";
-import { isLoggedInState } from "@/recoil/state";
+import { isEditFeedState, isLoggedInState } from "@/recoil/state";
 import { feedsApi } from "@/api/feeds";
 import getMealTime from "@/utils/getMealTime";
 import { GetFeedsTypes, UserDailyNutrientTypes } from "@/types/feeds/feedsResponseTypes";
@@ -19,6 +19,18 @@ const Detail = () => {
 
 	// 로그인 여부 확인
 	const [isLoggedIn, setIsLoggedIn] = useRecoilState(isLoggedInState);
+
+	// 피드 수정 여부 확인
+	const [isEditFeed, setIsEditFeedState] = useRecoilState(isEditFeedState);
+
+	const handleListButton = () => {
+		if (isEditFeed) {
+			navigate(-3);
+			setIsEditFeedState(false);
+		} else {
+			navigate(-1);
+		}
+	};
 
 	// data set
 	const [feedDetail, setFeedDetail] = useState<GetFeedsTypes>();
@@ -145,18 +157,7 @@ const Detail = () => {
 							})}
 					</div>
 					<div className="flex justify-center gap-2 mt-14">
-						<BasicButton
-							type="button"
-							// TODO : 목록 버튼 클릭시 어떻게 이동해야할지 논의
-							// 1. 수정 완료 후 목록 -> /feeds
-							// 2. 식단톡, 마이페이지에서 접근 후 목록 -> 이전페이지(-1)
-							onClick={() => {
-								// navigate("/feeds");
-								navigate(-1);
-							}}
-							width={false}
-							style="primary"
-						>
+						<BasicButton type="button" onClick={handleListButton} width={false} style="primary">
 							목록
 						</BasicButton>
 						{feedDetail && feedDetail.is_mine && (
