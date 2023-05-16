@@ -1,4 +1,4 @@
-import { ChangeEvent, MouseEvent, useEffect, useRef, useState } from "react";
+import { ChangeEvent, KeyboardEvent, MouseEvent, useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useRecoilState, useSetRecoilState } from "recoil";
 import { isLoggedInState, isPasswordToastState } from "@/recoil/state";
@@ -47,9 +47,7 @@ const SignIn = () => {
 	}
 
 	// 로그인 함수
-	const handleLoginRequest = async (event: MouseEvent<HTMLButtonElement>) => {
-		event.preventDefault();
-
+	const handleLoginRequest = async () => {
 		if (!email || !password) {
 			alert("이메일과 비밀번호를 입력해주세요.");
 			return;
@@ -72,6 +70,13 @@ const SignIn = () => {
 			navigate("/");
 		} catch (err) {
 			alert(data.response.data.message);
+		}
+	};
+
+	// enter키로 로그인
+	const handleKeyPress = (e: KeyboardEvent<HTMLInputElement>) => {
+		if (e.key === "Enter") {
+			handleLoginRequest();
 		}
 	};
 
@@ -102,17 +107,11 @@ const SignIn = () => {
 						value={password}
 						onChange={handlePasswordChange}
 						ref={passwordInputRef}
+						onKeyPress={handleKeyPress}
 					/>
 				</div>
 				<div className="mb-16">
-					<BasicButton
-						type="submit"
-						onClick={(e) => {
-							handleLoginRequest(e);
-						}}
-						width={true}
-						style="primary"
-					>
+					<BasicButton type="submit" onClick={handleLoginRequest} width={true} style="primary">
 						로그인
 					</BasicButton>
 				</div>
