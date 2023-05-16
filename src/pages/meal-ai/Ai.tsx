@@ -48,7 +48,12 @@ const Ai = () => {
 
 	// api 통신
 	const onSubmit: SubmitHandler<PostAiTypes> = async (data) => {
+		// 버튼 상태 조작
 		setButtonActivated(true);
+		const button = document.querySelector(".button-text");
+		button!.innerHTML = "분석 중 ...";
+
+		// file set & api 통신
 		const file = Array.from(data.file as ArrayLike<File>);
 		const postData = { ...data, file: file[0] };
 
@@ -63,7 +68,6 @@ const Ai = () => {
 			sessionStorage.setItem("aiPredictResultId", result.data);
 			navigate("/meal-ai/result");
 		} else {
-			console.log(result);
 			navigate("/meal-ai/fail");
 		}
 	};
@@ -77,7 +81,6 @@ const Ai = () => {
 		}
 	}, [preview]);
 
-	console.log("buttonActivated", buttonActivated);
 	return (
 		<GradientWrapper>
 			<h1 className="text-primary-1 text-center pt-20 mb-10">식단 AI 분석을 시작합니다.</h1>
@@ -137,7 +140,7 @@ const Ai = () => {
 				<div className="flex flex-col items-center mt-10">
 					<div className="w-96">
 						<BasicButton type="submit" width={true} style="primary" deactivated={buttonActivated}>
-							분석 시작
+							<p className="button-text">분석 시작</p>
 						</BasicButton>
 						{!isLoggedIn && (
 							<div className="flex items-center gap-1 mt-6">

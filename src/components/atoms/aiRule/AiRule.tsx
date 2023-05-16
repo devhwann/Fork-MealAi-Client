@@ -8,7 +8,7 @@ const Container = styled.div`
 	height: 384px;
 	background-color: rgba(107, 182, 74, 0.15);
 	border-radius: 8px;
-	padding: 24px 32px;
+	padding: 28px 32px;
 `;
 
 const Rule = styled.div`
