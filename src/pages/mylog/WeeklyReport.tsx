@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { reportApi } from "@/api/report";
 import { ReportWeekHistory } from "@/types/report/reportResponseType";
 import { UserDailyNutrientTypes } from "@/types/feeds/feedsResponseTypes";
@@ -11,6 +11,7 @@ import HorizontalProgressBars from "@/components/atoms/progressBars/HorizontalPr
 
 const WeeklyReport = () => {
 	const { week } = useParams();
+	const navigate = useNavigate();
 
 	// data set
 	const [goal, setGoal] = useState<GoalType>("balance");
@@ -44,7 +45,9 @@ const WeeklyReport = () => {
 
 			if (weeklyReport.status === 200) {
 				if (weeklyReport.data === null) {
-					<></>;
+					alert("해당 주간의 피드 기록이 없어서 리포트를 제공할 수 없습니다. 이전 화면으로 돌아갑니다.");
+					navigate(-1);
+					return;
 				} else {
 					setGoal(weeklyReport.data.goal);
 					setPeriod([weeklyReport.data.start_of_week, weeklyReport.data.end_of_week]);
