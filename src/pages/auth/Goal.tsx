@@ -3,11 +3,11 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useSetRecoilState } from "recoil";
 import { isLoggedInState } from "@/recoil/state";
 import { authApi } from "@/api/auth";
+import { axiosHandler } from "@/utils/axios.utils";
 import { AuthFormTypes, LoginParams } from "@/types/auth/authTypes";
 import GoalButtons from "@/components/organisms/GoalButtons";
 import BasicButton from "@/components/atoms/buttons/BasicButton";
 import { GoalType } from "@/components/organisms/GoalText";
-import { axiosHandler } from "@/utils/axios.utils";
 
 const Goal = () => {
 	const navigate = useNavigate();
@@ -40,11 +40,11 @@ const Goal = () => {
 		};
 
 		// 회원가입 api호출
-		const data = await authApi.authRegisterRequest("/api/users", form);
+		const data = await authApi.createRegisterRequest("/api/users", form);
 
 		if (data.status === 201) {
 			// 로그인 api  호출
-			const res = await authApi.authLoginRequest("/api/auth/login", userData);
+			const res = await authApi.createLoginRequest("/api/auth/login", userData);
 			const accessToken: string = res.data.access_token;
 			const refreshToken: string = res.data.refresh_token;
 

@@ -1,10 +1,10 @@
-import Badge from "../badges/Badge";
-import { ProgressBarProps, ProgressBarsProps } from "../progressBars/HorizontalProgressBars";
 import getProgressBarPercent from "@/utils/getProgressBarPercent";
 import KcalIcon from "@/assets/icon_kcal.svg";
 import CarboIcon from "@/assets/icon_carbo.svg";
 import ProteinIcon from "@/assets/icon_protein.svg";
 import FatIcon from "@/assets/icon_fat.svg";
+import Badge from "../badges/Badge";
+import { ProgressBarProps, ProgressBarsProps } from "../progressBars/HorizontalProgressBars";
 
 // 영양소별 카드 컴포넌트
 const ReportInfoCard = ({ type, value, max }: ProgressBarProps) => {

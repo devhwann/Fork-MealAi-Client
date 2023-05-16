@@ -7,7 +7,7 @@ import { AuthFormTypes, LoginParams, RefreshParams, ResetPasswordParams } from "
  */
 
 export const authApi = Object.freeze({
-	async authRegisterRequest(endPoint: string, params: AuthFormTypes) {
+	async createRegisterRequest(endPoint: string, params: AuthFormTypes) {
 		try {
 			const response = await axiosHandler.post(endPoint, params);
 			return response;
@@ -15,7 +15,7 @@ export const authApi = Object.freeze({
 			return err;
 		}
 	},
-	async authLoginRequest(endPoint: string, params: LoginParams) {
+	async createLoginRequest(endPoint: string, params: LoginParams) {
 		try {
 			const response = await axiosHandler.post(endPoint, params);
 			return response;
@@ -23,16 +23,16 @@ export const authApi = Object.freeze({
 			return err;
 		}
 	},
-	async authLogoutRequest(endPoint: string) {
+	async createLogoutRequest(endPoint: string) {
 		// 그냥 클라이언트에 발급받은 토큰을 삭제하면 끝(따로 API 호출이 필요없다)
 		const response = axiosHandler.post(endPoint);
 		return response;
 	},
-	async authRefreshRequest(endPoint: string, params: RefreshParams) {
+	async createRefreshRequest(endPoint: string, params: RefreshParams) {
 		const response = await axiosHandler.post(endPoint, params);
 		return response;
 	},
-	async authFindRequest(endPoint: string, params: ResetPasswordParams) {
+	async createFindRequest(endPoint: string, params: ResetPasswordParams) {
 		try {
 			const response = await axiosHandler.post(endPoint, params);
 			return response;
@@ -40,7 +40,7 @@ export const authApi = Object.freeze({
 			return err;
 		}
 	},
-	async authCheckEmailRequest(endPoint: string, email: string) {
+	async createCheckEmailRequest(endPoint: string, email: string) {
 		try {
 			const response = await axiosHandler.post(endPoint, { email });
 			return response;

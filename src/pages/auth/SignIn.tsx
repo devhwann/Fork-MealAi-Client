@@ -1,9 +1,9 @@
 import { ChangeEvent, MouseEvent, useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { axiosHandler } from "@/utils/axios.utils";
 import { useRecoilState, useSetRecoilState } from "recoil";
 import { isLoggedInState, isPasswordToastState } from "@/recoil/state";
 import { authApi } from "@/api/auth";
+import { axiosHandler } from "@/utils/axios.utils";
 
 import InputLabel from "@/components/atoms/inputs/InputLabel";
 import Input from "@/components/atoms/inputs/Input";
@@ -57,7 +57,7 @@ const SignIn = () => {
 
 		let data;
 		try {
-			data = await authApi.authLoginRequest("/api/auth/login", {
+			data = await authApi.createLoginRequest("/api/auth/login", {
 				email,
 				password,
 			});

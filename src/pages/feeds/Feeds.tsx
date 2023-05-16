@@ -1,12 +1,12 @@
 import { ChangeEvent, useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { AxiosResponse } from "axios";
 import { useRecoilValue } from "recoil";
 import { isLoggedInState } from "@/recoil/state";
 import { feedsApi } from "@/api/feeds";
 import { FilterType, GetFeedsParamsTypes } from "@/types/feeds/feedsRequestTypes";
 import { GetFeedsResponseTypes, GetFeedsTypes } from "@/types/feeds/feedsResponseTypes";
 import Thumb from "@/components/atoms/thumbnail/Thumbnail";
-import { AxiosResponse } from "axios";
 
 const Feeds = () => {
 	const navigate = useNavigate();
@@ -103,7 +103,7 @@ const Feeds = () => {
 		copyFeeds[i].my_like = !feeds![i].my_like;
 		setFeeds(copyFeeds);
 
-		const patchLikes = await feedsApi.patchLikesRequest(`/api/feeds/likes/${feedId}`);
+		const patchLikes = await feedsApi.updateLikesRequest(`/api/feeds/likes/${feedId}`);
 
 		if (patchLikes.status !== 200) {
 			navigate("/auth/sign-in");
@@ -123,7 +123,7 @@ const Feeds = () => {
 		copyFeeds[i].my_like = !popularFeeds![i].my_like;
 		setPopularFeeds(copyFeeds);
 
-		const patchLikes = await feedsApi.patchLikesRequest(`/api/feeds/likes/${feedId}`);
+		const patchLikes = await feedsApi.updateLikesRequest(`/api/feeds/likes/${feedId}`);
 
 		if (patchLikes.status !== 200) {
 			navigate("/auth/sign-in");

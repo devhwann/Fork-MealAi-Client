@@ -1,7 +1,7 @@
-import { UserDailyNutrientTypes } from "@/types/feeds/feedsResponseTypes";
-import { ReportWeekHistory } from "@/types/report/reportResponseType";
 import getProgressBarColor from "@/utils/getProgressBarColor";
 import getProgressBarPercent from "@/utils/getProgressBarPercent";
+import { UserDailyNutrientTypes } from "@/types/feeds/feedsResponseTypes";
+import { ReportWeekHistory } from "@/types/report/reportResponseType";
 
 export interface ProgressBarsProps {
 	nutry: ReportWeekHistory;

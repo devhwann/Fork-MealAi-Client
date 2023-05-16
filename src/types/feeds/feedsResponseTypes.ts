@@ -1,5 +1,5 @@
-import { GoalType } from "@/components/organisms/GoalText";
 import { MealType } from "@/utils/getMealTime";
+import { GoalType } from "@/components/organisms/GoalText";
 
 export interface FoodsTypes {
 	food_id: number;
