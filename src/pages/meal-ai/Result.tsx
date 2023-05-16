@@ -1,4 +1,4 @@
-import { ChangeEvent, MouseEvent, useEffect, useRef, useState } from "react";
+import { ChangeEvent, KeyboardEvent, MouseEvent, useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useRecoilValue } from "recoil";
 import { isLoggedInState } from "@/recoil/state";
@@ -93,6 +93,13 @@ const Result = () => {
 			setKeyWordResults(data.data);
 		} else {
 			alert("음식을 검색할 수 없습니다.");
+		}
+	};
+
+	// enter키로 검색
+	const handleKeyPress = (e: KeyboardEvent<HTMLInputElement>) => {
+		if (e.key === "Enter") {
+			handleSearch();
 		}
 	};
 
@@ -255,6 +262,7 @@ const Result = () => {
 										handleFoodCards={handleFoodCards}
 										handleInputKeyword={handleInputKeyword}
 										handleSearch={handleSearch}
+										onKeyPress={handleKeyPress}
 									/>
 								);
 							})}
@@ -295,6 +303,7 @@ const Result = () => {
 						onChange={(e: ChangeEvent<HTMLInputElement>) => {
 							setSearchKeyWord(e.target.value);
 						}}
+						onKeyPress={handleKeyPress}
 					/>
 					<SearchResult data={keyWordResults} onClick={(v) => handleSearchForNewFood(v)} />
 				</Modal>

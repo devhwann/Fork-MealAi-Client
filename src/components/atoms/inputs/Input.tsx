@@ -1,4 +1,4 @@
-import { ChangeEvent, forwardRef } from "react";
+import { ChangeEvent, KeyboardEvent, forwardRef } from "react";
 
 export interface InputProps {
 	type: string;
@@ -7,11 +7,12 @@ export interface InputProps {
 	value?: string | number;
 	placeholder: string;
 	onChange?: (e: ChangeEvent<HTMLInputElement>) => void;
+	onKeyPress?: (e: KeyboardEvent<HTMLInputElement>) => void;
 	deactivated?: boolean;
 }
 
 const Input = (
-	{ type, name, id, value, placeholder, onChange, deactivated }: InputProps,
+	{ type, name, id, value, placeholder, onChange, onKeyPress, deactivated }: InputProps,
 	ref: React.LegacyRef<HTMLInputElement>
 ) => {
 	if (deactivated) {
@@ -37,6 +38,7 @@ const Input = (
 			value={value}
 			placeholder={placeholder}
 			onChange={onChange}
+			onKeyPress={onKeyPress}
 			ref={ref}
 			className="input input-bordered w-full"
 		/>

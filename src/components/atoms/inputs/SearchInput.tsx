@@ -1,4 +1,4 @@
-import { ChangeEvent, forwardRef } from "react";
+import { ChangeEvent, KeyboardEvent, forwardRef } from "react";
 
 export interface SearchInputProps {
 	name: string;
@@ -6,9 +6,13 @@ export interface SearchInputProps {
 	value?: string;
 	onClick?: () => void;
 	onChange?: (e: ChangeEvent<HTMLInputElement>) => void;
+	onKeyPress: (e: KeyboardEvent<HTMLInputElement>) => void;
 }
 
-const SearchInput = ({ name, id, onClick, onChange }: SearchInputProps, ref: React.LegacyRef<HTMLInputElement>) => {
+const SearchInput = (
+	{ name, id, onClick, onChange, onKeyPress }: SearchInputProps,
+	ref: React.LegacyRef<HTMLInputElement>
+) => {
 	return (
 		<div className="form-control">
 			<div className="input-group">
@@ -18,6 +22,7 @@ const SearchInput = ({ name, id, onClick, onChange }: SearchInputProps, ref: Rea
 					id={id}
 					ref={ref}
 					onChange={onChange}
+					onKeyPress={onKeyPress}
 					placeholder="식단 이름을 검색해주세요."
 					className="input input-bordered w-full"
 				/>

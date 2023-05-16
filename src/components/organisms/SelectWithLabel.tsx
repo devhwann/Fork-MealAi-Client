@@ -5,13 +5,14 @@ interface SelectProps extends InputLabelProps {
 	name: string;
 	id: string;
 	defaultValue?: string | number;
+	key?: number;
 	onChange: (e: ChangeEvent<HTMLSelectElement>) => void;
 	children: ReactNode;
 	value?: number;
 	key?: number;
 }
 
-const SelectWithLabel = ({ name, id, defaultValue, onChange, children, label, htmlFor, value }: SelectProps) => {
+const SelectWithLabel = ({ name, id, defaultValue, key, onChange, children, label, htmlFor, value }: SelectProps) => {
 	return (
 		<div>
 			<InputLabel label={label} htmlFor={htmlFor} />
@@ -19,6 +20,7 @@ const SelectWithLabel = ({ name, id, defaultValue, onChange, children, label, ht
 				name={name}
 				id={id}
 				defaultValue={defaultValue}
+				key={key}
 				onChange={onChange}
 				className="select select-bordered w-full"
 				value={value}

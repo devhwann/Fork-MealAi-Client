@@ -1,4 +1,4 @@
-import { ChangeEvent, MouseEvent, useEffect, useRef, useState } from "react";
+import { ChangeEvent, KeyboardEvent, MouseEvent, useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { axios } from "@/utils/axios.utils";
 import { userApi } from "@/api/user";
@@ -81,8 +81,7 @@ const MyPage = () => {
 		}
 	}
 
-	const handleNextPage = async (event: MouseEvent<HTMLButtonElement>) => {
-		event.preventDefault();
+	const handleNextPage = async () => {
 		if (!currentPassword) {
 			alert("비밀번호를 입력해주세요.");
 			return;
@@ -93,6 +92,13 @@ const MyPage = () => {
 			navigate("/mypage/edit-info");
 		} else {
 			alert(data.response.data.message);
+		}
+	};
+
+	// 비밀번호 검사시 enter키로 수정페이지 이동
+	const handleKeyPress = (e: KeyboardEvent<HTMLInputElement>) => {
+		if (e.key === "Enter") {
+			handleNextPage();
 		}
 	};
 
@@ -233,6 +239,7 @@ const MyPage = () => {
 							placeholder="비밀번호"
 							value={currentPassword}
 							onChange={handleCheckPassword}
+							onKeyPress={handleKeyPress}
 							ref={currentPasswordInputRef}
 						/>
 					</div>
@@ -240,7 +247,7 @@ const MyPage = () => {
 						<BasicButton type="button" onClick={handleEditInfoModal} width={false} style="bg">
 							취소
 						</BasicButton>
-						<BasicButton type="button" onClick={(e) => handleNextPage(e)} width={false} style="primary">
+						<BasicButton type="button" onClick={handleNextPage} width={false} style="primary">
 							확인
 						</BasicButton>
 					</div>

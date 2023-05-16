@@ -1,4 +1,4 @@
-import { ChangeEvent, MouseEvent, useEffect, useRef, useState } from "react";
+import { ChangeEvent, KeyboardEvent, MouseEvent, useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useSetRecoilState } from "recoil";
 import { isEditFeedState } from "@/recoil/state";
@@ -105,6 +105,13 @@ const Edit = () => {
 
 	const handleFoodCards = (newFoodCards: FoodsTypes[]) => {
 		setFoodCards(newFoodCards);
+	};
+
+	// enter키로 검색
+	const handleKeyPress = (e: KeyboardEvent<HTMLInputElement>) => {
+		if (e.key === "Enter") {
+			handleSearch();
+		}
 	};
 
 	// 모달
@@ -255,6 +262,7 @@ const Edit = () => {
 										handleFoodCards={handleFoodCards}
 										handleInputKeyword={handleInputKeyword}
 										handleSearch={handleSearch}
+										onKeyPress={handleKeyPress}
 									/>
 								);
 							})}
@@ -288,6 +296,7 @@ const Edit = () => {
 						id="search"
 						value={searchKeyWord}
 						onClick={handleSearch}
+						onKeyPress={handleKeyPress}
 						ref={searchInputRef}
 						onChange={(e: ChangeEvent<HTMLInputElement>) => {
 							setSearchKeyWord(e.target.value);

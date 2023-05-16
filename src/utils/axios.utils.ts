@@ -4,10 +4,10 @@ import { API_ENDPOINT } from "@/config/constants";
 
 const axiosOptions = {
 	baseURL: API_ENDPOINT,
-	withCredentials: true,
 	headers: {
 		"Content-Type": "application/json",
 	},
+	timeout: 10000,
 };
 
 const axiosHandler = axios.create(axiosOptions);
@@ -94,7 +94,15 @@ axiosHandler.interceptors.response.use(
 		const originalConfig = error.config;
 		const code = error.response.data.error_code;
 
-		if (code === 2002 || code === 2003 || code === 2004 || code === 2005 || code === 2006 || code === 2007) {
+		if (
+			code === 1002 ||
+			code === 2002 ||
+			code === 2003 ||
+			code === 2004 ||
+			code === 2005 ||
+			code === 2006 ||
+			code === 2007
+		) {
 			try {
 				await handleResetTokens();
 				return;
