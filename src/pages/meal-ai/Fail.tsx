@@ -16,7 +16,7 @@ const Fail = () => {
 				다시 분석해 보시겠습니까?
 			</p>
 			<div className={"w-96 h-96 overflow-hidden border border-solid border-gray-7 rounded-lg relative"}>
-				<img src={imagePreview} className="object-cover" />
+				<img src={imagePreview} className="w-96 h-96 object-cover" />
 			</div>
 			<div className="mt-6 w-96">
 				<BasicButton

@@ -41,7 +41,6 @@ const Feeds = () => {
 			const params: GetFeedsParamsTypes = { page: page, per_page: 3, filter: "popularity", goal: "all" };
 			data = await feedsApi.getFeedsRequest("api/feeds", params);
 			setPopularFeeds(data.data.feeds);
-			console.log("Test!!!!!!!!!!!!!!!!!!!");
 		} catch (err) {
 			alert("인기 랭킹을 불러올 수 없습니다!");
 		}

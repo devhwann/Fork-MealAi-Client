@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { useRecoilState, useRecoilValue } from "recoil";
@@ -35,8 +35,20 @@ const Ai = () => {
 	const preview = watch("file");
 	const mealTime = watch("meal_time");
 
+	// button 상태 제어
+	const [buttonActivated, setButtonActivated] = useState(true);
+
+	useEffect(() => {
+		if (!mealTime || mealTime === "식사 시간 선택" || !preview || preview.length === 0) {
+			setButtonActivated(true);
+		} else {
+			setButtonActivated(false);
+		}
+	}, [mealTime, preview]);
+
 	// api 통신
 	const onSubmit: SubmitHandler<PostAiTypes> = async (data) => {
+		setButtonActivated(true);
 		const file = Array.from(data.file as ArrayLike<File>);
 		const postData = { ...data, file: file[0] };
 
@@ -65,12 +77,7 @@ const Ai = () => {
 		}
 	}, [preview]);
 
-	// button validation
-	function hadleButtonActivated() {
-		if (!mealTime || mealTime === "식사 시간 선택" || !preview || preview.length === 0) return true;
-		return false;
-	}
-
+	console.log("buttonActivated", buttonActivated);
 	return (
 		<GradientWrapper>
 			<h1 className="text-primary-1 text-center pt-20 mb-10">식단 AI 분석을 시작합니다.</h1>
@@ -129,7 +136,7 @@ const Ai = () => {
 				</div>
 				<div className="flex flex-col items-center mt-10">
 					<div className="w-96">
-						<BasicButton type="submit" width={true} style="primary" deactivated={hadleButtonActivated()}>
+						<BasicButton type="submit" width={true} style="primary" deactivated={buttonActivated}>
 							분석 시작
 						</BasicButton>
 						{!isLoggedIn && (
