@@ -1,16 +1,16 @@
 import { MouseEvent, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { feedsApi } from "@/api/feeds";
 import { useRecoilState } from "recoil";
 import { isLoggedInState } from "@/recoil/state";
+import { feedsApi } from "@/api/feeds";
+import getMealTime from "@/utils/getMealTime";
 import Thumb from "@/components/atoms/thumbnail/Thumbnail";
 import Modal from "@/components/organisms/Modal";
-import BasicButton from "@/components/atoms/buttons/BasicButton";
 import HorizontalProgressBars from "@/components/atoms/progressBars/HorizontalProgressBars";
 import FoodCardViewOnly from "@/components/organisms/FoodCardViewOnly";
-import getMealTime from "@/utils/getMealTime";
 import LikeWithCount from "@/components/organisms/LikeWithCount";
 import GoalText from "@/components/organisms/GoalText";
+import BasicButton from "@/components/atoms/buttons/BasicButton";
 import ArrowButton from "@/components/atoms/buttons/ArrowButton";
 
 import { GetFeedsTypes, UserDailyNutrientTypes } from "@/types/feeds/feedsResponseTypes";
@@ -80,7 +80,7 @@ const Detail = () => {
 			setLikeCount(likeCount! + 1);
 			setIsLike(true);
 		}
-		const patchLikes = await feedsApi.patchLikesRequest(`/api/feeds/likes/${feedId}`);
+		const patchLikes = await feedsApi.updateLikesRequest(`/api/feeds/likes/${feedId}`);
 
 		if (patchLikes.status !== 200) {
 			setIsLoggedIn(false);

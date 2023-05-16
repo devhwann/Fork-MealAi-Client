@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
-import BasicButton from "@/components/atoms/buttons/BasicButton";
 import { useRecoilValue } from "recoil";
 import { imagePreviewState } from "@/recoil/state";
+import BasicButton from "@/components/atoms/buttons/BasicButton";
 
 const Fail = () => {
 	const navigate = useNavigate();

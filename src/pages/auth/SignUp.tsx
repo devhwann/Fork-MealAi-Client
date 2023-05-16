@@ -1,13 +1,13 @@
 import { ChangeEvent, MouseEvent, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { authApi } from "@/api/auth";
-import BasicButton from "@/components/atoms/buttons/BasicButton";
+import { validateConfirmPassword, validateEmail, validatePassword } from "@/utils/validation";
 import Input from "@/components/atoms/inputs/Input";
 import InputLabel from "@/components/atoms/inputs/InputLabel";
 import InputWithLabel from "@/components/organisms/InputWithLabel";
 import SelectWithLabel from "@/components/organisms/SelectWithLabel";
+import BasicButton from "@/components/atoms/buttons/BasicButton";
 import RadioButton from "@/components/atoms/buttons/RadioButton";
-import { validateConfirmPassword, validateEmail, validatePassword } from "@/utils/validation";
 
 const SignUp = () => {
 	const navigate = useNavigate();
@@ -83,7 +83,7 @@ const SignUp = () => {
 			return;
 		}
 
-		const data = await authApi.authCheckEmailRequest("/api/auth/check_email", form.email);
+		const data = await authApi.createCheckEmailRequest("/api/auth/check_email", form.email);
 
 		if (data.status === 200) {
 			setAuthCode(data.data.authentication_number);

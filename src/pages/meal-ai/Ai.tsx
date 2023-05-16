@@ -1,16 +1,16 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { imagePreviewState, isLoggedInState } from "@/recoil/state";
-import { useNavigate } from "react-router-dom";
-import { PostAiTypes } from "@/types/feeds/feedsRequestTypes";
 import { feedsApi } from "@/api/feeds";
+import { PostAiTypes } from "@/types/feeds/feedsRequestTypes";
 import { GradientWrapper } from "@/pages/meal-ai/Ai.styles";
-import InfoIcon from "@/assets/icon_info.svg";
 import AiRule from "@/components/atoms/aiRule/AiRule";
 import BasicButton from "@/components/atoms/buttons/BasicButton";
 import TinyButton from "@/components/atoms/buttons/TinyButton";
 import AddIcon from "@/assets/icon_add_image.svg";
+import InfoIcon from "@/assets/icon_info.svg";
 
 const Ai = () => {
 	const navigate = useNavigate();
@@ -57,7 +57,7 @@ const Ai = () => {
 			formData.append(key, value);
 		});
 
-		const result = await feedsApi.postFeedRequest("/api/feeds", formData);
+		const result = await feedsApi.createFeedRequest("/api/feeds", formData);
 
 		if (result.status === 200) {
 			sessionStorage.setItem("aiPredictResultId", result.data);

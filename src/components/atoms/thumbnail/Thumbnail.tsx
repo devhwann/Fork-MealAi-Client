@@ -1,10 +1,10 @@
 import { useNavigate } from "react-router-dom";
 import { S3_URL } from "@/config/constants";
-import LikeButton, { LikeButtonProps } from "../buttons/LikeButton";
 import getMealTime from "@/utils/getMealTime";
-import LockIcon from "@/assets/icon_lock.svg";
 import Badge from "../badges/Badge";
+import LockIcon from "@/assets/icon_lock.svg";
 import NoneImage from "@/assets/image_default_thumbs.svg";
+import LikeButton, { LikeButtonProps } from "../buttons/LikeButton";
 
 export interface ThumbnailProps extends LikeButtonProps {
 	src: string | null; // 이미지 주소

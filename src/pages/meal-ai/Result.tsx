@@ -2,20 +2,20 @@ import { ChangeEvent, MouseEvent, useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useRecoilValue } from "recoil";
 import { isLoggedInState } from "@/recoil/state";
-import Thumb from "@/components/atoms/thumbnail/Thumbnail";
-import FoodCard from "@/components/organisms/FoodCard";
-import AddFoodButton from "@/components/atoms/buttons/AddFoodButton";
-import Modal from "@/components/organisms/Modal";
-import SearchInput from "@/components/atoms/inputs/SearchInput";
-import SearchResult from "@/components/organisms/SearchResult";
-import BasicButton from "@/components/atoms/buttons/BasicButton";
-import ToggleButton from "@/components/atoms/buttons/ToggleButton";
-import HorizontalProgressBars from "@/components/atoms/progressBars/HorizontalProgressBars";
-import { GetFeedsTypes, GetSearchFoodTypes, UserDailyNutrientTypes } from "@/types/feeds/feedsResponseTypes";
 import { feedsApi } from "@/api/feeds";
 import getMealTime from "@/utils/getMealTime";
 import { FoodsTypes } from "@/types/feeds/feedsResponseTypes";
 import { EditFeedTypes } from "@/types/feeds/feedsRequestTypes";
+import { GetFeedsTypes, GetSearchFoodTypes, UserDailyNutrientTypes } from "@/types/feeds/feedsResponseTypes";
+import Thumb from "@/components/atoms/thumbnail/Thumbnail";
+import FoodCard from "@/components/organisms/FoodCard";
+import Modal from "@/components/organisms/Modal";
+import SearchInput from "@/components/atoms/inputs/SearchInput";
+import SearchResult from "@/components/organisms/SearchResult";
+import AddFoodButton from "@/components/atoms/buttons/AddFoodButton";
+import BasicButton from "@/components/atoms/buttons/BasicButton";
+import ToggleButton from "@/components/atoms/buttons/ToggleButton";
+import HorizontalProgressBars from "@/components/atoms/progressBars/HorizontalProgressBars";
 
 const Result = () => {
 	const navigate = useNavigate();
@@ -140,7 +140,7 @@ const Result = () => {
 		async function getNutryData() {
 			let data;
 			try {
-				data = await feedsApi.postSearchFoodRequst("/api/feeds/food", foodCards);
+				data = await feedsApi.createSearchFoodRequst("/api/feeds/food", foodCards);
 
 				if (data.status === 200) {
 					setNutry(data.data);
@@ -172,7 +172,7 @@ const Result = () => {
 			open: isOpen,
 		};
 
-		const data = await feedsApi.editFeedRequest(`/api/feeds/${aiPredictResultId}`, params);
+		const data = await feedsApi.updateFeedRequest(`/api/feeds/${aiPredictResultId}`, params);
 
 		if (data.status === 200) {
 			navigate("/mylog/1");

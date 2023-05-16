@@ -6,12 +6,11 @@ const Home = lazy(() => import("@/pages/Home"));
 const Ai = lazy(() => import("@/pages/meal-ai/Ai"));
 const Result = lazy(() => import("@/pages/meal-ai/Result"));
 const Fail = lazy(() => import("@/pages/meal-ai/Fail"));
-const PageNotFound = lazy(() => import("@/pages/PageNotFound"));
-const Goal = lazy(() => import("@/pages/auth/Goal"));
 const SignIn = lazy(() => import("@/pages/auth/SignIn"));
-const FindPassword = lazy(() => import("@/pages/auth/FindPassword"));
 const SignUp = lazy(() => import("@/pages/auth/SignUp"));
 const Info = lazy(() => import("@/pages/auth/Info"));
+const Goal = lazy(() => import("@/pages/auth/Goal"));
+const FindPassword = lazy(() => import("@/pages/auth/FindPassword"));
 const Feeds = lazy(() => import("@/pages/feeds/Feeds"));
 const Detail = lazy(() => import("@/pages/feeds/Detail"));
 const Edit = lazy(() => import("@/pages/feeds/Edit"));
@@ -19,6 +18,7 @@ const MyLog = lazy(() => import("@/pages/mylog/MyLog"));
 const WeeklyReport = lazy(() => import("@/pages/mylog/WeeklyReport"));
 const MyPage = lazy(() => import("@/pages/mypage/MyPage"));
 const EditInfo = lazy(() => import("@/pages/mypage/EditInfo"));
+const PageNotFound = lazy(() => import("@/pages/PageNotFound"));
 
 const routes = createBrowserRouter([
 	{

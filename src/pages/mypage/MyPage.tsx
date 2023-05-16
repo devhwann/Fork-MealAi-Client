@@ -1,17 +1,17 @@
 import { ChangeEvent, MouseEvent, useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { validateConfirmPassword, validatePassword } from "@/utils/validation";
 import { axios } from "@/utils/axios.utils";
 import { userApi } from "@/api/user";
 import { feedsApi } from "@/api/feeds";
+import { validateConfirmPassword, validatePassword } from "@/utils/validation";
 import { GetFeedsTypes } from "@/types/feeds/feedsResponseTypes";
-import BasicButton from "@/components/atoms/buttons/BasicButton";
 import GoalText, { GoalType } from "@/components/organisms/GoalText";
 import Thumb from "@/components/atoms/thumbnail/Thumbnail";
 import Modal from "@/components/organisms/Modal";
 import Input from "@/components/atoms/inputs/Input";
 import InputWithLabel from "@/components/organisms/InputWithLabel";
 import InputLabel from "@/components/atoms/inputs/InputLabel";
+import BasicButton from "@/components/atoms/buttons/BasicButton";
 
 const MyPage = () => {
 	const navigate = useNavigate();
@@ -40,7 +40,7 @@ const MyPage = () => {
 
 	useEffect(() => {
 		axios
-			.all([userApi.userInfoRequest("/api/users"), feedsApi.getMyLikesRequest("/api/feeds/likes", { page })])
+			.all([userApi.getUserInfoRequest("/api/users"), feedsApi.getMyLikesRequest("/api/feeds/likes", { page })])
 			.then(
 				axios.spread((userInfoData, myLikesFeedsData) => {
 					setNickname(userInfoData.data.nickname);
@@ -88,7 +88,7 @@ const MyPage = () => {
 			return;
 		}
 
-		const data = await userApi.checkPasswordRequest("/api/users/check_password", { password: currentPassword });
+		const data = await userApi.createCheckPasswordRequest("/api/users/check_password", { password: currentPassword });
 		if (data.status === 200) {
 			navigate("/mypage/edit-info");
 		} else {
@@ -108,7 +108,7 @@ const MyPage = () => {
 			return;
 		}
 
-		const data = await userApi.changePasswordRequest("/api/users/change_password", {
+		const data = await userApi.updatePasswordRequest("/api/users/change_password", {
 			current_password: currentPassword,
 			change_password: newPassword,
 		});
@@ -167,7 +167,7 @@ const MyPage = () => {
 		copyFeeds[i].my_like = !myLikesFeeds![i].my_like;
 		setMyLikesFeeds(copyFeeds);
 
-		const patchLikes = await feedsApi.patchLikesRequest(`/api/feeds/likes/${feedId}`);
+		const patchLikes = await feedsApi.updateLikesRequest(`/api/feeds/likes/${feedId}`);
 
 		if (patchLikes.status !== 200) {
 			navigate("/auth/sign-in");

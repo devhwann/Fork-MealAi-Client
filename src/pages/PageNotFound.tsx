@@ -1,5 +1,5 @@
-import BasicButton from "@/components/atoms/buttons/BasicButton";
 import { useNavigate } from "react-router";
+import BasicButton from "@/components/atoms/buttons/BasicButton";
 
 const PageNotFound = () => {
 	const navigate = useNavigate();

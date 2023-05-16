@@ -1,9 +1,8 @@
-import { useNavigate } from "react-router-dom";
 import { ChangeEvent, MouseEvent, useEffect, useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useSetRecoilState } from "recoil";
 import { isPasswordToastState } from "@/recoil/state";
 import { authApi } from "@/api/auth";
-
 import BasicButton from "@/components/atoms/buttons/BasicButton";
 import InputLabel from "@/components/atoms/inputs/InputLabel";
 import Input from "@/components/atoms/inputs/Input";
@@ -29,7 +28,7 @@ const FindPassword = () => {
 			return;
 		}
 
-		const data = await authApi.authFindRequest("/api/auth/reset_password", { email });
+		const data = await authApi.createFindRequest("/api/auth/reset_password", { email });
 
 		if (data.status === 200) {
 			setIsPasswordToast(true);
