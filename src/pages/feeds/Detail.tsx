@@ -4,6 +4,7 @@ import { useRecoilState } from "recoil";
 import { isLoggedInState } from "@/recoil/state";
 import { feedsApi } from "@/api/feeds";
 import getMealTime from "@/utils/getMealTime";
+import { GetFeedsTypes, UserDailyNutrientTypes } from "@/types/feeds/feedsResponseTypes";
 import Thumb from "@/components/atoms/thumbnail/Thumbnail";
 import Modal from "@/components/organisms/Modal";
 import HorizontalProgressBars from "@/components/atoms/progressBars/HorizontalProgressBars";
@@ -11,11 +12,6 @@ import FoodCardViewOnly from "@/components/organisms/FoodCardViewOnly";
 import LikeWithCount from "@/components/organisms/LikeWithCount";
 import GoalText from "@/components/organisms/GoalText";
 import BasicButton from "@/components/atoms/buttons/BasicButton";
-import ArrowButton from "@/components/atoms/buttons/ArrowButton";
-
-import { GetFeedsTypes, UserDailyNutrientTypes } from "@/types/feeds/feedsResponseTypes";
-
-// TODO : 이전글 다음글 구현? 안되면 주석 삭제하기
 
 const Detail = () => {
 	const { id } = useParams();
@@ -108,7 +104,6 @@ const Detail = () => {
 	return (
 		<>
 			<div className="flex justify-center gap-36">
-				{/* 	<ArrowButton direction="prev" onClick={() => {}} /> */}
 				<div className="w-fit">
 					<div className="pt-20 mb-10 flex justify-between items-center">
 						<h1>
@@ -183,7 +178,6 @@ const Detail = () => {
 						)}
 					</div>
 				</div>
-				{/* <ArrowButton direction="next" onClick={() => {}} /> */}
 			</div>
 
 			{deleteModal && (
