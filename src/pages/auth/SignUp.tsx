@@ -177,7 +177,7 @@ const SignUp = () => {
 		}
 		return false;
 	}
-	console.log(inputDeactivated);
+
 	return (
 		<div className="grid justify-items-center mt-20">
 			<h1 className="mb-14">회원가입</h1>
