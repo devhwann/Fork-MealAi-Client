@@ -1,4 +1,4 @@
-import { ChangeEvent, Ref, useEffect, useState } from "react";
+import { ChangeEvent, KeyboardEvent, Ref, useEffect, useState } from "react";
 import { FoodsTypes, GetSearchFoodTypes } from "@/types/feeds/feedsResponseTypes";
 import EditIcon from "@/assets/icon_food_edit.svg";
 import DeleteIcon from "@/assets/icon_food_delete.svg";
@@ -28,6 +28,7 @@ interface FoodCardProps extends ThumbnailProps {
 	handleFoodCards: (foodCards: FoodsTypes[]) => void;
 	handleInputKeyword: (e: ChangeEvent<HTMLInputElement>) => void;
 	handleSearch: () => void;
+	onKeyPress: (e: KeyboardEvent<HTMLInputElement>) => void;
 }
 
 interface FoodCardButtonProps {
@@ -64,6 +65,7 @@ const FoodCard = ({
 	handleFoodCards,
 	handleInputKeyword,
 	handleSearch,
+	onKeyPress,
 }: FoodCardProps) => {
 	const [newFoodId, setNewFoodId] = useState(foodId);
 	const [newName, setNewName] = useState(name);
@@ -211,6 +213,7 @@ const FoodCard = ({
 						id="search"
 						value={searchKeyWord}
 						onClick={handleSearch}
+						onKeyPress={onKeyPress}
 						ref={searchInputRef}
 						onChange={(e: ChangeEvent<HTMLInputElement>) => {
 							handleInputKeyword(e);

@@ -145,5 +145,23 @@ export const IntroContainer = styled.div<{ currentScroll: number }>`
 				if (currentScroll >= 45) return "fadeInUp 3s";
 			}};
 		}
+
+		@media all and (max-width: 1200px) {
+			.people_image {
+				margin-left: 10%;
+			}
+			.food1_image {
+				margin-left: 0%;
+			}
+			.food2_image {
+				margin-left: 21%;
+			}
+			.food3_image {
+				margin-left: 53%;
+			}
+			.food4_image {
+				margin-left: 63%;
+			}
+		}
 	}
 `;

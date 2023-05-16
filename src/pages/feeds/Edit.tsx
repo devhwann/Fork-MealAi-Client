@@ -1,5 +1,7 @@
-import { ChangeEvent, MouseEvent, useEffect, useRef, useState } from "react";
+import { ChangeEvent, KeyboardEvent, MouseEvent, useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { useSetRecoilState } from "recoil";
+import { isEditFeedState } from "@/recoil/state";
 import { feedsApi } from "@/api/feeds";
 import getMealTime from "@/utils/getMealTime";
 import {
@@ -22,6 +24,9 @@ import AddFoodButton from "@/components/atoms/buttons/AddFoodButton";
 const Edit = () => {
 	const { id } = useParams();
 	const navigate = useNavigate();
+
+	// 피드 수정 여부 확인
+	const setIsEditFeedState = useSetRecoilState(isEditFeedState);
 
 	// data set
 	const [feedDetail, setFeedDetail] = useState<GetFeedsTypes>();
@@ -102,6 +107,13 @@ const Edit = () => {
 		setFoodCards(newFoodCards);
 	};
 
+	// enter키로 검색
+	const handleKeyPress = (e: KeyboardEvent<HTMLInputElement>) => {
+		if (e.key === "Enter") {
+			handleSearch();
+		}
+	};
+
 	// 모달
 	const [editModal, setEditModal] = useState<number | null>(null);
 	const handleEditModal = (id: number) => {
@@ -175,6 +187,7 @@ const Edit = () => {
 		if (data.status === 200) {
 			alert("식단 피드가 수정되었습니다.");
 			navigate(`/feeds/${id}`);
+			setIsEditFeedState(true);
 		} else {
 			alert("식단 수정을 할 수 없습니다.");
 		}
@@ -249,6 +262,7 @@ const Edit = () => {
 										handleFoodCards={handleFoodCards}
 										handleInputKeyword={handleInputKeyword}
 										handleSearch={handleSearch}
+										onKeyPress={handleKeyPress}
 									/>
 								);
 							})}
@@ -282,6 +296,7 @@ const Edit = () => {
 						id="search"
 						value={searchKeyWord}
 						onClick={handleSearch}
+						onKeyPress={handleKeyPress}
 						ref={searchInputRef}
 						onChange={(e: ChangeEvent<HTMLInputElement>) => {
 							setSearchKeyWord(e.target.value);

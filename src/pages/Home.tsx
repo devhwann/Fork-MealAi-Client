@@ -105,7 +105,7 @@ const Home = () => {
 							<img src={Food4Image} className="food4_image" />
 						</div>
 					</div>
-					<div className="text_anima">
+					<div className="text_anima z-20">
 						<h2 className="mb-6">
 							매일 매일 하는 식사,
 							<br />
