@@ -7,6 +7,7 @@ import BasicButton from "@/components/atoms/buttons/BasicButton";
 import ArrowButton from "@/components/atoms/buttons/ArrowButton";
 import TinyButton from "@/components/atoms/buttons/TinyButton";
 import HorizontalProgressBars from "@/components/atoms/progressBars/HorizontalProgressBars";
+import axios from "axios";
 
 const MyLog = () => {
 	const navigate = useNavigate();
@@ -62,19 +63,23 @@ const MyLog = () => {
 			const weeklyReport = await reportApi.getReportWeekRequest(`/api/reports/report/${week}`);
 
 			if (weeklyReport.status === 200) {
-				setPeriod([weeklyReport.data.start_of_week, weeklyReport.data.end_of_week]);
-				setWeeklyNutry({
-					kcal: weeklyReport.data.weekly_nutrient.kcal,
-					carbohydrate: weeklyReport.data.weekly_nutrient.carbohydrate,
-					protein: weeklyReport.data.weekly_nutrient.protein,
-					fat: weeklyReport.data.weekly_nutrient.fat,
-				});
-				setWeeklyNutryGoal({
-					kcal: weeklyReport.data.weekly_goal.kcal,
-					carbohydrate: weeklyReport.data.weekly_goal.carbohydrate,
-					protein: weeklyReport.data.weekly_goal.protein,
-					fat: weeklyReport.data.weekly_goal.fat,
-				});
+				if (weeklyReport.data === null) {
+					<></>;
+				} else {
+					setPeriod([weeklyReport.data.start_of_week, weeklyReport.data.end_of_week]);
+					setWeeklyNutry({
+						kcal: weeklyReport.data.weekly_nutrient.kcal,
+						carbohydrate: weeklyReport.data.weekly_nutrient.carbohydrate,
+						protein: weeklyReport.data.weekly_nutrient.protein,
+						fat: weeklyReport.data.weekly_nutrient.fat,
+					});
+					setWeeklyNutryGoal({
+						kcal: weeklyReport.data.weekly_goal.kcal,
+						carbohydrate: weeklyReport.data.weekly_goal.carbohydrate,
+						protein: weeklyReport.data.weekly_goal.protein,
+						fat: weeklyReport.data.weekly_goal.fat,
+					});
+				}
 			}
 		}
 		getWeeklyReportData();
@@ -145,7 +150,6 @@ const MyLog = () => {
 											</div>
 										</div>
 										{targetDataArr.map((value) => {
-											console.log(value);
 											return (
 												<>
 													{value.feed_id ? (
@@ -156,7 +160,7 @@ const MyLog = () => {
 															type="log"
 															mealTime={value.meal_time}
 															open={value.open}
-															key={value.feed_id}
+															key={value.user_id}
 														/>
 													) : null}
 												</>

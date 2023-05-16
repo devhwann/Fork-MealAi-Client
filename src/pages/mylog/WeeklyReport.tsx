@@ -43,30 +43,32 @@ const WeeklyReport = () => {
 			const weeklyReport = await reportApi.getMylogsRequest(`/api/reports/report/${week}`);
 
 			if (weeklyReport.status === 200) {
-				console.log("WeeklyReport", weeklyReport);
+				if (weeklyReport.data === null) {
+					<></>;
+				} else {
+					setGoal(weeklyReport.data.goal);
+					setPeriod([weeklyReport.data.start_of_week, weeklyReport.data.end_of_week]);
+					setDailyData(weeklyReport.data.daily_nutrient);
 
-				setGoal(weeklyReport.data.goal);
-				setPeriod([weeklyReport.data.start_of_week, weeklyReport.data.end_of_week]);
-				setDailyData(weeklyReport.data.daily_nutrient);
-
-				setWeeklyNutry({
-					kcal: weeklyReport.data.weekly_nutrient.kcal,
-					carbohydrate: weeklyReport.data.weekly_nutrient.carbohydrate,
-					protein: weeklyReport.data.weekly_nutrient.protein,
-					fat: weeklyReport.data.weekly_nutrient.fat,
-				});
-				setWeeklyNutryGoal({
-					kcal: weeklyReport.data.weekly_goal.kcal,
-					carbohydrate: weeklyReport.data.weekly_goal.carbohydrate,
-					protein: weeklyReport.data.weekly_goal.protein,
-					fat: weeklyReport.data.weekly_goal.fat,
-				});
-				setGoalNutry({
-					kcal: weeklyReport.data.daily_goal.kcal,
-					carbohydrate: weeklyReport.data.daily_goal.carbohydrate,
-					protein: weeklyReport.data.daily_goal.protein,
-					fat: weeklyReport.data.daily_goal.fat,
-				});
+					setWeeklyNutry({
+						kcal: weeklyReport.data.weekly_nutrient.kcal,
+						carbohydrate: weeklyReport.data.weekly_nutrient.carbohydrate,
+						protein: weeklyReport.data.weekly_nutrient.protein,
+						fat: weeklyReport.data.weekly_nutrient.fat,
+					});
+					setWeeklyNutryGoal({
+						kcal: weeklyReport.data.weekly_goal.kcal,
+						carbohydrate: weeklyReport.data.weekly_goal.carbohydrate,
+						protein: weeklyReport.data.weekly_goal.protein,
+						fat: weeklyReport.data.weekly_goal.fat,
+					});
+					setGoalNutry({
+						kcal: weeklyReport.data.daily_goal.kcal,
+						carbohydrate: weeklyReport.data.daily_goal.carbohydrate,
+						protein: weeklyReport.data.daily_goal.protein,
+						fat: weeklyReport.data.daily_goal.fat,
+					});
+				}
 			}
 		}
 		getWeeklyReportData();
@@ -85,7 +87,7 @@ const WeeklyReport = () => {
 							<p className="mb-2 text-gray-4">한 주동안 목표에 맞게 열심히 식단관리 하셨나요?</p>
 							<p className="text-gray-4">리포트를 확인해보세요.</p>
 						</div>
-						<MyGoalText goal={goal} />
+						{goal ? <MyGoalText goal={goal} /> : null}
 					</div>
 					<div className="w-96 h-64 p-10 mt-20 bg-white border-solid border border-gray-7 rounded-lg">
 						<HorizontalProgressBars nutry={weeklyNutry} usersNutry={weeklyNutryGoal} />
