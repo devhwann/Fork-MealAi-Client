@@ -47,7 +47,6 @@ const Detail = () => {
 			const data = await feedsApi.getFeedRequest(`/api/feeds/${id}`);
 
 			if (data.status === 200) {
-				console.log(data.data);
 				// 좋아요, 좋아요 수, 피드영양정보 외 데이터는 묶어서 set처리
 				setFeedDetail(data.data);
 				setIsLike(data.data.my_like); // 좋아요
