@@ -99,10 +99,9 @@ const Detail = () => {
 		const data = await feedsApi.deleteFeedRequest(`/api/feeds/${id}`);
 		if (data.status === 200) {
 			alert("피드가 삭제되었습니다.");
-			navigate("/feeds");
+			navigate(-1);
 		} else {
 			alert("삭제하지 못했습니다. 다시 시도해주세요.");
-			navigate("/feeds");
 		}
 	};
 
