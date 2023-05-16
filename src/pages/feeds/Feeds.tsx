@@ -189,6 +189,11 @@ const Feeds = () => {
 					</select>
 				</>
 			</div>
+			{feeds && feeds.length === 0 && (
+				<div className="text-center mt-12">
+					<p className="mb-4 font-bold text-gray-3">해당 목표로 설정된 피드가 없습니다😥</p>
+				</div>
+			)}
 			<div className="flex flex-wrap w-1200 mt-8 gap-6 feedBox">
 				{feeds &&
 					feeds.map((v, i) => {

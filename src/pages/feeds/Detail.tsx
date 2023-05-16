@@ -1,9 +1,10 @@
 import { MouseEvent, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useRecoilState } from "recoil";
-import { isLoggedInState } from "@/recoil/state";
+import { isEditFeedState, isLoggedInState } from "@/recoil/state";
 import { feedsApi } from "@/api/feeds";
 import getMealTime from "@/utils/getMealTime";
+import { GetFeedsTypes, UserDailyNutrientTypes } from "@/types/feeds/feedsResponseTypes";
 import Thumb from "@/components/atoms/thumbnail/Thumbnail";
 import Modal from "@/components/organisms/Modal";
 import HorizontalProgressBars from "@/components/atoms/progressBars/HorizontalProgressBars";
@@ -11,11 +12,6 @@ import FoodCardViewOnly from "@/components/organisms/FoodCardViewOnly";
 import LikeWithCount from "@/components/organisms/LikeWithCount";
 import GoalText from "@/components/organisms/GoalText";
 import BasicButton from "@/components/atoms/buttons/BasicButton";
-import ArrowButton from "@/components/atoms/buttons/ArrowButton";
-
-import { GetFeedsTypes, UserDailyNutrientTypes } from "@/types/feeds/feedsResponseTypes";
-
-// TODO : 이전글 다음글 구현? 안되면 주석 삭제하기
 
 const Detail = () => {
 	const { id } = useParams();
@@ -23,6 +19,18 @@ const Detail = () => {
 
 	// 로그인 여부 확인
 	const [isLoggedIn, setIsLoggedIn] = useRecoilState(isLoggedInState);
+
+	// 피드 수정 여부 확인
+	const [isEditFeed, setIsEditFeedState] = useRecoilState(isEditFeedState);
+
+	const handleListButton = () => {
+		if (isEditFeed) {
+			navigate(-3);
+			setIsEditFeedState(false);
+		} else {
+			navigate(-1);
+		}
+	};
 
 	// data set
 	const [feedDetail, setFeedDetail] = useState<GetFeedsTypes>();
@@ -47,7 +55,6 @@ const Detail = () => {
 			const data = await feedsApi.getFeedRequest(`/api/feeds/${id}`);
 
 			if (data.status === 200) {
-				console.log(data.data);
 				// 좋아요, 좋아요 수, 피드영양정보 외 데이터는 묶어서 set처리
 				setFeedDetail(data.data);
 				setIsLike(data.data.my_like); // 좋아요
@@ -100,17 +107,15 @@ const Detail = () => {
 		const data = await feedsApi.deleteFeedRequest(`/api/feeds/${id}`);
 		if (data.status === 200) {
 			alert("피드가 삭제되었습니다.");
-			navigate("/feeds");
+			navigate(-1);
 		} else {
 			alert("삭제하지 못했습니다. 다시 시도해주세요.");
-			navigate("/feeds");
 		}
 	};
 
 	return (
 		<>
 			<div className="flex justify-center gap-36">
-				{/* 	<ArrowButton direction="prev" onClick={() => {}} /> */}
 				<div className="w-fit">
 					<div className="pt-20 mb-10 flex justify-between items-center">
 						<h1>
@@ -152,18 +157,7 @@ const Detail = () => {
 							})}
 					</div>
 					<div className="flex justify-center gap-2 mt-14">
-						<BasicButton
-							type="button"
-							// TODO : 목록 버튼 클릭시 어떻게 이동해야할지 논의
-							// 1. 수정 완료 후 목록 -> /feeds
-							// 2. 식단톡, 마이페이지에서 접근 후 목록 -> 이전페이지(-1)
-							onClick={() => {
-								// navigate("/feeds");
-								navigate(-1);
-							}}
-							width={false}
-							style="primary"
-						>
+						<BasicButton type="button" onClick={handleListButton} width={false} style="primary">
 							목록
 						</BasicButton>
 						{feedDetail && feedDetail.is_mine && (
@@ -185,7 +179,6 @@ const Detail = () => {
 						)}
 					</div>
 				</div>
-				{/* <ArrowButton direction="next" onClick={() => {}} /> */}
 			</div>
 
 			{deleteModal && (
