@@ -1,4 +1,4 @@
-import { axios, axiosHandler } from "@/utils/axios.utils";
+import { axiosHandler } from "@/utils/axios.utils";
 
 /**
  * report apis

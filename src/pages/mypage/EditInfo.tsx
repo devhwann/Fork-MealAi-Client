@@ -1,17 +1,16 @@
 import { ChangeEvent, MouseEvent, useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { userApi } from "@/api/user";
-import { GoalType } from "@/components/organisms/GoalText";
 import { useSetRecoilState } from "recoil";
 import { isLoggedInState } from "@/recoil/state";
-
+import { userApi } from "@/api/user";
+import { GoalType } from "@/components/organisms/GoalText";
+import Modal from "@/components/organisms/Modal";
 import Input from "@/components/atoms/inputs/Input";
 import InputLabel from "@/components/atoms/inputs/InputLabel";
 import SelectWithLabel from "@/components/organisms/SelectWithLabel";
 import RadioButton from "@/components/atoms/buttons/RadioButton";
 import GoalButtons from "@/components/organisms/GoalButtons";
 import BasicButton from "@/components/atoms/buttons/BasicButton";
-import Modal from "@/components/organisms/Modal";
 
 const EditInfo = () => {
 	const navigate = useNavigate();

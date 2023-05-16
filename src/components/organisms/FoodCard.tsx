@@ -1,14 +1,14 @@
-import Thumb, { ThumbnailProps } from "../atoms/thumbnail/Thumbnail";
+import { ChangeEvent, Ref, useEffect, useState } from "react";
+import { FoodsTypes, GetSearchFoodTypes } from "@/types/feeds/feedsResponseTypes";
 import EditIcon from "@/assets/icon_food_edit.svg";
 import DeleteIcon from "@/assets/icon_food_delete.svg";
 import Modal from "./Modal";
+import SearchResult from "./SearchResult";
 import Input from "../atoms/inputs/Input";
 import TinyButton from "../atoms/buttons/TinyButton";
 import BasicButton from "../atoms/buttons/BasicButton";
-import { ChangeEvent, Ref, useEffect, useState } from "react";
-import { FoodsTypes, GetSearchFoodTypes } from "@/types/feeds/feedsResponseTypes";
 import SearchInput from "../atoms/inputs/SearchInput";
-import SearchResult from "./SearchResult";
+import Thumb, { ThumbnailProps } from "../atoms/thumbnail/Thumbnail";
 
 interface FoodCardProps extends ThumbnailProps {
 	index: number;

@@ -1,17 +1,17 @@
 import { ChangeEvent, MouseEvent, useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { validateConfirmPassword, validatePassword } from "@/utils/validation";
 import { axios } from "@/utils/axios.utils";
 import { userApi } from "@/api/user";
 import { feedsApi } from "@/api/feeds";
+import { validateConfirmPassword, validatePassword } from "@/utils/validation";
 import { GetFeedsTypes } from "@/types/feeds/feedsResponseTypes";
-import BasicButton from "@/components/atoms/buttons/BasicButton";
 import GoalText, { GoalType } from "@/components/organisms/GoalText";
 import Thumb from "@/components/atoms/thumbnail/Thumbnail";
 import Modal from "@/components/organisms/Modal";
 import Input from "@/components/atoms/inputs/Input";
 import InputWithLabel from "@/components/organisms/InputWithLabel";
 import InputLabel from "@/components/atoms/inputs/InputLabel";
+import BasicButton from "@/components/atoms/buttons/BasicButton";
 
 const MyPage = () => {
 	const navigate = useNavigate();

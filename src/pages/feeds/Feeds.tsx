@@ -1,12 +1,12 @@
 import { ChangeEvent, useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { AxiosResponse } from "axios";
 import { useRecoilValue } from "recoil";
 import { isLoggedInState } from "@/recoil/state";
 import { feedsApi } from "@/api/feeds";
 import { FilterType, GetFeedsParamsTypes } from "@/types/feeds/feedsRequestTypes";
 import { GetFeedsResponseTypes, GetFeedsTypes } from "@/types/feeds/feedsResponseTypes";
 import Thumb from "@/components/atoms/thumbnail/Thumbnail";
-import { AxiosResponse } from "axios";
 
 const Feeds = () => {
 	const navigate = useNavigate();

@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { HeadContainer, IntroContainer } from "./Home.style";
-import { GetFeedsParamsTypes } from "@/types/feeds/feedsRequestTypes";
-import { GetFeedsTypes } from "@/types/feeds/feedsResponseTypes";
-import { feedsApi } from "@/api/feeds";
 import { useRecoilValue } from "recoil";
 import { isLoggedInState } from "@/recoil/state";
+import { feedsApi } from "@/api/feeds";
+import { GetFeedsTypes } from "@/types/feeds/feedsResponseTypes";
+import { GetFeedsParamsTypes } from "@/types/feeds/feedsRequestTypes";
+import { HeadContainer, IntroContainer } from "./Home.style";
 
 import WhiteLogo from "@/assets/logo_white.svg";
 import Logo from "@/assets/logo.svg";

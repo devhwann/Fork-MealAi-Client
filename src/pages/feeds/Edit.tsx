@@ -1,6 +1,7 @@
 import { ChangeEvent, MouseEvent, useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { feedsApi } from "@/api/feeds";
+import getMealTime from "@/utils/getMealTime";
 import {
 	FoodsTypes,
 	GetFeedsTypes,
@@ -8,7 +9,6 @@ import {
 	UserDailyNutrientTypes,
 } from "@/types/feeds/feedsResponseTypes";
 import { EditFeedTypes } from "@/types/feeds/feedsRequestTypes";
-import getMealTime from "@/utils/getMealTime";
 import Thumb from "@/components/atoms/thumbnail/Thumbnail";
 import HorizontalProgressBars from "@/components/atoms/progressBars/HorizontalProgressBars";
 import FoodCard from "@/components/organisms/FoodCard";

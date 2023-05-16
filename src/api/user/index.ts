@@ -1,5 +1,5 @@
-import { ChangePasswordTypes, CheckPasswordType, EditUserInfoTypes } from "@/types/user/userTypes";
 import { axiosHandler } from "@/utils/axios.utils";
+import { ChangePasswordTypes, CheckPasswordType, EditUserInfoTypes } from "@/types/user/userTypes";
 
 /**
  * user apis

@@ -3,11 +3,11 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useSetRecoilState } from "recoil";
 import { isLoggedInState } from "@/recoil/state";
 import { authApi } from "@/api/auth";
+import { axiosHandler } from "@/utils/axios.utils";
 import { AuthFormTypes, LoginParams } from "@/types/auth/authTypes";
 import GoalButtons from "@/components/organisms/GoalButtons";
 import BasicButton from "@/components/atoms/buttons/BasicButton";
 import { GoalType } from "@/components/organisms/GoalText";
-import { axiosHandler } from "@/utils/axios.utils";
 
 const Goal = () => {
 	const navigate = useNavigate();

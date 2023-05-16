@@ -1,14 +1,14 @@
 import { ChangeEvent, MouseEvent, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { authApi } from "@/api/auth";
-import BasicButton from "@/components/atoms/buttons/BasicButton";
-import SocialButtons from "@/components/atoms/buttons/SocialButton";
+import { validateConfirmPassword, validateEmail, validatePassword } from "@/utils/validation";
 import Input from "@/components/atoms/inputs/Input";
 import InputLabel from "@/components/atoms/inputs/InputLabel";
 import InputWithLabel from "@/components/organisms/InputWithLabel";
 import SelectWithLabel from "@/components/organisms/SelectWithLabel";
+import BasicButton from "@/components/atoms/buttons/BasicButton";
+import SocialButtons from "@/components/atoms/buttons/SocialButton";
 import RadioButton from "@/components/atoms/buttons/RadioButton";
-import { validateConfirmPassword, validateEmail, validatePassword } from "@/utils/validation";
 
 const SignUp = () => {
 	const navigate = useNavigate();
