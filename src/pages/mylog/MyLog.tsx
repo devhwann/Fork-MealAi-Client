@@ -48,7 +48,6 @@ const MyLog = () => {
 			const reportWeek = await reportApi.getMylogsRequest(`/api/reports/history/${week}`);
 
 			if (reportWeek.status === 200) {
-				console.log(reportWeek.data);
 				setNutry(reportWeek.data.nutrient);
 				setGoalNutry(reportWeek.data.goal);
 
@@ -63,7 +62,6 @@ const MyLog = () => {
 			const weeklyReport = await reportApi.getReportWeekRequest(`/api/reports/report/${week}`);
 
 			if (weeklyReport.status === 200) {
-				console.log("WeeklyReport", weeklyReport);
 				setPeriod([weeklyReport.data.start_of_week, weeklyReport.data.end_of_week]);
 				setWeeklyNutry({
 					kcal: weeklyReport.data.weekly_nutrient.kcal,
@@ -123,18 +121,7 @@ const MyLog = () => {
 					<ArrowButton direction="next" onClick={nextClick} />
 				</div>
 
-				{/* // TODO : API 명세 받은 후 map함수 적용 */}
 				<div>
-					{/* {nutry &&
-						nutry.map((v, i) => {
-							return (
-								<div key={i} className="w-220 h-220 px-6 py-5 border-solid border border-gray-7 rounded-lg">
-									<div className="scale-90">
-										<HorizontalProgressBars nutry={v} usersNutry={goalNutry} />
-									</div>
-								</div>
-							);
-						})} */}
 					{feedData &&
 						feedData.map((targetDataArr, index) => {
 							return (
