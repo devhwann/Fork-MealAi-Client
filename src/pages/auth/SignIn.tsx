@@ -58,7 +58,7 @@ const SignIn = () => {
 
 		let data;
 		try {
-			data = await authApi.authLoginRequest("/api/auth/login", {
+			data = await authApi.createLoginRequest("/api/auth/login", {
 				email,
 				password,
 			});

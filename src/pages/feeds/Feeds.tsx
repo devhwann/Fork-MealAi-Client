@@ -104,7 +104,7 @@ const Feeds = () => {
 		copyFeeds[i].my_like = !feeds![i].my_like;
 		setFeeds(copyFeeds);
 
-		const patchLikes = await feedsApi.patchLikesRequest(`/api/feeds/likes/${feedId}`);
+		const patchLikes = await feedsApi.updateLikesRequest(`/api/feeds/likes/${feedId}`);
 
 		if (patchLikes.status !== 200) {
 			navigate("/auth/sign-in");
@@ -124,7 +124,7 @@ const Feeds = () => {
 		copyFeeds[i].my_like = !popularFeeds![i].my_like;
 		setPopularFeeds(copyFeeds);
 
-		const patchLikes = await feedsApi.patchLikesRequest(`/api/feeds/likes/${feedId}`);
+		const patchLikes = await feedsApi.updateLikesRequest(`/api/feeds/likes/${feedId}`);
 
 		if (patchLikes.status !== 200) {
 			navigate("/auth/sign-in");

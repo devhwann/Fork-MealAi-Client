@@ -40,7 +40,7 @@ const MyPage = () => {
 
 	useEffect(() => {
 		axios
-			.all([userApi.userInfoRequest("/api/users"), feedsApi.getMyLikesRequest("/api/feeds/likes", { page })])
+			.all([userApi.getUserInfoRequest("/api/users"), feedsApi.getMyLikesRequest("/api/feeds/likes", { page })])
 			.then(
 				axios.spread((userInfoData, myLikesFeedsData) => {
 					setNickname(userInfoData.data.nickname);
@@ -92,7 +92,7 @@ const MyPage = () => {
 			return;
 		}
 
-		const data = await userApi.checkPasswordRequest("/api/users/check_password", { password: currentPassword });
+		const data = await userApi.createCheckPasswordRequest("/api/users/check_password", { password: currentPassword });
 		if (data.status === 200) {
 			navigate("/mypage/edit-info");
 		} else {
@@ -112,7 +112,7 @@ const MyPage = () => {
 			return;
 		}
 
-		const data = await userApi.changePasswordRequest("/api/users/change_password", {
+		const data = await userApi.updatePasswordRequest("/api/users/change_password", {
 			current_password: currentPassword,
 			change_password: newPassword,
 		});
@@ -171,7 +171,7 @@ const MyPage = () => {
 		copyFeeds[i].my_like = !myLikesFeeds![i].my_like;
 		setMyLikesFeeds(copyFeeds);
 
-		const patchLikes = await feedsApi.patchLikesRequest(`/api/feeds/likes/${feedId}`);
+		const patchLikes = await feedsApi.updateLikesRequest(`/api/feeds/likes/${feedId}`);
 
 		if (patchLikes.status !== 200) {
 			navigate("/auth/sign-in");

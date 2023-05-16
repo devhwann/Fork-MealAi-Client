@@ -80,7 +80,7 @@ const Detail = () => {
 			setLikeCount(likeCount! + 1);
 			setIsLike(true);
 		}
-		const patchLikes = await feedsApi.patchLikesRequest(`/api/feeds/likes/${feedId}`);
+		const patchLikes = await feedsApi.updateLikesRequest(`/api/feeds/likes/${feedId}`);
 
 		if (patchLikes.status !== 200) {
 			setIsLoggedIn(false);

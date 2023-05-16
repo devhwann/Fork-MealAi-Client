@@ -45,7 +45,7 @@ const Ai = () => {
 			formData.append(key, value);
 		});
 
-		const result = await feedsApi.postFeedRequest("/api/feeds", formData);
+		const result = await feedsApi.createFeedRequest("/api/feeds", formData);
 
 		if (result.status === 200) {
 			sessionStorage.setItem("aiPredictResultId", result.data);

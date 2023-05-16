@@ -6,11 +6,11 @@ import { ChangePasswordTypes, CheckPasswordType, EditUserInfoTypes } from "@/typ
  * 사용자 조회 및 업데이트, 삭제를 담당하는 api 객체
  */
 export const userApi = Object.freeze({
-	async userInfoRequest(endPoint: string) {
+	async getUserInfoRequest(endPoint: string) {
 		const response = axiosHandler.get(endPoint);
 		return response;
 	},
-	async changePasswordRequest(endPoint: string, params: ChangePasswordTypes) {
+	async updatePasswordRequest(endPoint: string, params: ChangePasswordTypes) {
 		try {
 			const response = await axiosHandler.patch(endPoint, params);
 			return response;
@@ -18,7 +18,7 @@ export const userApi = Object.freeze({
 			return err;
 		}
 	},
-	async checkPasswordRequest(endPoint: string, params: CheckPasswordType) {
+	async createCheckPasswordRequest(endPoint: string, params: CheckPasswordType) {
 		try {
 			const response = await axiosHandler.post(endPoint, params);
 			return response;
@@ -26,7 +26,7 @@ export const userApi = Object.freeze({
 			return err;
 		}
 	},
-	async editUserInfoRequest(endPoint: string, params: EditUserInfoTypes) {
+	async updateUserInfoRequest(endPoint: string, params: EditUserInfoTypes) {
 		try {
 			const response = await axiosHandler.patch(endPoint, params);
 			return response;

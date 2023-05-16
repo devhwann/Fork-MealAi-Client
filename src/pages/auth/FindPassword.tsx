@@ -28,7 +28,7 @@ const FindPassword = () => {
 			return;
 		}
 
-		const data = await authApi.authFindRequest("/api/auth/reset_password", { email });
+		const data = await authApi.createFindRequest("/api/auth/reset_password", { email });
 
 		if (data.status === 200) {
 			setIsPasswordToast(true);

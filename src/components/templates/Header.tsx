@@ -20,7 +20,7 @@ const Header = () => {
 	}, [isLoggedIn]);
 
 	const handleLogout = async () => {
-		await authApi.authLogoutRequest("/api/auth/logout");
+		await authApi.createLogoutRequest("/api/auth/logout");
 		localStorage.clear();
 		setisLoggedInState(false);
 	};

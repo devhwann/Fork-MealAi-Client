@@ -143,7 +143,7 @@ const Edit = () => {
 		async function getNutryData() {
 			let data;
 			try {
-				data = await feedsApi.postSearchFoodRequst("/api/feeds/food", foodCards);
+				data = await feedsApi.createSearchFoodRequst("/api/feeds/food", foodCards);
 
 				if (data.status === 200) {
 					setNutry(data.data);
@@ -170,7 +170,7 @@ const Edit = () => {
 			open: isOpen,
 		};
 
-		const data = await feedsApi.editFeedRequest(`/api/feeds/${id}`, params);
+		const data = await feedsApi.updateFeedRequest(`/api/feeds/${id}`, params);
 
 		if (data.status === 200) {
 			alert("식단 피드가 수정되었습니다.");

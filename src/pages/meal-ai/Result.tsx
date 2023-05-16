@@ -140,7 +140,7 @@ const Result = () => {
 		async function getNutryData() {
 			let data;
 			try {
-				data = await feedsApi.postSearchFoodRequst("/api/feeds/food", foodCards);
+				data = await feedsApi.createSearchFoodRequst("/api/feeds/food", foodCards);
 
 				if (data.status === 200) {
 					setNutry(data.data);
@@ -172,7 +172,7 @@ const Result = () => {
 			open: isOpen,
 		};
 
-		const data = await feedsApi.editFeedRequest(`/api/feeds/${aiPredictResultId}`, params);
+		const data = await feedsApi.updateFeedRequest(`/api/feeds/${aiPredictResultId}`, params);
 
 		if (data.status === 200) {
 			navigate("/mylog/1");

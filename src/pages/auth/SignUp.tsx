@@ -84,7 +84,7 @@ const SignUp = () => {
 			return;
 		}
 
-		const data = await authApi.authCheckEmailRequest("/api/auth/check_email", form.email);
+		const data = await authApi.createCheckEmailRequest("/api/auth/check_email", form.email);
 
 		if (data.status === 200) {
 			setAuthCode(data.data.authentication_number);

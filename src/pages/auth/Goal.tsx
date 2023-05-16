@@ -40,11 +40,11 @@ const Goal = () => {
 		};
 
 		// 회원가입 api호출
-		const data = await authApi.authRegisterRequest("/api/users", form);
+		const data = await authApi.createRegisterRequest("/api/users", form);
 
 		if (data.status === 201) {
 			// 로그인 api  호출
-			const res = await authApi.authLoginRequest("/api/auth/login", userData);
+			const res = await authApi.createLoginRequest("/api/auth/login", userData);
 			const accessToken: string = res.data.access_token;
 			const refreshToken: string = res.data.refresh_token;
 

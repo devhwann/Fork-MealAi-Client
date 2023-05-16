@@ -15,7 +15,7 @@ export const feedsApi = Object.freeze({
 			return err;
 		}
 	},
-	async postFeedRequest(endPoint: string, params: any) {
+	async createFeedRequest(endPoint: string, params: any) {
 		try {
 			const response = await axiosHandler.post(endPoint, params, {
 				headers: {
@@ -35,7 +35,7 @@ export const feedsApi = Object.freeze({
 			return err;
 		}
 	},
-	async patchLikesRequest(endPoint: string) {
+	async updateLikesRequest(endPoint: string) {
 		try {
 			const response = await axiosHandler.patch(endPoint);
 			return response;
@@ -59,7 +59,7 @@ export const feedsApi = Object.freeze({
 			return err;
 		}
 	},
-	async editFeedRequest(endPoint: string, params: EditFeedTypes) {
+	async updateFeedRequest(endPoint: string, params: EditFeedTypes) {
 		try {
 			const response = await axiosHandler.patch(endPoint, params);
 			return response;
@@ -75,7 +75,7 @@ export const feedsApi = Object.freeze({
 			return err;
 		}
 	},
-	async postSearchFoodRequst(endPoint: string, params: PostSearchFoodTypes) {
+	async createSearchFoodRequst(endPoint: string, params: PostSearchFoodTypes) {
 		try {
 			const response = await axiosHandler.post(endPoint, params);
 			return response;
