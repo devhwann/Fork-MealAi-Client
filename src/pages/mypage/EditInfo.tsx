@@ -118,6 +118,7 @@ const EditInfo = () => {
 						name="ageGroup"
 						id="ageGroup"
 						defaultValue={ageGroup}
+						key={ageGroup}
 						label="연령대"
 						htmlFor="ageGroup"
 						onChange={handleAgeGroup}
