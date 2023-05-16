@@ -81,7 +81,7 @@ const Home = () => {
 	return (
 		<div>
 			<HeadContainer currentScroll={currentScroll}>
-				<div className="ml-96 select-none">
+				<div className="select-none head-title">
 					<h1 className="text-white mb-3">나만의 맞춤 AI 영양사,</h1>
 					<img src={WhiteLogo} width="214" height="50" />
 					<button

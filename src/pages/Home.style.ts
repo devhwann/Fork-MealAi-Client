@@ -28,6 +28,10 @@ export const HeadContainer = styled.div<{ currentScroll: number }>`
 		position: relative;
 		animation: titleFadeInUp 1s;
 	}
+
+	.head-title {
+		margin-left: 15%;
+	}
 `;
 
 export const IntroContainer = styled.div<{ currentScroll: number }>`

@@ -63,7 +63,6 @@ const Ai = () => {
 			sessionStorage.setItem("aiPredictResultId", result.data);
 			navigate("/meal-ai/result");
 		} else {
-			console.log(result);
 			navigate("/meal-ai/fail");
 		}
 	};
@@ -77,7 +76,6 @@ const Ai = () => {
 		}
 	}, [preview]);
 
-	console.log("buttonActivated", buttonActivated);
 	return (
 		<GradientWrapper>
 			<h1 className="text-primary-1 text-center pt-20 mb-10">식단 AI 분석을 시작합니다.</h1>
