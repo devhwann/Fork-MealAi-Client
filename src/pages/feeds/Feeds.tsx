@@ -4,6 +4,7 @@ import { AxiosResponse } from "axios";
 import { useRecoilValue } from "recoil";
 import { isLoggedInState } from "@/recoil/state";
 import { feedsApi } from "@/api/feeds";
+import { authApi } from "@/api/auth";
 import { FilterType, GetFeedsParamsTypes } from "@/types/feeds/feedsRequestTypes";
 import { GetFeedsResponseTypes, GetFeedsTypes } from "@/types/feeds/feedsResponseTypes";
 import Thumb from "@/components/atoms/thumbnail/Thumbnail";
@@ -108,6 +109,7 @@ const Feeds = () => {
 		if (patchLikes.status !== 200) {
 			navigate("/auth/sign-in");
 			alert("다시 로그인 해주세요.");
+			await authApi.createLogoutRequest("/api/auth/logout");
 			localStorage.clear();
 		}
 	};
@@ -128,6 +130,7 @@ const Feeds = () => {
 		if (patchLikes.status !== 200) {
 			navigate("/auth/sign-in");
 			alert("다시 로그인 해주세요.");
+			await authApi.createLogoutRequest("/api/auth/logout");
 			localStorage.clear();
 		}
 	};

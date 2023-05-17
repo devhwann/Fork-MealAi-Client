@@ -15,15 +15,13 @@ const Header = () => {
 	const [isLoggedIn, setisLoggedInState] = useRecoilState(isLoggedInState);
 
 	useEffect(() => {
-		const isCookie = document.cookie;
-		const isLoggedInValid = !isCookie ? false : true;
-		// const isLoggedInValid =
-		// // 	!localStorage.getItem("accessToken") && !localStorage.getItem("refreshToken") ? false : true;
+		const isLoggedInValid = !localStorage.getItem("accessToken") ? false : true;
 		setisLoggedInState(isLoggedInValid);
 	}, [isLoggedIn]);
 
 	const handleLogout = async () => {
-		await authApi.createLogoutRequest("/api/auth/logout");
+		const data = await authApi.createLogoutRequest("/api/auth/logout");
+		console.log("로그아웃 response 확인", data);
 		axiosHandler.defaults.headers.common["authorization-"] = "Bearer ";
 		setisLoggedInState(false);
 	};

@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useSetRecoilState } from "recoil";
 import { isLoggedInState } from "@/recoil/state";
 import { userApi } from "@/api/user";
+import { authApi } from "@/api/auth";
 import { GoalType } from "@/components/organisms/GoalText";
 import Modal from "@/components/organisms/Modal";
 import Input from "@/components/atoms/inputs/Input";
@@ -34,6 +35,7 @@ const EditInfo = () => {
 			} catch (err) {
 				navigate("/auth/sign-in");
 				alert("다시 로그인 해주세요.");
+				await authApi.createLogoutRequest("/api/auth/logout");
 				localStorage.clear();
 			}
 		}
@@ -57,7 +59,7 @@ const EditInfo = () => {
 
 		await userApi.updateUserInfoRequest("/api/users", { gender, age_group: ageGroup, nickname, goal });
 		alert("회원정보가 수정되었습니다.");
-		window.scrollTo({ top: 0, behavior: "smooth" });
+		navigate(-1);
 	};
 
 	// 탈퇴 모달

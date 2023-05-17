@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { axios } from "@/utils/axios.utils";
 import { userApi } from "@/api/user";
 import { feedsApi } from "@/api/feeds";
+import { authApi } from "@/api/auth";
 import { validateConfirmPassword, validatePassword } from "@/utils/validation";
 import { GetFeedsTypes } from "@/types/feeds/feedsResponseTypes";
 import GoalText, { GoalType } from "@/components/organisms/GoalText";
@@ -178,6 +179,7 @@ const MyPage = () => {
 		if (patchLikes.status !== 200) {
 			navigate("/auth/sign-in");
 			alert("다시 로그인 해주세요.");
+			await authApi.createLogoutRequest("/api/auth/logout");
 			localStorage.clear();
 		}
 	};
