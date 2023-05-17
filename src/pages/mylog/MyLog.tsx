@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, Fragment } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { reportApi } from "@/api/report";
 import { ReportWeekHistory, ReportWeekHistoryData } from "@/types/report/reportResponseType";
@@ -7,7 +7,7 @@ import BasicButton from "@/components/atoms/buttons/BasicButton";
 import ArrowButton from "@/components/atoms/buttons/ArrowButton";
 import TinyButton from "@/components/atoms/buttons/TinyButton";
 import HorizontalProgressBars from "@/components/atoms/progressBars/HorizontalProgressBars";
-import axios from "axios";
+import { v4 as uuidv4 } from "uuid";
 
 const MyLog = () => {
 	const navigate = useNavigate();
@@ -151,7 +151,7 @@ const MyLog = () => {
 										</div>
 										{targetDataArr.map((value) => {
 											return (
-												<>
+												<Fragment key={uuidv4()}>
 													{value.feed_id ? (
 														<Thumb
 															src={value.image_url}
@@ -160,10 +160,10 @@ const MyLog = () => {
 															type="log"
 															mealTime={value.meal_time}
 															open={value.open}
-															key={value.user_id}
+															key={value.feed_id}
 														/>
 													) : null}
-												</>
+												</Fragment>
 											);
 										})}
 									</div>
