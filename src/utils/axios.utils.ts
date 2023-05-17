@@ -66,7 +66,8 @@ const getRefreshToken = async () => {
 			const data = await authApi.createRefreshRequest("/api/auth/refresh");
 			console.log("리프레시 결과 확인", data);
 			if (data.status === 200) {
-				axiosHandler.defaults.headers.common["authorization-"] = `Bearer ${data.data.access_token}`;
+				localStorage.setItem("accessToken", data.data.access_token);
+				axiosHandler.defaults.headers.common["authorization-"] = `Bearer ${localStorage.getItem("accessToken")}`;
 				processQueue(null, data.data.access_token);
 			} else {
 				alert("다시 로그인 해주세요🤗");
