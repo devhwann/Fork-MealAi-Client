@@ -64,7 +64,7 @@ const MyLog = () => {
 
 			if (weeklyReport.status === 200) {
 				if (weeklyReport.data === null) {
-					<></>;
+					return;
 				} else {
 					setPeriod([weeklyReport.data.start_of_week, weeklyReport.data.end_of_week]);
 					setWeeklyNutry({
@@ -106,18 +106,37 @@ const MyLog = () => {
 						<div>
 							<h3 className="text-gray-1 mb-2">주간 영양 섭취량</h3>
 							<p className="text-lg font-bold text-gray-4 mb-6">
-								{period[0]} ~ {period[1]}
+								{period && period.length >= 1 ? (
+									<>
+										{period[0]} ~ {period[1]}
+									</>
+								) : (
+									<>해당 주간의 피드 기록이 없습니다🙄</>
+								)}
 							</p>
-							<BasicButton
-								type="button"
-								onClick={() => {
-									navigate(`/mylog/weekly-report/${week}`);
-								}}
-								width={false}
-								style="primary"
-							>
-								주간 AI 리포트 확인
-							</BasicButton>
+							{period && period.length >= 1 ? (
+								<BasicButton
+									type="button"
+									onClick={() => {
+										navigate(`/mylog/weekly-report/${week}`);
+									}}
+									width={false}
+									style="primary"
+								>
+									주간 AI 리포트 확인
+								</BasicButton>
+							) : (
+								<BasicButton
+									type="button"
+									onClick={() => {
+										navigate("/meal-ai");
+									}}
+									width={false}
+									style="primary"
+								>
+									식단 분석하러 가기
+								</BasicButton>
+							)}
 						</div>
 						<div className="my-auto w-80 max-h-fit items-center">
 							<HorizontalProgressBars nutry={weeklyNutry} usersNutry={weeklyNutryGoal} />
