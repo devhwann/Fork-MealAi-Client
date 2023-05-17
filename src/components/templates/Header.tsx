@@ -20,9 +20,8 @@ const Header = () => {
 	}, [isLoggedIn]);
 
 	const handleLogout = async () => {
-		const data = await authApi.createLogoutRequest("/api/auth/logout");
-		console.log("로그아웃 response 확인", data);
-		axiosHandler.defaults.headers.common["authorization-"] = "Bearer ";
+		await authApi.createLogoutRequest("/api/auth/logout");
+		localStorage.clear();
 		setisLoggedInState(false);
 	};
 
