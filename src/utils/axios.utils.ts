@@ -64,7 +64,6 @@ const getRefreshToken = async () => {
 		isRefreshing = true;
 		try {
 			const data = await authApi.createRefreshRequest("/api/auth/refresh");
-			console.log("리프레시 결과 확인", data);
 			if (data.status === 200) {
 				localStorage.setItem("accessToken", data.data.access_token);
 				axiosHandler.defaults.headers.common["authorization-"] = `Bearer ${localStorage.getItem("accessToken")}`;
@@ -92,7 +91,6 @@ axiosHandler.interceptors.response.use(
 	async function (error) {
 		const originalConfig = error.config;
 		const code = error.response.data.error_code;
-		console.log("에러코드 확인", code);
 
 		if (
 			code === 1002 ||
