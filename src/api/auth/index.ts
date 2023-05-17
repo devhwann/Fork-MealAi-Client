@@ -29,7 +29,7 @@ export const authApi = Object.freeze({
 		return response;
 	},
 	async createRefreshRequest(endPoint: string) {
-		const response = await axiosHandler.post(endPoint);
+		const response = await axiosHandler.get(endPoint);
 		return response;
 	},
 	async createFindRequest(endPoint: string, params: ResetPasswordParams) {
