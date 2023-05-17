@@ -4,6 +4,7 @@ import { API_ENDPOINT } from "@/config/constants";
 
 const axiosOptions = {
 	baseURL: API_ENDPOINT,
+	withCredentials: true,
 	headers: {
 		"Content-Type": "application/json",
 	},
@@ -15,11 +16,19 @@ const axiosHandler = axios.create(axiosOptions);
 axiosHandler.interceptors.request.use(
 	function (config) {
 		// 요청을 보내기 전에 수행할 일
-		if (localStorage.getItem("accessToken")) {
-			config.headers["authorization-"] = `Bearer ${localStorage.getItem("accessToken")}`;
-		} else {
-			config.headers["authorization-"] = null;
-		}
+		// config.headers["authorization-"] = `Bearer ${accessToken}`;
+
+		// if (privateToken) {
+		// 	config.headers["authorization-"] = `Bearer ${privateToken}`;
+		// } else {
+		// 	config.headers["authorization-"] = null;
+		// }
+
+		// if (localStorage.getItem("accessToken")) {
+		// 	config.headers["authorization-"] = `Bearer ${localStorage.getItem("accessToken")}`;
+		// } else {
+		// 	config.headers["authorization-"] = null;
+		// }
 		return config;
 	},
 	function (error) {
@@ -33,7 +42,7 @@ let isRefreshing = false;
 let refreshSubscribers: any[] = [];
 
 // 대기열
-const processQueue = (err: unknown | null, token: null) => {
+const processQueue = (err: unknown | null, token: string | null) => {
 	refreshSubscribers.forEach((callback) => callback(token));
 	refreshSubscribers = [];
 };
@@ -44,7 +53,9 @@ const handleResetTokens = async () => {
 		isRefreshing = true;
 		try {
 			alert("토큰이 만료되어 자동으로 로그아웃 되었습니다. 다시 로그인 해주세요🤗");
-			localStorage.clear();
+			await authApi.createLogoutRequest("/api/auth/logout");
+			axiosHandler.defaults.headers.common["authorization-"] = "Bearer ";
+
 			if (window !== undefined) {
 				location.href = "/auth/sign-in";
 			}
@@ -60,24 +71,28 @@ const getRefreshToken = async () => {
 	if (!isRefreshing) {
 		isRefreshing = true;
 		try {
-			const currentRefreshToken = localStorage.getItem("refreshToken");
+			const data = await authApi.createRefreshRequest("/api/auth/refresh");
+			axiosHandler.defaults.headers.common["authorization-"] = `Bearer ${data.data.access_token}`;
+			processQueue(null, data.data.access_token);
 
-			if (currentRefreshToken) {
-				const data = await authApi.createRefreshRequest("/api/auth/refresh", {
-					refresh_token: currentRefreshToken,
-				});
-				localStorage.setItem("accessToken", data.data.access_token);
-				localStorage.setItem("refreshToken", data.data.refresh_token);
-				axiosHandler.defaults.headers.common["authorization-"] = `Bearer ${localStorage.getItem("accessToken")}`;
-				processQueue(null, data.data.access_token);
-			} else {
-				alert("다시 로그인 해주세요🤗");
-				localStorage.clear();
-				if (window !== undefined) {
-					location.href = "/auth/sign-in";
-				}
-				processQueue(null, null);
-			}
+			// const currentRefreshToken = localStorage.getItem("refreshToken");
+
+			// if (currentRefreshToken) {
+			// 	const data = await authApi.createRefreshRequest("/api/auth/refresh", {
+			// 		refresh_token: currentRefreshToken,
+			// 	});
+			// 	// localStorage.setItem("accessToken", data.data.access_token);
+			// 	const privateToken = data.data.access_token;
+			// 	localStorage.setItem("refreshToken", data.data.refresh_token);
+			// 	axiosHandler.defaults.headers.common["authorization-"] = `Bearer ${privateToken}`;
+			// 	processQueue(null, privateToken);
+			// } else {
+			// 	alert("다시 로그인 해주세요🤗");
+			// 	if (window !== undefined) {
+			// 		location.href = "/auth/sign-in";
+			// 	}
+			// 	processQueue(null, null);
+			// }
 		} catch (err) {
 			processQueue(err, null);
 		} finally {

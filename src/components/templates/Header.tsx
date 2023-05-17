@@ -4,6 +4,7 @@ import { useRecoilState } from "recoil";
 import { isLoggedInState } from "@/recoil/state";
 import { authApi } from "@/api/auth";
 import Logo from "@/assets/logo.svg";
+import { axiosHandler } from "@/utils/axios.utils";
 
 interface MenuObjProps {
 	name: string;
@@ -14,14 +15,16 @@ const Header = () => {
 	const [isLoggedIn, setisLoggedInState] = useRecoilState(isLoggedInState);
 
 	useEffect(() => {
-		const isLoggedInValid =
-			!localStorage.getItem("accessToken") && !localStorage.getItem("refreshToken") ? false : true;
+		const isCookie = document.cookie;
+		const isLoggedInValid = !isCookie ? false : true;
+		// const isLoggedInValid =
+		// // 	!localStorage.getItem("accessToken") && !localStorage.getItem("refreshToken") ? false : true;
 		setisLoggedInState(isLoggedInValid);
 	}, [isLoggedIn]);
 
 	const handleLogout = async () => {
 		await authApi.createLogoutRequest("/api/auth/logout");
-		localStorage.clear();
+		axiosHandler.defaults.headers.common["authorization-"] = "Bearer ";
 		setisLoggedInState(false);
 	};
 

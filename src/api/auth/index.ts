@@ -17,7 +17,7 @@ export const authApi = Object.freeze({
 	},
 	async createLoginRequest(endPoint: string, params: LoginParams) {
 		try {
-			const response = await axiosHandler.post(endPoint, params);
+			const response = await axiosHandler.post(endPoint, params, { withCredentials: true });
 			return response;
 		} catch (err: any) {
 			return err;
@@ -28,8 +28,8 @@ export const authApi = Object.freeze({
 		const response = axiosHandler.post(endPoint);
 		return response;
 	},
-	async createRefreshRequest(endPoint: string, params: RefreshParams) {
-		const response = await axiosHandler.post(endPoint, params);
+	async createRefreshRequest(endPoint: string) {
+		const response = await axiosHandler.post(endPoint);
 		return response;
 	},
 	async createFindRequest(endPoint: string, params: ResetPasswordParams) {
