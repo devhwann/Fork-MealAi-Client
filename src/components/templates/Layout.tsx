@@ -12,14 +12,15 @@ const Wrapper = styled.div`
 	display: flex;
 	flex-direction: column;
 	height: 100vh;
+	min-width: 1280px;
 	background-color: white;
 `;
 
 const Page = styled.div`
 	margin: 90px auto 120px auto;
 	width: 100%;
-	min-width: 1200px;
 	flex: 1;
+	background-color: white;
 `;
 
 const Layout = () => {
