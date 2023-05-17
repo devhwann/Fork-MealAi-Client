@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useRecoilValue } from "recoil";
 import { isLoggedInState } from "@/recoil/state";
 import { feedsApi } from "@/api/feeds";
+import { authApi } from "@/api/auth";
 import { GetFeedsTypes } from "@/types/feeds/feedsResponseTypes";
 import { GetFeedsParamsTypes } from "@/types/feeds/feedsRequestTypes";
 import { HeadContainer, IntroContainer } from "./Home.style";
@@ -74,6 +75,7 @@ const Home = () => {
 		if (patchLikes.status !== 200) {
 			navigate("/auth/sign-in");
 			alert("다시 로그인 해주세요.");
+			await authApi.createLogoutRequest("/api/auth/logout");
 			localStorage.clear();
 		}
 	};

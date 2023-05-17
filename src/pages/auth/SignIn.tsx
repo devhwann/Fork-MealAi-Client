@@ -23,10 +23,10 @@ const SignIn = () => {
 	const [isPasswordToast, setIsPasswordToast] = useRecoilState(isPasswordToastState);
 
 	useEffect(() => {
-		// if (localStorage.getItem("accessToken") || localStorage.getItem("refreshToken")) {
-		// 	alert("로그아웃 후 이용해주세요.");
-		// 	navigate("/");
-		// }
+		if (localStorage.getItem("accessToken")) {
+			alert("로그아웃 후 이용해주세요.");
+			navigate("/");
+		}
 		if (isPasswordToast) {
 			setTimeout(() => {
 				setIsPasswordToast(false);
@@ -60,9 +60,11 @@ const SignIn = () => {
 				password,
 			});
 
-			axiosHandler.defaults.headers.common["authorization-"] = `Bearer ${data.data.access_token}`;
+			const accessToken: string = data.data.access_token;
+			localStorage.setItem("accessToken", accessToken);
+			axiosHandler.defaults.headers.common["authorization-"] = `Bearer ${accessToken}`;
 			setisLoggedInState(true);
-			// navigate("/");
+			navigate("/");
 		} catch (err) {
 			alert(data.response.data.message);
 		}

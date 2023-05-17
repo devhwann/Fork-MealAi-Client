@@ -46,11 +46,7 @@ const Goal = () => {
 			// 로그인 api  호출
 			const res = await authApi.createLoginRequest("/api/auth/login", userData);
 			const accessToken: string = res.data.access_token;
-			const refreshToken: string = res.data.refresh_token;
-
 			localStorage.setItem("accessToken", accessToken);
-			localStorage.setItem("refreshToken", refreshToken);
-
 			axiosHandler.defaults.headers.common["authorization-"] = `Bearer ${accessToken}`;
 			setisLoggedInState(true);
 			navigate("/");

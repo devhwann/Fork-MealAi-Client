@@ -3,6 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useRecoilState } from "recoil";
 import { isEditFeedState, isLoggedInState } from "@/recoil/state";
 import { feedsApi } from "@/api/feeds";
+import { authApi } from "@/api/auth";
 import getMealTime from "@/utils/getMealTime";
 import { GetFeedsTypes, UserDailyNutrientTypes } from "@/types/feeds/feedsResponseTypes";
 import Thumb from "@/components/atoms/thumbnail/Thumbnail";
@@ -93,6 +94,7 @@ const Detail = () => {
 			setIsLoggedIn(false);
 			navigate("/auth/sign-in");
 			alert("다시 로그인 해주세요.");
+			await authApi.createLogoutRequest("/api/auth/logout");
 			localStorage.clear();
 		}
 	};

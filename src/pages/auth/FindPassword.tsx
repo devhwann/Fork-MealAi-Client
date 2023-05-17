@@ -39,7 +39,7 @@ const FindPassword = () => {
 	};
 
 	useEffect(() => {
-		if (localStorage.getItem("accessToken") || localStorage.getItem("refreshToken")) {
+		if (localStorage.getItem("accessToken")) {
 			alert("로그아웃 후 이용해주세요.");
 			navigate("/");
 		}
